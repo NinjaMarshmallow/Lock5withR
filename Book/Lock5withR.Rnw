@@ -246,6 +246,7 @@ Statistics: Unlocking the Power of Data}
 \parskip=3mm
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 \maketitle
 \setcounter{tocdepth}{1}
 \tableofcontents

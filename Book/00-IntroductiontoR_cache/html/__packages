@@ -1,0 +1,13 @@
+base
+dplyr
+lattice
+ggplot2
+ggstance
+ggformula
+mosaicData
+Matrix
+mosaic
+mosaicCore
+mosaicCalc
+fastR
+Lock5withR
