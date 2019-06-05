@@ -1,0 +1,27 @@
+---
+title: "Lock5 With R"
+author: "R Pruim"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+biblio-style: apalike
+#bibliography: /Users/rpruim/tex/inputs/BibTeX/all.bib 
+link-citations: yes
+description: "Code, exercises and discussion to accompany a course taught from 'Statistics: Unlocking the Power of Data'"
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  fig.width = 5,
+  fig.height = 9,
+  out.width = "65%"
+  )
+library(ggformula)
+```
+
+# Lock 5 With R {-}
+
+\newpage
+

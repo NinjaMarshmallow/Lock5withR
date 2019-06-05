@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2 Describing Data | Lock5 With R</title>
+  <meta name="description" content="Code, exercises and discussion to accompany a course taught from ‘Statistics: Unlocking the Power of Data’" />
+  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2 Describing Data | Lock5 With R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Code, exercises and discussion to accompany a course taught from ‘Statistics: Unlocking the Power of Data’" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2 Describing Data | Lock5 With R" />
+  
+  <meta name="twitter:description" content="Code, exercises and discussion to accompany a course taught from ‘Statistics: Unlocking the Power of Data’" />
+  
+
+<meta name="author" content="R Pruim" />
+
+
+<meta name="date" content="2019-06-05" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="collecting-data.html">
+<link rel="next" href="confidence-intervals.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Lock5 With R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Lock 5 With R</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html"><i class="fa fa-check"></i>Introduction to R and Statistics</a><ul>
+<li class="chapter" data-level="0.1" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#getting-started-with-rstudio"><i class="fa fa-check"></i><b>0.1</b> Getting Started With RStudio</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#rstudio"><i class="fa fa-check"></i>RStudio</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#loading-packages"><i class="fa fa-check"></i>Loading packages</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#using-r-as-a-calculator"><i class="fa fa-check"></i>Using R as a calculator</a></li>
+</ul></li>
+<li class="chapter" data-level="0.2" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#getting-help-in-rstudio"><i class="fa fa-check"></i><b>0.2</b> Getting Help in RStudio</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#the-rstudio-help-system"><i class="fa fa-check"></i>The RStudio help system</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#history"><i class="fa fa-check"></i>History</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#error-messages"><i class="fa fa-check"></i>Error messages</a></li>
+</ul></li>
+<li class="chapter" data-level="0.3" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#four-things-to-know-about-r"><i class="fa fa-check"></i><b>0.3</b> Four Things to Know About R</a></li>
+<li class="chapter" data-level="0.4" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#data-in-r"><i class="fa fa-check"></i><b>0.4</b> Data in R</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#data-in-packages"><i class="fa fa-check"></i>Data in Packages</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#the-helprct-data-set"><i class="fa fa-check"></i>The HELPrct data set</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#using-your-own-data"><i class="fa fa-check"></i>Using your own data</a></li>
+</ul></li>
+<li class="chapter" data-level="0.5" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#the-most-important-template"><i class="fa fa-check"></i><b>0.5</b> The Most Important Template</a></li>
+<li class="chapter" data-level="0.6" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#manipulating-your-data"><i class="fa fa-check"></i><b>0.6</b> Manipulating your data</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#creating-a-subset"><i class="fa fa-check"></i>Creating a subset</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#choosing-specific-columns"><i class="fa fa-check"></i>Choosing specific columns</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#dropping-variables"><i class="fa fa-check"></i>Dropping Variables</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#creating-new-variables"><i class="fa fa-check"></i>Creating new variables</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#saving-data"><i class="fa fa-check"></i>Saving Data</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#merging-datasets"><i class="fa fa-check"></i>Merging datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="0.7" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#using-r-markdown"><i class="fa fa-check"></i><b>0.7</b> Using R Markdown</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#r-markdown-files-must-be-self-contained"><i class="fa fa-check"></i>R Markdown files must be self-contained</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#output-formats"><i class="fa fa-check"></i>Output formats</a></li>
+</ul></li>
+<li class="chapter" data-level="0.8" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#statistics-answering-questions-with-data"><i class="fa fa-check"></i><b>0.8</b> Statistics: Answering Questions With Data</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#data-the-raw-material"><i class="fa fa-check"></i>Data – the raw material</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#information-the-goal"><i class="fa fa-check"></i>Information – the goal</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#uncertainty-the-context"><i class="fa fa-check"></i>Uncertainty – the context</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#probability-the-tool"><i class="fa fa-check"></i>Probability – the tool</a></li>
+</ul></li>
+<li class="chapter" data-level="0.9" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#a-first-example-the-lady-tasting-tea"><i class="fa fa-check"></i><b>0.9</b> A First Example: The Lady Tasting Tea</a></li>
+<li class="chapter" data-level="0.10" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#coins-and-cups"><i class="fa fa-check"></i><b>0.10</b> Coins and Cups</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="collecting-data.html"><a href="collecting-data.html"><i class="fa fa-check"></i><b>1</b> Collecting Data</a><ul>
+<li class="chapter" data-level="1.1" data-path="collecting-data.html"><a href="collecting-data.html#the-structure-of-data"><i class="fa fa-check"></i><b>1.1</b> The Structure of Data</a><ul>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#cases-and-variables"><i class="fa fa-check"></i>Cases and Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#categorical-and-quantitative-variables"><i class="fa fa-check"></i>Categorical and Quantitative Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#investigating-variables-and-relationships-between-variables"><i class="fa fa-check"></i>Investigating Variables and Relationships between Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#using-data-to-answer-a-question"><i class="fa fa-check"></i>Using Data to Answer a Question</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="collecting-data.html"><a href="collecting-data.html#sampling-from-a-population"><i class="fa fa-check"></i><b>1.2</b> Sampling from a Population</a><ul>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#samples-from-populations"><i class="fa fa-check"></i>Samples from Populations</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#sampling-bias"><i class="fa fa-check"></i>Sampling Bias</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#simple-random-sample"><i class="fa fa-check"></i>Simple Random Sample</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="collecting-data.html"><a href="collecting-data.html#experiments-and-observational-studies"><i class="fa fa-check"></i><b>1.3</b> Experiments and Observational Studies</a><ul>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#confounding-variables"><i class="fa fa-check"></i>Confounding Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#observational-studies-vs.-experiments"><i class="fa fa-check"></i>Observational Studies vs. Experiments</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="describing-data.html"><a href="describing-data.html"><i class="fa fa-check"></i><b>2</b> Describing Data</a><ul>
+<li class="chapter" data-level="2.1" data-path="describing-data.html"><a href="describing-data.html#categorical-variables"><i class="fa fa-check"></i><b>2.1</b> Categorical Variables</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#one-categorical-variable"><i class="fa fa-check"></i>One Categorical Variable</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#two-categorical-variables-two-way-tables"><i class="fa fa-check"></i>Two Categorical Variables: Two-Way Tables</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="describing-data.html"><a href="describing-data.html#one-quantitative-variable-shape-and-center"><i class="fa fa-check"></i><b>2.2</b> One Quantitative Variable: Shape and Center</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#the-shape-of-a-distribution"><i class="fa fa-check"></i>The Shape of a Distribution</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#the-center-of-a-distribution"><i class="fa fa-check"></i>The Center of a Distribution</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#resistance"><i class="fa fa-check"></i>Resistance</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="describing-data.html"><a href="describing-data.html#one-quantitative-variable-measures-of-spread"><i class="fa fa-check"></i><b>2.3</b> One Quantitative Variable: Measures of Spread</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#standard-deviation"><i class="fa fa-check"></i>Standard Deviation</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#percentiles"><i class="fa fa-check"></i>Percentiles</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#five-number-summary"><i class="fa fa-check"></i>Five Number Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="describing-data.html"><a href="describing-data.html#outliers-boxplots-and-quantitativecategorical-relationships"><i class="fa fa-check"></i><b>2.4</b> Outliers, Boxplots, and Quantitative/Categorical Relationships</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#detection-of-outliers"><i class="fa fa-check"></i>Detection of Outliers</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#boxplots"><i class="fa fa-check"></i>Boxplots</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#one-quantitative-and-one-categorical-variable"><i class="fa fa-check"></i>One Quantitative and One Categorical Variable</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="describing-data.html"><a href="describing-data.html#two-quantitative-variables-scatterplot-and-correlation"><i class="fa fa-check"></i><b>2.5</b> Two Quantitative Variables: Scatterplot and Correlation</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#visualizing-a-relationship-between-two-quantitative-variables-scatterplots"><i class="fa fa-check"></i>Visualizing a Relationship between Two Quantitative Variables: Scatterplots</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#summarizing-a-relationship-between-two-quantitative-variables-correlation"><i class="fa fa-check"></i>Summarizing a Relationship between Two Quantitative Variables: Correlation</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="describing-data.html"><a href="describing-data.html#two-quantitative-variables-linear-regression"><i class="fa fa-check"></i><b>2.6</b> Two Quantitative Variables: Linear Regression</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>3</b> Confidence Intervals</a><ul>
+<li class="chapter" data-level="3.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#sampling-distributions"><i class="fa fa-check"></i><b>3.1</b> Sampling Distributions</a><ul>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#variability-of-sample-statistics"><i class="fa fa-check"></i>Variability of Sample Statistics</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#measuring-sampling-variability-the-standard-error"><i class="fa fa-check"></i>Measuring Sampling Variability: The Standard Error</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#the-importance-of-sample-size"><i class="fa fa-check"></i>The Importance of Sample Size</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#understanding-and-interpreting-confidence-intervals"><i class="fa fa-check"></i><b>3.2</b> Understanding and Interpreting Confidence Intervals</a><ul>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#interval-estimates-and-margin-of-error"><i class="fa fa-check"></i>Interval Estimates and Margin of Error</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#confidence-intervals-1"><i class="fa fa-check"></i>Confidence Intervals</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#understanding-confidence-intervals"><i class="fa fa-check"></i>Understanding Confidence Intervals</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#interpreting-confidence-intervals"><i class="fa fa-check"></i>Interpreting Confidence Intervals</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#constructing-bootstrap-confidence-intervals"><i class="fa fa-check"></i><b>3.3</b> Constructing Bootstrap Confidence Intervals</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-samples"><i class="fa fa-check"></i><b>3.3.1</b> Bootstrap Samples</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-distribution"><i class="fa fa-check"></i>Bootstrap Distribution</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#estimating-standard-error-based-on-a-bootstrap-distribution"><i class="fa fa-check"></i>Estimating Standard Error Based on a Bootstrap Distribution</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#confidence-interval-based-on-a-bootstrap-standard-error"><i class="fa fa-check"></i>95% Confidence Interval Based on a Bootstrap Standard Error</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-confidence-intervals-using-percentiles"><i class="fa fa-check"></i><b>3.4</b> Bootstrap Confidence Intervals Using Percentiles</a><ul>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#confidence-intervals-based-on-bootstrap-percentiles"><i class="fa fa-check"></i>Confidence Intervals Based on Bootstrap Percentiles</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#finding-confidence-intervals-for-many-different-parameters"><i class="fa fa-check"></i>Finding Confidence Intervals for Many Different Parameters</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#another-look-at-the-effect-of-sample-size"><i class="fa fa-check"></i>Another Look at the Effect of Sample Size</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#one-caution-on-constructing-bootstrap-confidence-intervals"><i class="fa fa-check"></i>One Caution on Constructing Bootstrap Confidence Intervals</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html"><i class="fa fa-check"></i><b>4</b> Hypothesis Tests</a><ul>
+<li class="chapter" data-level="4.1" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#introducing-hypothesis-tests"><i class="fa fa-check"></i><b>4.1</b> Introducing Hypothesis Tests</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#the-4-step-outline"><i class="fa fa-check"></i>The 4-step outline</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#null-and-alternative-hypotheses"><i class="fa fa-check"></i>Null and Alternative Hypotheses</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#measuring-evidence-with-p-values"><i class="fa fa-check"></i><b>4.2</b> Measuring Evidence with P-values</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#p-values-from-randomization-distributions"><i class="fa fa-check"></i>P-values from Randomization Distributions</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#p-values-and-the-alternative-hypothesis"><i class="fa fa-check"></i>P-values and the Alternative Hypothesis</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#determining-statisical-significance"><i class="fa fa-check"></i><b>4.3</b> Determining Statisical Significance</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#less-formal-statistical-decisions"><i class="fa fa-check"></i>Less Formal Statistical Decisions</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#creating-randomization-distributions"><i class="fa fa-check"></i><b>4.4</b> Creating Randomization Distributions</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-test-for-a-difference-in-proportions-cocaine-addiction"><i class="fa fa-check"></i>Randomization Test for a Difference in Proportions: Cocaine Addiction</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-test-for-a-correlation-malevolent-uniforms-and-penalties"><i class="fa fa-check"></i>Randomization Test for a Correlation: Malevolent Uniforms and Penalties</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-test-for-a-mean-body-temperature"><i class="fa fa-check"></i>Randomization Test for a Mean: Body Temperature</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#confidence-intervals-and-hypothesis-tests"><i class="fa fa-check"></i><b>4.5</b> Confidence Intervals and Hypothesis Tests</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-and-bootstrap-distributions"><i class="fa fa-check"></i>Randomization and Bootstrap Distributions</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Lock5 With R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="describing-data" class="section level1">
+<h1><span class="header-section-number">2</span> Describing Data</h1>
+<!-- r set_parent('Lock5withR.Rmd') -->
+<!-- 2.21 -->
+<!-- 2.31 -->
+<p>In this chapter we discuss graphical and numerical summaries of data.
+<!-- These notes focus primarily on how to get R  to do the work for you. The text book includes more information about why and when to use various kinds of summaries. --></p>
+<div id="categorical-variables" class="section level2">
+<h2><span class="header-section-number">2.1</span> Categorical Variables</h2>
+<p>Let us investigate categorical variables in R by taking a look at the data set for the One True Love survey. Notice that the data set is not readily available in our textbook’s package. However, the authors do provide us with the necessary information to create our own data spreadsheet (in either Excel or Google) and import it into R (See Chapter 0 for instructions.)</p>
+<pre class="sourceCode r"><code class="sourceCode r">OneTrueLove &lt;-<span class="st"> </span><span class="kw">read.file</span>( <span class="st">&quot;OneTrueLove.csv&quot;</span> )</code></pre>
+<pre><code>## Reading data with read.csv()</code></pre>
+<p>Alternatively, we can read from a URL like this</p>
+<pre class="sourceCode r"><code class="sourceCode r">OneTrueLove2 &lt;-<span class="st"> </span>
+<span class="st">  </span><span class="kw">read.file</span>(<span class="st">&quot;https://raw.githubusercontent.com/rpruim/Lock5withR/master/Book/OneTrueLove.csv&quot;</span>)</code></pre>
+<!-- The block below should be commented out -->
+<!-- In this case, the file is also distributed with the **`Lock5withR`** package, so -->
+<!-- we can read it like this too: -->
+<!-- ```{r Data2.1c, message=FALSE} -->
+<!-- # docFile() will tell us where the file is on our computer -->
+<!-- docFile("OneTrueLove.csv", package = "Lock5withR") -->
+<!-- OneTrueLove3 <- read.file(docFile("OneTrueLove.csv", package = "Lock5withR")) -->
+<!-- OneTrueLove4 <- read.file("OneTrueLove.csv", package = "Lock5withR") -->
+<!-- ``` -->
+<!-- Example 2.1 -->
+<!-- Example 2.2 -->
+<div id="one-categorical-variable" class="section level3 unnumbered">
+<h3>One Categorical Variable</h3>
+<p>From the dataset we named as <span style="color:blue">OneTrueLove</span>, we can use the <code>prop()()</code> function to quickly find <strong>proportions</strong>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>( <span class="op">~</span><span class="st"> </span>Response, <span class="dt">data =</span> OneTrueLove)</code></pre>
+<pre><code>## prop_Agree 
+##       0.28</code></pre>
+<div id="table-2.1" class="section level4 unnumbered">
+<h4>Table 2.1</h4>
+<p>We can also tabulate the categorical variable to display the <em>frequency</em> by using the <code>tally()()</code> function. The default in tallying is to not include the row totals, or column totals when there are two variables. These are called marginal totals and if you want them, you can change the default.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tally</span>( <span class="op">~</span><span class="st"> </span>Response, <span class="dt">margin =</span> <span class="ot">TRUE</span>, <span class="dt">data =</span> OneTrueLove)</code></pre>
+<pre><code>## Response
+##      Agree   Disagree Don&#39;t know      Total 
+##        735       1812         78       2625</code></pre>
+</div>
+<div id="example-2.3" class="section level4 unnumbered">
+<h4>Example 2.3</h4>
+<p>To find the proportion of responders who <em>disagree</em> or <em>don’t know</em>, we can use the <span style="color:brown">level=</span> argument in the function to find proportions.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>( <span class="op">~</span><span class="st"> </span>Response, <span class="dt">success =</span> <span class="st">&quot;Disagree&quot;</span>, <span class="dt">data =</span> OneTrueLove)</code></pre>
+<pre><code>## prop_Disagree 
+##     0.6902857</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>( <span class="op">~</span><span class="st"> </span>Response, <span class="dt">success =</span> <span class="st">&quot;Don&#39;t know&quot;</span>, <span class="dt">data =</span> OneTrueLove)</code></pre>
+<pre><code>## prop_Don&#39;t know 
+##      0.02971429</code></pre>
+<p>Further, we can also display the <em>relative frequencies</em>, or <strong>proportions</strong> in a table.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tally</span>( <span class="op">~</span><span class="st"> </span>Response, <span class="dt">format =</span> <span class="st">&quot;proportion&quot;</span>, <span class="dt">margin =</span> <span class="ot">TRUE</span>, <span class="dt">data =</span> OneTrueLove)</code></pre>
+<pre><code>## Response
+##      Agree   Disagree Don&#39;t know      Total 
+## 0.28000000 0.69028571 0.02971429 1.00000000</code></pre>
+</div>
+<div id="figure-2.1" class="section level4 unnumbered">
+<h4>Figure 2.1</h4>
+<p>R provides many different chart and plot functions, including <em>bar charts</em> and <em>pie charts</em>, to visualize counts or proportions. Bar charts, also known as bar graphs, are a way of displaying the distribution of a categorical variable.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_bar</span>( <span class="op">~</span><span class="st"> </span>Response, <span class="dt">data =</span> OneTrueLove)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.1-1.png" width="65%" /></p>
+<!-- Here is an example of a pie chart, but note that statisticians rarely use pie charts because they are harder to read. -->
+<!-- Include pie chart? -->
+<!-- <<piechart>>= -->
+<!-- slices <- c(78, 1812, 735) # assigning vectors of the area of each slice -->
+<!-- lbls <- c("Don't know", "Disagree", "Agree") # assigning vectors of labels of corresponding slice -->
+<!-- pie(slices, labels = lbls) # plotting "slices" for a pie chart -->
+<!-- ```
+ -->
+<!-- Example 2.4 -->
+</div>
+</div>
+<div id="two-categorical-variables-two-way-tables" class="section level3 unnumbered">
+<h3>Two Categorical Variables: Two-Way Tables</h3>
+<p>Often, it is useful to compute cross tables for two (or more) variables. We can again use <code>tally()()</code> for several ways to investigate a two-way table.</p>
+<div id="table-2.3" class="section level4 unnumbered">
+<h4>Table 2.3</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tally</span>( <span class="op">~</span><span class="st"> </span>Response <span class="op">+</span><span class="st"> </span>Gender, <span class="dt">data =</span> OneTrueLove)</code></pre>
+<pre><code>##             Gender
+## Response     Female Male
+##   Agree         363  372
+##   Disagree     1005  807
+##   Don&#39;t know     44   34</code></pre>
+</div>
+<div id="table-2.4" class="section level4 unnumbered">
+<h4>Table 2.4</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tally</span>( <span class="op">~</span><span class="st"> </span>Response <span class="op">+</span><span class="st"> </span>Gender, <span class="dt">margins =</span> <span class="ot">TRUE</span>, <span class="dt">data =</span> OneTrueLove)</code></pre>
+<pre><code>##             Gender
+## Response     Female Male Total
+##   Agree         363  372   735
+##   Disagree     1005  807  1812
+##   Don&#39;t know     44   34    78
+##   Total        1412 1213  2625</code></pre>
+</div>
+<div id="example-2.5" class="section level4 unnumbered">
+<h4>Example 2.5</h4>
+<p>Similar to one categorical variable, we can use the <code>prop()()</code> function to find the proportion of two variables. The first line results in the proportion of females who agree and the proportion of males who agree. The second line shows the proportion who agree that are female and the proportion who disagree that are female. The third results in the proportion of all the survey responders that are female.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>(Response<span class="op">~</span>Gender, <span class="dt">data =</span> OneTrueLove)</code></pre>
+<pre><code>## prop_Agree.Female   prop_Agree.Male 
+##         0.2570822         0.3066777</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>(Gender<span class="op">~</span>Response, <span class="dt">data =</span> OneTrueLove)</code></pre>
+<pre><code>##      prop_Female.Agree   prop_Female.Disagree prop_Female.Don&#39;t know 
+##              0.4938776              0.5546358              0.5641026</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>( <span class="op">~</span><span class="st"> </span>Gender, <span class="dt">data =</span> OneTrueLove)</code></pre>
+<pre><code>## prop_Female 
+##   0.5379048</code></pre>
+<p>See though that because we have multiple levels of each variable, this process can become quite tedious if we want to find the proportions for all of the levels. Using the tally function a little differently will result in these proportions.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tally</span>(Response <span class="op">~</span><span class="st"> </span>Gender, <span class="dt">data =</span> OneTrueLove)</code></pre>
+<pre><code>##             Gender
+## Response     Female Male
+##   Agree         363  372
+##   Disagree     1005  807
+##   Don&#39;t know     44   34</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tally</span>( <span class="op">~</span><span class="st"> </span>Response <span class="op">|</span><span class="st"> </span>Gender, <span class="dt">data =</span> OneTrueLove)</code></pre>
+<pre><code>##             Gender
+## Response     Female Male
+##   Agree         363  372
+##   Disagree     1005  807
+##   Don&#39;t know     44   34</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tally</span>(Gender <span class="op">~</span><span class="st"> </span>Response, <span class="dt">data =</span> OneTrueLove)</code></pre>
+<pre><code>##         Response
+## Gender   Agree Disagree Don&#39;t know
+##   Female   363     1005         44
+##   Male     372      807         34</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tally</span>( <span class="op">~</span><span class="st"> </span>Gender <span class="op">|</span><span class="st"> </span>Response, <span class="dt">data =</span> OneTrueLove)</code></pre>
+<pre><code>##         Response
+## Gender   Agree Disagree Don&#39;t know
+##   Female   363     1005         44
+##   Male     372      807         34</code></pre>
+<p>Notice that (by default) some of these use counts and some use proportions. Again, we can change the format.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tally</span>( <span class="op">~</span><span class="st"> </span>Gender, <span class="dt">format =</span> <span class="st">&quot;percent&quot;</span>, <span class="dt">data =</span> OneTrueLove)</code></pre>
+<pre><code>## Gender
+##   Female     Male 
+## 53.79048 46.20952</code></pre>
+</div>
+<div id="example-2.6" class="section level4 unnumbered">
+<h4>Example 2.6</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tally</span>( <span class="op">~</span><span class="st"> </span>Gender <span class="op">+</span><span class="st"> </span>Award, <span class="dt">margin =</span> <span class="ot">TRUE</span>, <span class="dt">data =</span> StudentSurvey)</code></pre>
+<pre><code>##        Award
+## Gender  Academy Nobel Olympic Total
+##   F          20    76      73   169
+##   M          11    73     109   193
+##   Total      31   149     182   362</code></pre>
+<p>Also, we can arrange the table differently by converting it to a data frame.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.data.frame</span>(<span class="kw">tally</span>( <span class="op">~</span><span class="st"> </span>Gender <span class="op">+</span><span class="st"> </span>Award, <span class="dt">data =</span> StudentSurvey))</code></pre>
+<pre><code>##   Gender   Award Freq
+## 1      F Academy   20
+## 2      M Academy   11
+## 3      F   Nobel   76
+## 4      M   Nobel   73
+## 5      F Olympic   73
+## 6      M Olympic  109</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>( <span class="op">~</span><span class="st"> </span>Award, <span class="dt">success =</span> <span class="st">&quot;Olympic&quot;</span>, <span class="dt">data =</span> StudentSurvey)</code></pre>
+<pre><code>## prop_Olympic 
+##    0.5027624</code></pre>
+</div>
+<div id="example-2.7" class="section level4 unnumbered">
+<h4>Example 2.7</h4>
+<p>To calculate the difference of certain statistics, we can use the <code>diff()()</code> function. Here we use it to find the difference in proportions, but it can be used for means, medians, and etc.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">diff</span>(<span class="kw">prop</span>(Award<span class="op">~</span>Gender, <span class="dt">success =</span> <span class="st">&quot;Olympic&quot;</span>, <span class="dt">data =</span> StudentSurvey))</code></pre>
+<pre><code>## prop_Olympic.M 
+##      0.1328142</code></pre>
+<p>We will continue more with proportions in Chapter 3.</p>
+</div>
+<div id="figure-2.2" class="section level4 unnumbered">
+<h4>Figure 2.2</h4>
+<p>A way to look at multiple groups simultaneously is by using <em>comparative plots</em> such as a <em>segmented bar chart</em> or <em>side-by-side bar chart</em>. We often use the <span style="color:brown">fill</span> argument for this. <span style="color:brown">fill</span> is used when the assigned data is represented as an area, rather than a line or point.
+<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a></p>
+<p>Notice the addition of <span style="color:brown">fill=</span> (to group) and <span style="color:brown">position=</span> (to segment the graph). The default of <span style="color:brown">position=</span> is to stack the bar graph, so for the first example we can disclude the argument.
+TEX COMMAND NOT FOUND authNote Rewrote paragraph and footnote</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_bar</span>( <span class="op">~</span><span class="st"> </span>Award, <span class="dt">fill =</span> <span class="op">~</span>Gender, <span class="dt">data =</span> StudentSurvey)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.2-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_bar</span>( <span class="op">~</span><span class="st"> </span>Gender, <span class="dt">fill =</span> <span class="op">~</span>Award, <span class="dt">position =</span> <span class="st">&#39;dodge&#39;</span>, <span class="dt">data =</span> StudentSurvey)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.2b-1.png" width="65%" /></p>
+<!-- Example 2.8 -->
+</div>
+</div>
+</div>
+<div id="one-quantitative-variable-shape-and-center" class="section level2">
+<h2><span class="header-section-number">2.2</span> One Quantitative Variable: Shape and Center</h2>
+<hr />
+<p>The distribution of a variable answers two questions:
+<!-- begin itemize --></p>
+<ol>
+<li><em>What values</em> can the variable have?</li>
+<li><em>With what frequency</em> does each value occur?</li>
+</ol>
+<p>Again, the frequency may be described in terms of counts, proportions (often called
+relative frequency), or densities (more on densities later).
+<!-- end itemize --></p>
+<hr />
+<p>A distribution may be described using a table (listing values and frequencies)
+or a graph (e.g., a histogram) or with words that describe general features
+of the distribution (e.g., symmetric, skewed).</p>
+<div id="the-shape-of-a-distribution" class="section level3 unnumbered">
+<h3>The Shape of a Distribution</h3>
+<div id="table-2.14" class="section level4 unnumbered">
+<h4>Table 2.14</h4>
+<pre class="sourceCode r"><code class="sourceCode r">MammalLongevity</code></pre>
+<pre><code>##          Animal Gestation Longevity
+## 1        baboon       187        20
+## 2    bear,black       219        18
+## 3  bear,grizzly       225        25
+## 4    bear,polar       240        20
+## 5        beaver       122         5
+## 6       buffalo       278        15
+## 7         camel       406        12
+## 8           cat        63        12
+## 9    chimpanzee       231        20
+## 10     chipmunk        31         6
+## 11          cow       284        15
+## 12         deer       201         8
+## 13          dog        61        12
+## 14       donkey       365        12
+## 15     elephant       645        40
+## 16          elk       250        15
+## 17          fox        52         7
+## 18      giraffe       425        10
+## 19         goat       151         8
+## 20      gorilla       257        20
+## 21   guinea pig        68         4
+## 22 hippopotamus       238        25
+## 23        horse       330        20
+## 24     kangaroo        42         7
+## 25      leopard        98        12
+## 26         lion       100        15
+## 27       monkey       164        15
+## 28        moose       240        12
+## 29        mouse        21         3
+## 30      opposum        15         1
+## 31          pig       112        10
+## 32         puma        90        12
+## 33       rabbit        31         5
+## 34   rhinoceros       450        15
+## 35     sea lion       350        12
+## 36        sheep       154        12
+## 37     squirrel        44        10
+## 38        tiger       105        16
+## 39         wolf        63         5
+## 40        zebra       365        15</code></pre>
+<p>Statisticians have devised a number of graphs to help us see distributions visually.<br />
+The general syntax for making a graph of one variable in a data frame is</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotname</span>( <span class="op">~</span><span class="st"> </span>variable, <span class="dt">data =</span> dataName)</code></pre>
+<p>In other words, there are three pieces of information we must provide to
+R in order to get the plot we want:
+<!-- begin itemize --></p>
+<ol>
+<li><pre><code>   The kind of plot (`gf_histogram()()`, `gf_bar()()`, </code></pre>
+<code>gf_dens()()</code>, etc.)
+#. The name of the variable
+#. The name of the data frame this variable is a part of.
+<!-- end itemize --></li>
+</ol>
+<p>This should look familiar from the previous section.</p>
+</div>
+<div id="figure-2.6" class="section level4 unnumbered">
+<h4>Figure 2.6</h4>
+<p>Let’s make a <em>dot plot</em> of the variable Longevity in the <span style="color:blue">MammalLongevity</span> data set for a quick and simple look at the distribution. We use the syntax provided above with two additional arguments to make the figure look the way we want it to. The next few sections will explain a few of the different arguments available for plots in R</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dotplot</span>(<span class="op">~</span><span class="st"> </span>Longevity, <span class="dt">binwidth =</span> <span class="dv">1</span>, <span class="dt">dotsize =</span> <span class="fl">.75</span>, <span class="dt">data =</span> MammalLongevity)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.6-1.png" width="65%" /></p>
+<!-- AuthNote --- should be count not density -->
+</div>
+<div id="table-2.15" class="section level4 unnumbered">
+<h4>Table 2.15</h4>
+<p>Although <code>tally()()</code> works with quantitative variables as well as categorical variables, this is only useful when there are not too many different values for the variable.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tally</span>( <span class="op">~</span><span class="st"> </span>Longevity, <span class="dt">margin =</span> <span class="ot">TRUE</span>, <span class="dt">data =</span> MammalLongevity)</code></pre>
+<pre><code>## Longevity
+##     1     3     4     5     6     7     8    10    12    15    16    18 
+##     1     1     1     3     1     2     2     3     9     7     1     1 
+##    20    25    40 Total 
+##     5     2     1    40</code></pre>
+<p>Sometimes, it is more convenient to group them into bins. We just have to tell R what the bins are. For example, suppose we wanted to group together by 5.
+<tt>cut()</tt> <!-- This term should be indexed --><!--  -->
+<tt>tally()</tt> <!-- This term should be indexed --><!--  --></p>
+<pre class="sourceCode r"><code class="sourceCode r">binned.long &lt;-<span class="st"> </span><span class="kw">cut</span>(MammalLongevity<span class="op">$</span>Longevity, <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">5</span>,<span class="dv">10</span>,<span class="dv">15</span>,<span class="dv">20</span>,<span class="dv">25</span>,<span class="dv">30</span>,<span class="dv">35</span>,<span class="dv">40</span>))
+<span class="kw">tally</span>( <span class="op">~</span><span class="st"> </span>binned.long)      <span class="co"># no data frame given because it is not in a data frame</span></code></pre>
+<pre><code>## binned.long
+##   (0,5]  (5,10] (10,15] (15,20] (20,25] (25,30] (30,35] (35,40] 
+##       6       8      16       7       2       0       0       1</code></pre>
+<p>Suppose we wanted to group the 1s, 10s, 20s, etc. together. We want to make sure then that 10 is with the 10s, so we should add another argument.
+&lt;&lt;Table2.15c&gt;&gt;=
+binned.long2 &lt;- cut(MammalLongevity$Longevity, breaks = c(0,10,20,30,40,50), right = FALSE)
+tally( ~ binned.long2) # no data frame given because it is not in a data frame
+@</p>
+<p>We won’t use this very often however, since seeing this information in a histogram is typically more useful.</p>
+</div>
+<div id="figure-2.7" class="section level4 unnumbered">
+<h4>Figure 2.7</h4>
+<p>Histograms are a way of displaying the distribution of a quantitative variable.
+&lt;&lt;Figure2.7&gt;&gt;=
+gf_histogram( ~ Longevity, binwidth = 5, data = MammalLongevity)
+@</p>
+<p>We can control the (approximate) number of bins using the <span style="color:brown">bins</span> argument. The number of bins (and to a lesser extent the positions of the bins) can make a histogram look quite different.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_histogram</span>( <span class="op">~</span><span class="st"> </span>Longevity, <span class="dt">data =</span> MammalLongevity, <span class="dt">bins =</span> <span class="dv">8</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.7b-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_histogram</span>( <span class="op">~</span><span class="st"> </span>Longevity, <span class="dt">data =</span> MammalLongevity, <span class="dt">bins =</span> <span class="dv">15</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.7b-2.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_histogram</span>( <span class="op">~</span><span class="st"> </span>Longevity, <span class="dt">data =</span> MammalLongevity, <span class="dt">bins =</span> <span class="dv">30</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.7b-3.png" width="65%" /></p>
+<p>We can also describe the bins in terms of width instead of in terms of the number of bins. This is especially nice for count or other integer data.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_histogram</span>( <span class="op">~</span><span class="st"> </span>Longevity, <span class="dt">data =</span> MammalLongevity, <span class="dt">binwidth =</span> <span class="dv">10</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.7c-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_histogram</span>( <span class="op">~</span><span class="st"> </span>Longevity, <span class="dt">data =</span> MammalLongevity, <span class="dt">binwidth =</span> <span class="dv">5</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.7c-2.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_histogram</span>( <span class="op">~</span><span class="st"> </span>Longevity, <span class="dt">data =</span> MammalLongevity, <span class="dt">binwidth =</span> <span class="dv">2</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.7c-3.png" width="65%" /></p>
+<!-- Example 2.9 -->
+</div>
+<div id="figure-2.8" class="section level4 unnumbered">
+<h4>Figure 2.8</h4>
+<p>The various options available for the <code>gf_histogram()()</code> function enable us to replicate Figure 2.8, some including closing, adding counts, labels, and limit to the y-axis (similar for x-axis). Using <code>gf_dhistogram()()</code> measures the y-axis by density rather than count. This is useful for determing relative amounts.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_histogram</span>( <span class="op">~</span><span class="st"> </span>Pulse, <span class="dt">binwidth =</span> <span class="dv">5</span>, <span class="dt">data =</span> StudentSurvey)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.8-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_histogram</span>( <span class="op">~</span><span class="st"> </span>Exercise, <span class="dt">binwidth =</span> <span class="dv">2</span>, <span class="dt">closed =</span> <span class="st">&#39;left&#39;</span>,
+              <span class="dt">data =</span> StudentSurvey)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.8-2.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dhistogram</span>( <span class="op">~</span>Piercings, <span class="dt">binwidth =</span> <span class="dv">1</span>, <span class="dt">data =</span> StudentSurvey)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.8-3.png" width="65%" /></p>
+<p>Sometimes a <strong>frequency polygon</strong> provides a more useful view.
+The only thing that changes is <code>gf_histogram()()</code> becomes <code>gf_freqpoly()()</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_freqpoly</span>(..density.. <span class="op">~</span><span class="st"> </span>Exercise, <span class="dt">bins =</span> <span class="dv">10</span>, <span class="dt">data =</span> StudentSurvey)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/freqpolygon-1.png" width="65%" /></p>
+<p>What is a frequency polygon? The picture below shows how it is related to a histogram. The frequency polygon is just a dot-to-dot drawing through the centers of the tops of the bars of the histogram.
+<img src="Lock5WithR_files/figure-html/freqpolygon-illustrated-1.png" width="65%" /></p>
+<p>R also provides a “smooth” version called a density plot; just change the function name from <code>gf_histogram()()</code> to <code>gf_density()()</code>, also <code>gf_dens()()</code> is a modified version of <code>gf_density()</code> that isn’t shaded in and may be useful for layering plots.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_density</span>( <span class="op">~</span><span class="st"> </span>Longevity, <span class="dt">data =</span> MammalLongevity)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/densityplot-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dens</span>( <span class="op">~</span><span class="st"> </span>BirthRate, <span class="dt">data =</span> AllCountries )</code></pre>
+<p><img src="Lock5WithR_files/figure-html/densityplot-2.png" width="65%" /></p>
+<p>If we make a histogram (or any of these other plots) of our data, we can describe the overall shape of the distribution. Keep in mind that the shape of a particular histogram may depend on the choice of bins. Choosing too many or too few bins can hide the true shape of the distribution. (When in doubt, make more than one histogram.)</p>
+<p>Here are some words we use to describe shapes of distributions.
+<!-- begin description --></p>
+<ol>
+<li><strong>symmetric</strong> The left and right sides are mirror images of each other.</li>
+<li><strong>skewed</strong> The distribution stretches out farther in one direction than in the other.<br />
+(We say the distribution is skewed toward the long tail.)</li>
+<li><strong>uniform</strong> The heights of all the bars are (roughly) the same.<br />
+(So the data are equally likely to be anywhere within some range.)</li>
+<li><strong>unimodal</strong> There is one major “bump” where there is a lot of data.</li>
+<li><strong>bimodal</strong> There are two “bumps”.</li>
+<li><strong>outlier</strong> An observation that does not fit the overall pattern of the rest of
+the data.
+<!-- end description --></li>
+</ol>
+</div>
+</div>
+<div id="the-center-of-a-distribution" class="section level3 unnumbered">
+<h3>The Center of a Distribution</h3>
+<!-- Example 2.10 -->
+<p>Recall that a statistic is a number computed from data. The <strong>mean</strong> and the <strong>median</strong> are key statistics which describe the center of a distribution. We can see through Example 2.11 that numerical summaries are computed using the same template as graphical summaries.</p>
+<p>Note that the example asks about subsets of <span style="color:blue">ICUAdmissions</span>–specifically about 20-year-old and 55-year-old patients. In this case, we can manipulate the data (to name a new data set) with the subset command. Here are some examples.
+<!-- begin enumerate --></p>
+<ol>
+<li><pre><code>Select only the males from the &lt;span style=&quot;color:blue&quot;&gt;ICUAdmissions&lt;/span&gt; data set.</code></pre></li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(ICUAdmissions, <span class="dv">2</span>)</code></pre>
+<pre><code>##   ID Status Age Sex Race Service Cancer Renal Infection CPR Systolic
+## 1  8      0  27   1    1       0      0     0         1   0      142
+## 2 12      0  59   0    1       0      0     0         0   0      112
+##   HeartRate Previous Type Fracture PO2 PH PCO2 Bicarbonate Creatinine
+## 1        88        0    1        0   0  0    0           0          0
+## 2        80        1    1        0   0  0    0           0          0
+##   Consciousness status    sex  race service cancer renal infection cpr
+## 1             1  Lived Female White Medical     No    No       Yes  No
+## 2             1  Lived   Male White Medical     No    No        No  No
+##   previous      type pO2low pO2 pHlow pH pCO2hi pCO2 bicarbonateLow
+## 1       No Emergency     No  Hi    No Hi     No  Low             No
+## 2      Yes Emergency     No  Hi    No Hi     No  Low             No
+##   bicarbonate creatinineHi creatinine consciousness
+## 1          Hi           No        Low     Conscious
+## 2          Hi           No        Low     Conscious</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tally</span>( <span class="op">~</span><span class="st"> </span>sex, <span class="dt">data =</span> ICUAdmissions) </code></pre>
+<pre><code>## sex
+## Female   Male 
+##     76    124</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">ICUMales &lt;-<span class="st"> </span><span class="kw">subset</span>(ICUAdmissions, sex <span class="op">==</span><span class="st"> &quot;Male&quot;</span>) <span class="co"># notice the double =</span>
+<span class="kw">tally</span>( <span class="op">~</span><span class="st"> </span>sex, <span class="dt">data =</span> ICUMales)</code></pre>
+<pre><code>## sex
+## Female   Male 
+##      0    124</code></pre>
+<pre><code>#.      Select only the subjects over 50:</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">ICUOld &lt;-<span class="st"> </span><span class="kw">subset</span>(ICUAdmissions, Age <span class="op">&gt;</span><span class="st"> </span><span class="dv">50</span>) </code></pre>
+<!--    #. -->
+<!--        Only the states (and Puerto Rico and District of Columbia) data from the US Census data set loaded above. -->
+<!-- <<>>= -->
+<!-- tally( ~Sumlev, data = Population) -->
+<!-- States <- subset(Population, Sumlev == 40) -->
+<!-- dim(States) -->
+<!-- @ -->
+<!-- end enumerate -->
+<p>The <code>subset()()</code> function can use any condition that evaluates to TRUE or FALSE for each row (case) in the data set.</p>
+<div id="example-2.11" class="section level4 unnumbered">
+<h4>Example 2.11</h4>
+<pre class="sourceCode r"><code class="sourceCode r">ICU20 &lt;-<span class="st"> </span><span class="kw">subset</span>(ICUAdmissions, Age <span class="op">==</span><span class="st"> &quot;20&quot;</span>)
+<span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>HeartRate, <span class="dt">data =</span> ICU20)</code></pre>
+<pre><code>## [1] 82.2</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">median</span>( <span class="op">~</span><span class="st"> </span>HeartRate, <span class="dt">data =</span> ICU20)</code></pre>
+<pre><code>## [1] 80</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">ICU55 =<span class="st"> </span><span class="kw">subset</span>(ICUAdmissions, Age <span class="op">==</span><span class="st"> &quot;55&quot;</span>)
+<span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>HeartRate, <span class="dt">data =</span> ICU55)</code></pre>
+<pre><code>## [1] 108.5</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">median</span>( <span class="op">~</span><span class="st"> </span>HeartRate, <span class="dt">data =</span> ICU55)</code></pre>
+<pre><code>## [1] 106</code></pre>
+<!-- Example 2.12 -->
+</div>
+</div>
+<div id="resistance" class="section level3 unnumbered">
+<h3>Resistance</h3>
+<!-- Example 2.13 -->
+<div id="figure-2.10" class="section level4 unnumbered">
+<h4>Figure 2.10</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(FloridaLakes)</code></pre>
+<pre><code>##   ID         Lake Alkalinity  pH Calcium Chlorophyll AvgMercury NumSamples
+## 1  1    Alligator        5.9 6.1     3.0         0.7       1.23          5
+## 2  2        Annie        3.5 5.1     1.9         3.2       1.33          7
+## 3  3       Apopka      116.0 9.1    44.1       128.3       0.04          6
+## 4  4 Blue Cypress       39.4 6.9    16.4         3.5       0.44         12
+## 5  5        Brick        2.5 4.6     2.9         1.8       1.20         12
+## 6  6       Bryant       19.6 7.3     4.5        44.1       0.27         14
+##   MinMercury MaxMercury ThreeYrStdMercury AgeData
+## 1       0.85       1.43              1.53       1
+## 2       0.92       1.90              1.33       0
+## 3       0.04       0.06              0.04       0
+## 4       0.13       0.84              0.44       0
+## 5       0.69       1.50              1.33       1
+## 6       0.04       0.48              0.25       1</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_histogram</span>( <span class="op">~</span><span class="st"> </span>Alkalinity, <span class="dt">binwidth =</span> <span class="dv">10</span>, <span class="dt">data =</span> FloridaLakes)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.10-1.png" width="65%" /></p>
+</div>
+<div id="example-2.14" class="section level4 unnumbered">
+<h4>Example 2.14</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>Alkalinity, <span class="dt">data =</span> FloridaLakes)</code></pre>
+<pre><code>## [1] 37.53019</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">median</span>( <span class="op">~</span><span class="st"> </span>Alkalinity, <span class="dt">data =</span> FloridaLakes)</code></pre>
+<pre><code>## [1] 19.6</code></pre>
+</div>
+</div>
+</div>
+<div id="one-quantitative-variable-measures-of-spread" class="section level2">
+<h2><span class="header-section-number">2.3</span> One Quantitative Variable: Measures of Spread</h2>
+<p>In the previous section, we investigated center summary statistics. In this section, we will cover some other important statistics.</p>
+<div id="example-2.15" class="section level4 unnumbered">
+<h4>Example 2.15</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(April14Temps)</code></pre>
+<pre><code>##       Year        DesMoines      SanFrancisco  
+##  Min.   :1995   Min.   :37.20   Min.   :48.70  
+##  1st Qu.:1999   1st Qu.:44.40   1st Qu.:51.30  
+##  Median :2002   Median :54.50   Median :54.00  
+##  Mean   :2002   Mean   :54.49   Mean   :54.01  
+##  3rd Qu.:2006   3rd Qu.:61.27   3rd Qu.:55.90  
+##  Max.   :2010   Max.   :74.90   Max.   :61.00</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">favstats</span>( <span class="op">~</span><span class="st"> </span>DesMoines, <span class="dt">data =</span> April14Temps) <span class="co"># some favorite statistics</span></code></pre>
+<pre><code>##   min   Q1 median     Q3  max    mean      sd  n missing
+##  37.2 44.4   54.5 61.275 74.9 54.4875 11.7303 16       0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">favstats</span>( <span class="op">~</span><span class="st"> </span>SanFrancisco, <span class="dt">data =</span> April14Temps)</code></pre>
+<pre><code>##   min   Q1 median   Q3 max    mean       sd  n missing
+##  48.7 51.3     54 55.9  61 54.0125 3.376956 16       0</code></pre>
+</div>
+<div id="standard-deviation" class="section level3 unnumbered">
+<h3>Standard Deviation</h3>
+<p>The density plots of the temperatures of Des Moines and San Francisco reveal that Des Moines has a greater <em>variability</em> or <em>spread</em>.</p>
+<div id="figure-2.18" class="section level4 unnumbered">
+<h4>Figure 2.18</h4>
+<p>The  argument controls <code>character expansion" and can be used to make the plotting</code>characters" larger or smaller by specifying the scaling ratio.  allows you to adjust the vertical distance between points. Chaining  lets you set the limits for the x and y-axes.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dotplot</span>( <span class="op">~</span><span class="st"> </span>DesMoines, <span class="dt">binwidth =</span> <span class="dv">1</span>, <span class="dt">dotsize =</span> <span class="dv">2</span>, <span class="dt">stackratio =</span> <span class="dv">3</span>,
+            <span class="dt">data =</span> April14Temps) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gf_lims</span>(<span class="dt">x =</span> <span class="kw">c</span>(<span class="dv">35</span>, <span class="dv">80</span>))</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.18-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dotplot</span>( <span class="op">~</span><span class="st"> </span>SanFrancisco, <span class="dt">binwidth =</span> <span class="dv">1</span>, <span class="dt">dotsize =</span> <span class="fl">.5</span>, <span class="dt">stackratio =</span> <span class="dv">2</span>, 
+            <span class="dt">data =</span> April14Temps) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gf_lims</span>(<span class="dt">x =</span> <span class="kw">c</span>(<span class="dv">45</span>, <span class="dv">65</span>))</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.18-2.png" width="65%" /></p>
+<!-- AuthNote --- added explanation for arguments and chaining gf_lims() -->
+</div>
+<div id="example-2.16" class="section level4 unnumbered">
+<h4>Example 2.16</h4>
+<p>Although both <code>summary()()</code> and <code>favstats()()</code> calculate the <strong>standard deviation</strong> of a variable, we can also use <code>sd()()</code> to find just the standard deviation.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sd</span>( <span class="op">~</span><span class="st"> </span>DesMoines, <span class="dt">data =</span> April14Temps)        </code></pre>
+<pre><code>## [1] 11.7303</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sd</span>( <span class="op">~</span><span class="st"> </span>SanFrancisco, <span class="dt">data =</span> April14Temps)</code></pre>
+<pre><code>## [1] 3.376956</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">var</span>( <span class="op">~</span><span class="st"> </span>DesMoines, <span class="dt">data =</span> April14Temps)        <span class="co"># variance = sd^2</span></code></pre>
+<pre><code>## [1] 137.5998</code></pre>
+</div>
+<div id="example-2.17" class="section level4 unnumbered">
+<h4>Example 2.17</h4>
+<p>To see that the distribution is indeed symmetric and approximately bell-shaped, you can chain the function <code>gf_dens()()</code>. It can be helpful to set alpha (the transparency argument) lower than 1 to make the plot easier to read.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dhistogram</span>( <span class="op">~</span><span class="st"> </span>Pulse, <span class="dt">data =</span> StudentSurvey, <span class="dt">alpha =</span> <span class="fl">.5</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gf_dens</span>( <span class="op">~</span><span class="st"> </span>Pulse)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example2.17-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r">mean &lt;-<span class="st"> </span><span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>Pulse, <span class="dt">data =</span> StudentSurvey); mean</code></pre>
+<pre><code>## [1] 69.57459</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">sd &lt;-<span class="st"> </span><span class="kw">sd</span>( <span class="op">~</span><span class="st"> </span>Pulse, <span class="dt">data =</span> StudentSurvey); sd</code></pre>
+<pre><code>## [1] 12.20514</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">mean <span class="op">-</span><span class="st"> </span><span class="dv">2</span><span class="op">*</span>sd</code></pre>
+<pre><code>## [1] 45.16431</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">mean <span class="op">+</span><span class="st"> </span><span class="dv">2</span><span class="op">*</span>sd</code></pre>
+<pre><code>## [1] 93.98486</code></pre>
+</div>
+<div id="figure-2.20" class="section level4 unnumbered">
+<h4>Figure 2.20</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dhistogram</span>( <span class="op">~</span><span class="st"> </span>Sales, <span class="dt">binwidth =</span> <span class="dv">25</span>, <span class="dt">data =</span> RetailSales)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.20-1.png" width="65%" /></p>
+</div>
+<div id="example-2.18" class="section level4 unnumbered">
+<h4>Example 2.18</h4>
+<pre class="sourceCode r"><code class="sourceCode r">mean &lt;-<span class="st"> </span><span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>Sales, <span class="dt">data =</span> RetailSales); mean</code></pre>
+<pre><code>## [1] 296.4382</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">sd &lt;-<span class="st"> </span><span class="kw">sd</span>( <span class="op">~</span><span class="st"> </span>Sales, <span class="dt">data =</span> RetailSales); sd</code></pre>
+<pre><code>## [1] 37.97074</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">mean <span class="op">-</span><span class="st"> </span><span class="dv">2</span><span class="op">*</span>sd</code></pre>
+<pre><code>## [1] 220.4968</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">mean <span class="op">+</span><span class="st"> </span><span class="dv">2</span><span class="op">*</span>sd</code></pre>
+<pre><code>## [1] 372.3797</code></pre>
+</div>
+<div id="example-2.19" class="section level4 unnumbered">
+<h4>Example 2.19</h4>
+<p>Z-scores can be computed as follows:</p>
+<pre class="sourceCode r"><code class="sourceCode r">( <span class="dv">204</span> <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>Systolic, <span class="dt">data =</span> ICUAdmissions) ) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>( <span class="op">~</span><span class="st"> </span>Systolic, <span class="dt">data =</span> ICUAdmissions)</code></pre>
+<pre><code>## [1] 2.176493</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">( <span class="dv">52</span> <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>HeartRate, <span class="dt">data =</span> ICUAdmissions) ) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>( <span class="op">~</span><span class="st"> </span>HeartRate, <span class="dt">data =</span> ICUAdmissions)</code></pre>
+<pre><code>## [1] -1.749</code></pre>
+</div>
+</div>
+<div id="percentiles" class="section level3 unnumbered">
+<h3>Percentiles</h3>
+<div id="figure-2.21" class="section level4 unnumbered">
+<h4>Figure 2.21</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_histogram</span>( <span class="op">~</span><span class="st"> </span>Close, <span class="dt">binwidth =</span> <span class="dv">25</span>, <span class="dt">data =</span> SandP500)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.21-1.png" width="65%" /></p>
+</div>
+<div id="example-2.20" class="section level4 unnumbered">
+<h4>Example 2.20</h4>
+<p>The text uses a histogram to estimate the <strong>percentile</strong> of the daily closing price for the
+S&amp;P 500 but we can also find the exact percentiles using the <code>quantile()()</code> function.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">quantile</span>(SandP500<span class="op">$</span>Close, <span class="dt">probs =</span> <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.25</span>))</code></pre>
+<pre><code>##       0%      25%      50%      75%     100% 
+## 1022.580 1094.802 1136.985 1183.372 1259.780</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">quantile</span>(SandP500<span class="op">$</span>Close, <span class="dt">probs =</span> <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.90</span>))</code></pre>
+<pre><code>##       0%      90% 
+## 1022.580 1216.906</code></pre>
+</div>
+</div>
+<div id="five-number-summary" class="section level3 unnumbered">
+<h3>Five Number Summary</h3>
+<p>We have already covered many different functions which results in the <strong>five number summary</strong> but <code>fivenum()()</code> is most direct way to obtain in the five number summary.</p>
+<div id="example-2.21" class="section level4 unnumbered">
+<h4>Example 2.21</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">fivenum</span>( <span class="op">~</span><span class="st"> </span>Exercise, <span class="dt">data =</span> StudentSurvey)</code></pre>
+<!-- missing 240 in StudentSurvey -->
+</div>
+<div id="example-2.22" class="section level4 unnumbered">
+<h4>Example 2.22</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">fivenum</span>( <span class="op">~</span><span class="st"> </span>Longevity, <span class="dt">data =</span> MammalLongevity)</code></pre>
+<pre><code>## [1]  1.0  8.0 12.0 15.5 40.0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">min</span>( <span class="op">~</span><span class="st"> </span>Longevity, <span class="dt">data =</span> MammalLongevity) </code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">max</span>( <span class="op">~</span><span class="st"> </span>Longevity, <span class="dt">data =</span> MammalLongevity) </code></pre>
+<pre><code>## [1] 40</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">range</span>( <span class="op">~</span><span class="st"> </span>Longevity, <span class="dt">data =</span> MammalLongevity)  <span class="co"># subtract to get the numerical range value</span></code></pre>
+<pre><code>## [1]  1 40</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">iqr</span>( <span class="op">~</span><span class="st"> </span>Longevity, <span class="dt">data =</span> MammalLongevity)   <span class="co"># interquartile range </span></code></pre>
+<pre><code>## [1] 7.25</code></pre>
+<p>Note the difference in the quartile and IQR from the textbook. This results because there are several different methods to determine the quartile.</p>
+</div>
+<div id="example-2.23" class="section level4 unnumbered">
+<h4>Example 2.23</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">fivenum</span>( <span class="op">~</span><span class="st"> </span>DesMoines, <span class="dt">data =</span> April14Temps)</code></pre>
+<pre><code>## [1] 37.20 44.40 54.50 61.95 74.90</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">fivenum</span>( <span class="op">~</span><span class="st"> </span>SanFrancisco, <span class="dt">data =</span> April14Temps)</code></pre>
+<pre><code>## [1] 48.7 51.2 54.0 56.0 61.0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">range</span>( <span class="op">~</span><span class="st"> </span>DesMoines, <span class="dt">data =</span> April14Temps)</code></pre>
+<pre><code>## [1] 37.2 74.9</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">diff</span>(<span class="kw">range</span>( <span class="op">~</span><span class="st"> </span>DesMoines, <span class="dt">data =</span> April14Temps))</code></pre>
+<pre><code>## [1] 37.7</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">range</span>( <span class="op">~</span><span class="st"> </span>SanFrancisco, <span class="dt">data =</span> April14Temps)</code></pre>
+<pre><code>## [1] 48.7 61.0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">diff</span>(<span class="kw">range</span>( <span class="op">~</span><span class="st"> </span>SanFrancisco, <span class="dt">data =</span> April14Temps))</code></pre>
+<pre><code>## [1] 12.3</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">iqr</span>( <span class="op">~</span><span class="st"> </span>DesMoines, <span class="dt">data =</span> April14Temps)</code></pre>
+<pre><code>## [1] 16.875</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">iqr</span>( <span class="op">~</span><span class="st"> </span>SanFrancisco, <span class="dt">data =</span> April14Temps)</code></pre>
+<pre><code>## [1] 4.6</code></pre>
+<!-- Example 2.24 -->
+</div>
+</div>
+</div>
+<div id="outliers-boxplots-and-quantitativecategorical-relationships" class="section level2">
+<h2><span class="header-section-number">2.4</span> Outliers, Boxplots, and Quantitative/Categorical Relationships</h2>
+<div id="detection-of-outliers" class="section level3 unnumbered">
+<h3>Detection of Outliers</h3>
+<p>Generally, outliers are considered to be values
+<!-- begin itemize --></p>
+<ol>
+<li>less than <span class="math inline">\(Q_1 - 1.5 TEX COMMAND NOT FOUND cdot (IQR)\)</span>, and</li>
+<li>greater than <span class="math inline">\(Q_3 + 1.5 TEX COMMAND NOT FOUND cdot (IQR)\)</span>.<br />
+<!-- end itemize --></li>
+</ol>
+<div id="example-2.25" class="section level4">
+<h4><span class="header-section-number">2.4.0.1</span> Example 2.25</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">fivenum</span>( <span class="op">~</span><span class="st"> </span>Longevity, <span class="dt">data =</span> MammalLongevity)</code></pre>
+<pre><code>## [1]  1.0  8.0 12.0 15.5 40.0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">iqr</span>( <span class="op">~</span><span class="st"> </span>Longevity, <span class="dt">data =</span> MammalLongevity)</code></pre>
+<pre><code>## [1] 7.25</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="fl">8.0-1.5</span><span class="op">*</span><span class="fl">7.25</span></code></pre>
+<pre><code>## [1] -2.875</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="fl">15.5+1.5</span><span class="op">*</span><span class="fl">7.25</span></code></pre>
+<pre><code>## [1] 26.375</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(MammalLongevity, Longevity<span class="op">&gt;</span><span class="fl">26.375</span>)</code></pre>
+<pre><code>##      Animal Gestation Longevity
+## 15 elephant       645        40</code></pre>
+<p>There is no function in R that directly results in outliers because practically, there is no one specific formula for such a determination. However, a boxplot will indirectly reveal outliers.</p>
+</div>
+</div>
+<div id="boxplots" class="section level3 unnumbered">
+<h3>Boxplots</h3>
+<p>A way to visualize the five number summary and outliers for a variable is to create a boxplot.</p>
+<div id="example-2.26" class="section level4 unnumbered">
+<h4>Example 2.26</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">favstats</span>( <span class="op">~</span><span class="st"> </span>Longevity, <span class="dt">data =</span> MammalLongevity)</code></pre>
+<pre><code>##  min Q1 median    Q3 max  mean       sd  n missing
+##    1  8     12 15.25  40 13.15 7.244981 40       0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_boxplot</span>(Longevity <span class="op">~</span><span class="st"> &quot;, xlab = &quot;</span>, <span class="dt">data =</span> MammalLongevity) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_refine</span>(<span class="kw">coord_flip</span>())</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example2.26-1.png" width="65%" /></p>
+<!-- # ```{r Figure2.31, include = FALSE} -->
+<!-- # <<Example2.26>> -->
+<!-- # ``` -->
+<!-- #  -->
+</div>
+<div id="figure-2.32" class="section level4 unnumbered">
+<h4>Figure 2.32</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_boxplot</span>(Smokers <span class="op">~</span><span class="st"> &quot;, xlab = &quot;</span>, <span class="dt">data =</span> USStates) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_refine</span>(<span class="kw">coord_flip</span>())</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.32-1.png" width="65%" /></p>
+</div>
+<div id="example-2.27" class="section level4 unnumbered">
+<h4>Example 2.27</h4>
+<p>We can similarity investigate the <em>Smokers</em> variable in <span style="color:blue">USStates</span>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">fivenum</span>( <span class="op">~</span><span class="st"> </span>Smokers, <span class="dt">data =</span> USStates)</code></pre>
+<pre><code>## [1] 11.5 19.3 20.6 22.6 28.7</code></pre>
+<p>The boxplot reveals two outliers. To identify them, we can again use <code>subset()()</code> for smokers greater or less than the <em>whiskers</em> of the boxplot.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(USStates, Smokers<span class="op">&lt;</span><span class="dv">15</span>)</code></pre>
+<pre><code>##    State HouseholdIncome    IQ McCainVote Region ObamaMcCain Population
+## 44  Utah           55619 101.1      0.629      W           M   2.420708
+##    EighthGradeMath HighSchool   GSP FiveVegetables Smokers
+## 44          279.16         91 36758           22.1    11.5
+##    PhysicalActivity Obese College NonWhite HeavyDrinkers Pres2008
+## 44             83.1  21.2      31     12.1           2.9   McCain</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(USStates, Smokers<span class="op">&gt;</span><span class="dv">28</span>)</code></pre>
+<pre><code>##       State HouseholdIncome   IQ McCainVote Region ObamaMcCain Population
+## 17 Kentucky           38694 99.4      0.575     MW           M   4.141835
+##    EighthGradeMath HighSchool   GSP FiveVegetables Smokers
+## 17          273.98       81.8 33666           16.8    28.7
+##    PhysicalActivity Obese College NonWhite HeavyDrinkers Pres2008
+## 17             70.1  28.6    22.6      9.4           2.7   McCain</code></pre>
+</div>
+<div id="figure-2.33" class="section level4 unnumbered">
+<h4>Figure 2.33</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_boxplot</span>(Budget <span class="op">~</span><span class="st"> &quot;, xlab = &quot;</span>, <span class="dt">data =</span> HollywoodMovies2011) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_refine</span>(<span class="kw">coord_flip</span>())</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.33-1.png" width="65%" /></p>
+</div>
+<div id="example-2.28" class="section level4 unnumbered">
+<h4>Example 2.28</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(HollywoodMovies2011, Budget<span class="op">&gt;</span><span class="dv">225</span>)</code></pre>
+<pre><code>##                                           Movie LeadStudio RottenTomatoes
+## 30 Pirates of the Caribbean:\nOn Stranger Tides     Disney             34
+##    AudienceScore Story  Genre TheatersOpenWeek BOAverageOpenWeek
+## 30            61 Quest Action             4155             21697
+##    DomesticGross ForeignGross WorldGross Budget Profitability
+## 30        241.07        802.8   1043.871    250      4.175484
+##    OpeningWeekend
+## 30          90.15</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(HollywoodMovies2011)</code></pre>
+<pre><code>##                                         Movie       LeadStudio
+## 1                                   Insidious             Sony
+## 2                       Paranormal Activity 3      Independent
+## 3                                 Bad Teacher      Independent
+## 4 Harry Potter and the Deathly Hallows Part 2      Warner Bros
+## 5                                 Bridesmaids Relativity Media
+## 6                           Midnight in Paris             Sony
+##   RottenTomatoes AudienceScore         Story   Genre TheatersOpenWeek
+## 1             67            65 Monster Force  Horror             2408
+## 2             68            58 Monster Force  Horror             3321
+## 3             44            38        Comedy  Comedy             3049
+## 4             96            92       Rivalry Fantasy             4375
+## 5             90            77       Rivalry  Comedy             2918
+## 6             93            84          Love Romance              944
+##   BOAverageOpenWeek DomesticGross ForeignGross WorldGross Budget
+## 1              5511         54.01        43.00     97.009    1.5
+## 2             15829        103.66        98.24    201.897    5.0
+## 3             10365        100.29       115.90    216.196   20.0
+## 4             38672        381.01       947.10   1328.111  125.0
+## 5              8995        169.11       119.28    288.382   32.5
+## 6              6177         56.18        83.00    139.177   17.0
+##   Profitability OpeningWeekend
+## 1     64.672667          13.27
+## 2     40.379400          52.57
+## 3     10.809800          31.60
+## 4     10.624888         169.19
+## 5      8.873292          26.25
+## 6      8.186882           5.83</code></pre>
+</div>
+</div>
+<div id="one-quantitative-and-one-categorical-variable" class="section level3 unnumbered">
+<h3>One Quantitative and One Categorical Variable</h3>
+<p>The formula for a <strong><code>lattice</code></strong> plot can be extended to create multiple panels (sometimes called <strong>facets</strong>) based on a “condition”, often given by another variable. This is another way to look at multiple groups simultaneously. The general syntax for this becomes</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotname</span>( <span class="op">~</span><span class="st"> </span>variable <span class="op">|</span><span class="st"> </span>condition, <span class="dt">data =</span> dataName )</code></pre>
+<!-- Example 2.29 -->
+<div id="figure-2.34" class="section level4 unnumbered">
+<h4>Figure 2.34</h4>
+<p>Depending on the type of plot, you will want to use conditioning.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_boxplot</span>(TV <span class="op">~</span><span class="st"> </span>Gender, <span class="dt">data =</span> StudentSurvey) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_refine</span>(<span class="kw">coord_flip</span>())</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.34-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dotplot</span>( <span class="op">~</span><span class="st"> </span>TV<span class="op">|</span>Gender, <span class="dt">binwidth =</span> <span class="dv">1</span>, <span class="dt">dotsize =</span> <span class="fl">.35</span>, <span class="dt">data =</span> StudentSurvey)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.34-2.png" width="65%" /></p>
+<p>We can do the same thing for bar graphs.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_bar</span>( <span class="op">~</span><span class="st"> </span>Award <span class="op">|</span><span class="st"> </span>Gender, <span class="dt">data =</span> StudentSurvey)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.34b-1.png" width="65%" /></p>
+<p>This graph should be familiar as we have plotted these variables together previously. Here we used different panels, but before, in 2.1, we had used grouping. Note that we can combine grouping and conditioning in the same plot.</p>
+<!-- <<groups-conditions, fig.width = 6, fig.height = 2.5>>= -->
+<!-- densityplot( ~ age | sex, groups = substance, data = HELPrct, auto.key = TRUE) -->
+<!-- ```
+ -->
+<!-- <<groups-conditions2, fig.width = 6, fig.height = 2.5>>= -->
+<!-- densityplot(~age|substance, groups = sex, data = HELPrct, auto.key = TRUE, layout = c(3, 1)) -->
+<!-- ```
+ -->
+<!-- This plot shows that for each substance, the age distributions of men and  -->
+<!-- women are quite similar, but that the distributions differ from  -->
+<!-- substance to substance. -->
+<!-- Example 2.30 -->
+</div>
+<div id="example-2.31" class="section level4 unnumbered">
+<h4>Example 2.31</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">favstats</span>( <span class="op">~</span><span class="st"> </span>TV <span class="op">|</span><span class="st"> </span>Gender, <span class="dt">data =</span> StudentSurvey)
+<span class="kw">diffmean</span>( <span class="op">~</span><span class="st"> </span>TV <span class="op">|</span><span class="st"> </span>Gender, <span class="dt">data =</span> StudentSurvey)</code></pre>
+<!-- missing data in StudentSurvey -->
+</div>
+</div>
+</div>
+<div id="two-quantitative-variables-scatterplot-and-correlation" class="section level2">
+<h2><span class="header-section-number">2.5</span> Two Quantitative Variables: Scatterplot and Correlation</h2>
+<div id="example-2.32" class="section level4 unnumbered">
+<h4>Example 2.32</h4>
+<pre class="sourceCode r"><code class="sourceCode r">ElectionMargin</code></pre>
+<pre><code>##    Year  Candidate Approval Margin Result
+## 1  1940  Roosevelt       62   10.0    Won
+## 2  1948     Truman       50    4.5    Won
+## 3  1956 Eisenhower       70   15.4    Won
+## 4  1964    Johnson       67   22.6    Won
+## 5  1972      Nixon       57   23.2    Won
+## 6  1976       Ford       48   -2.1   Lost
+## 7  1980     Carter       31   -9.7   Lost
+## 8  1984     Reagan       57   18.2    Won
+## 9  1992 G.H.W.Bush       39   -5.5   Lost
+## 10 1996    Clinton       55    8.5    Won
+## 11 2004   G.W.Bush       49    2.4    Won</code></pre>
+</div>
+<div id="visualizing-a-relationship-between-two-quantitative-variables-scatterplots" class="section level3 unnumbered">
+<h3>Visualizing a Relationship between Two Quantitative Variables: Scatterplots</h3>
+<p>The most common way to look at two quantitative variables is with a scatterplot. The <strong><code>ggformula</code></strong> function for this is <code>gf_point()()</code>, and the basic syntax is</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_point</span>(yvar <span class="op">~</span><span class="st"> </span>xvar, <span class="dt">data =</span> dataName)</code></pre>
+<p>Notice that now we have something on both sides of the ~{} since we need to tell  about two variables.</p>
+<div id="example-2.33" class="section level4 unnumbered">
+<h4>Example 2.33</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_point</span>(Margin <span class="op">~</span><span class="st"> </span>Approval, <span class="dt">data =</span> ElectionMargin)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example2.33-1.png" width="65%" /></p>
+<!-- <<Table2.29, include = FALSE>>= -->
+<!-- <<Example2.33>> -->
+<!-- @ -->
+<!-- %Grouping and conditioning work just as before. -->
+<!-- %With large data set, it can be helpful to make the dots semi-transparent so it is easier to see where there are overlaps.  This is done with \argument{alpha}. We can also make the dots smaller (or larger) using \argument{cex}. -->
+<!-- %<<xyplot2, fig.width = 6, fig.height = 3>>= -->
+<!-- %xyplot( mcs ~ age | sex, groups = substance, data = HELPrct, alpha = .6, cex = .5,  -->
+<!-- %     auto.key = TRUE ) -->
+<!-- %@ -->
+<!-- Example 2.34 -->
+</div>
+<div id="figure-2.49" class="section level4 unnumbered">
+<h4>Figure 2.49</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_point</span>(AvgMercury <span class="op">~</span><span class="st"> </span>pH, <span class="dt">data =</span> FloridaLakes)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.49-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_point</span>(AvgMercury <span class="op">~</span><span class="st"> </span>Alkalinity, <span class="dt">data =</span> FloridaLakes)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.49-2.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_point</span>(Alkalinity <span class="op">~</span><span class="st"> </span>pH, <span class="dt">data =</span> FloridaLakes)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.49-3.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_point</span>(AvgMercury <span class="op">~</span><span class="st"> </span>ThreeYrStdMercury, <span class="dt">data =</span> FloridaLakes)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.49-4.png" width="65%" /></p>
+<!-- <<Example2.34, include = FALSE>>= -->
+<!-- <<Figure2.49>> -->
+<!-- @ -->
+</div>
+</div>
+<div id="summarizing-a-relationship-between-two-quantitative-variables-correlation" class="section level3 unnumbered">
+<h3>Summarizing a Relationship between Two Quantitative Variables: Correlation</h3>
+<p>Another key numerical statistic is the <strong>correlation</strong>–the correlation is a measure of the strength and direction of the relationship between two quantitative variables.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(Margin <span class="op">~</span><span class="st"> </span>Approval, <span class="dt">data =</span> ElectionMargin)</code></pre>
+<pre><code>## [1] 0.8629926</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(AvgMercury <span class="op">~</span><span class="st"> </span>pH, <span class="dt">data =</span> FloridaLakes)</code></pre>
+<pre><code>## [1] -0.5754001</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(AvgMercury <span class="op">~</span><span class="st"> </span>Alkalinity, <span class="dt">data =</span> FloridaLakes)</code></pre>
+<pre><code>## [1] -0.5938967</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(Alkalinity <span class="op">~</span><span class="st"> </span>pH, <span class="dt">data =</span> FloridaLakes)</code></pre>
+<pre><code>## [1] 0.7191657</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(AvgMercury <span class="op">~</span><span class="st"> </span>ThreeYrStdMercury, <span class="dt">data =</span> FloridaLakes)</code></pre>
+<pre><code>## [1] 0.9592148</code></pre>
+<div id="table-2.31" class="section level4 unnumbered">
+<h4>Table 2.31</h4>
+<pre class="sourceCode r"><code class="sourceCode r">CricketChirps</code></pre>
+<pre><code>##   Temperature Chirps
+## 1        54.5     81
+## 2        59.5     97
+## 3        63.5    103
+## 4        67.5    123
+## 5        72.0    150
+## 6        78.5    182
+## 7        83.0    195</code></pre>
+</div>
+<div id="figure-2.50" class="section level4 unnumbered">
+<h4>Figure 2.50</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_point</span>(Temperature <span class="op">~</span><span class="st"> </span>Chirps, <span class="dt">data =</span> CricketChirps)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.50-1.png" width="65%" /></p>
+</div>
+<div id="example-2.35" class="section level4 unnumbered">
+<h4>Example 2.35</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(Temperature <span class="op">~</span><span class="st"> </span>Chirps, <span class="dt">data =</span> CricketChirps)</code></pre>
+<pre><code>## [1] 0.9906249</code></pre>
+<!-- Example 2.36 -->
+<!-- Example 2.37 -->
+</div>
+<div id="example-2.38" class="section level4 unnumbered">
+<h4>Example 2.38</h4>
+<p>Further, using the <code>subset()()</code> function again, we can investigate the correlation between variables with some restrictions.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_point</span>(Alcohol <span class="op">~</span><span class="st"> </span>Calories, <span class="dt">data =</span> <span class="kw">subset</span>(NutritionStudy, Age<span class="op">&gt;</span><span class="dv">59</span>))</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example2.38-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(Alcohol <span class="op">~</span><span class="st"> </span>Calories, <span class="dt">data =</span> <span class="kw">subset</span>(NutritionStudy, Age<span class="op">&gt;</span><span class="dv">59</span>))</code></pre>
+<pre><code>## [1] 0.7199945</code></pre>
+<p>And now we omit the outlier</p>
+<pre class="sourceCode r"><code class="sourceCode r">NutritionStudy60 =<span class="st"> </span><span class="kw">subset</span>(NutritionStudy, Age<span class="op">&gt;</span><span class="dv">59</span>)
+<span class="kw">gf_point</span>(Alcohol <span class="op">~</span><span class="st"> </span>Calories, <span class="dt">data =</span> <span class="kw">subset</span>(NutritionStudy60, Alcohol<span class="op">&lt;</span><span class="dv">25</span>))</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example2.38b-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(Alcohol <span class="op">~</span><span class="st"> </span>Calories, <span class="dt">data =</span> <span class="kw">subset</span>(NutritionStudy60, Alcohol<span class="op">&lt;</span><span class="dv">25</span>))</code></pre>
+<pre><code>## [1] 0.1449633</code></pre>
+<!-- <<Figure2.53, include = FALSE>>= -->
+<!-- <<Example2.38>> -->
+<!-- <<Example2.38b>> -->
+<!-- @ -->
+</div>
+</div>
+</div>
+<div id="two-quantitative-variables-linear-regression" class="section level2">
+<h2><span class="header-section-number">2.6</span> Two Quantitative Variables: Linear Regression</h2>
+<div id="figure-2.63" class="section level4 unnumbered">
+<h4>Figure 2.63</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_point</span>(Tip <span class="op">~</span><span class="st"> </span>Bill, <span class="dt">size =</span> <span class="fl">.5</span>, <span class="dt">data =</span> RestaurantTips)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.63-1.png" width="65%" /></p>
+</div>
+<div id="example-2.39" class="section level4 unnumbered">
+<h4>Example 2.39</h4>
+<p>When the relationship between variables is sufficiently <em>linear</em>, you may be able to predict the value of a variable using the other variable. This is possible by fitting a <em>regression line</em>. To plot this in R all we need to do is chain <code>gf_lim()()</code> to the scatter plot and give it the corresponding arguments.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_point</span>(Tip <span class="op">~</span><span class="st"> </span>Bill, <span class="dt">cex =</span> <span class="fl">0.5</span>, <span class="dt">data =</span> RestaurantTips) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gf_lm</span>(Tip <span class="op">~</span><span class="st"> </span>Bill, <span class="dt">data =</span> RestaurantTips)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example2.39-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(Tip <span class="op">~</span><span class="st"> </span>Bill, <span class="dt">data =</span> RestaurantTips)</code></pre>
+<pre><code>## [1] 0.9150592</code></pre>
+<!-- <<Figure2.64, include = FALSE>>= -->
+<!-- <<Example2.39>> -->
+<!-- @ -->
+<!-- Example 2.40 -->
+<p>The equation for the regression line, or the <em>prediction equation</em> is
+<span class="math display">\[
+\widehat{\mbox{Response}} = a + b \cdot \mbox{Explanatory}
+\]</span></p>
+<p>So now, we need to find the values for a, the intercept, and b, the slope using the function to fit linear models.</p>
+</div>
+<div id="example-2.41" class="section level4 unnumbered">
+<h4>Example 2.41</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lm</span>(Tip <span class="op">~</span><span class="st"> </span>Bill, <span class="dt">data =</span> RestaurantTips)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Tip ~ Bill, data = RestaurantTips)
+## 
+## Coefficients:
+## (Intercept)         Bill  
+##     -0.2923       0.1822</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">coef</span>(<span class="kw">lm</span>(Tip <span class="op">~</span><span class="st"> </span>Bill, <span class="dt">data =</span> RestaurantTips))  <span class="co"># just show me the coefficients</span></code></pre>
+<pre><code>## (Intercept)        Bill 
+##  -0.2922675   0.1822147</code></pre>
+<p>This results in the equation
+<span class="math display">\[
+\widehat{\mbox{Tip}} = \Sexpr{tip.coefs$Intercept} + \Sexpr{tip.coefs$Bill} \cdot \mbox{Bill}
+\]</span></p>
+<p>With this equation, one can predict the tip for different bill amounts.</p>
+<pre class="sourceCode r"><code class="sourceCode r">Tip.Fun &lt;-<span class="st"> </span><span class="kw">makeFun</span>(<span class="kw">lm</span>(Tip <span class="op">~</span><span class="st"> </span>Bill, <span class="dt">data =</span> RestaurantTips)) <span class="co"># make a function of the linear model</span>
+<span class="kw">Tip.Fun</span>(<span class="dt">Bill =</span> <span class="fl">59.33</span>) <span class="co"># predicted tip when bill is $59.33</span></code></pre>
+<pre><code>##        1 
+## 10.51853</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">Tip.Fun</span>(<span class="dt">Bill =</span> <span class="fl">9.52</span>)</code></pre>
+<pre><code>##        1 
+## 1.442417</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">Tip.Fun</span>(<span class="dt">Bill =</span> <span class="fl">23.70</span>)</code></pre>
+<pre><code>##        1 
+## 4.026222</code></pre>
+<p>An important aspect of the linear regression is the difference between the prediction and actual observation. This is called the <strong>residual</strong>, defined</p>
+<p><span class="math display">\[
+\mbox{residual} = \mbox{observed response} - \mbox{predicted response}
+\]</span></p>
+</div>
+<div id="example-2.42" class="section level4 unnumbered">
+<h4>Example 2.42</h4>
+<pre class="sourceCode r"><code class="sourceCode r">Resid.a &lt;-<span class="st"> </span><span class="fl">10.00</span> <span class="op">-</span><span class="st"> </span><span class="fl">10.51</span> <span class="co"># predicted tip from Example 2.41</span>
+Resid.a</code></pre>
+<pre><code>## [1] -0.51</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">Resid.b &lt;-<span class="st"> </span><span class="fl">1.00</span> <span class="op">-</span><span class="st"> </span><span class="fl">1.44</span>
+Resid.b</code></pre>
+<pre><code>## [1] -0.44</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">Resid.c &lt;-<span class="st"> </span><span class="fl">10.00</span> <span class="op">-</span><span class="st"> </span><span class="fl">4.02</span>
+Resid.c</code></pre>
+<pre><code>## [1] 5.98</code></pre>
+</div>
+<div id="example-2.43" class="section level4 unnumbered">
+<h4>Example 2.43</h4>
+<pre class="sourceCode r"><code class="sourceCode r">Elect.mod &lt;-<span class="st"> </span><span class="kw">lm</span>(Margin<span class="op">~</span>Approval, <span class="dt">data =</span> ElectionMargin)
+<span class="kw">resid</span>(<span class="kw">lm</span>(Margin<span class="op">~</span>Approval, <span class="dt">data =</span> ElectionMargin))</code></pre>
+<pre><code>##          1          2          3          4          5          6 
+## -5.3228564 -0.7958766 -6.6075096  3.0992354 12.0550519 -5.7247133 
+##          7          8          9         10         11 
+##  0.8801748  7.0550519 -1.6044784 -0.9737848 -2.0602949</code></pre>
+<!-- # ```{r Table2.34, include = FALSE} -->
+<!-- # <<Example2.43>> -->
+<!-- # ``` -->
+<!-- Example 2.44 -->
+</div>
+<div id="example-2.45" class="section level4 unnumbered">
+<h4>Example 2.45</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lm</span>(AvgMercury <span class="op">~</span><span class="st"> </span>pH, <span class="dt">data =</span> FloridaLakes)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = AvgMercury ~ pH, data = FloridaLakes)
+## 
+## Coefficients:
+## (Intercept)           pH  
+##      1.5309      -0.1523</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_point</span>(AvgMercury <span class="op">~</span><span class="st"> </span>pH, <span class="dt">data =</span> FloridaLakes) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gf_lm</span>(AvgMercury <span class="op">~</span><span class="st"> </span>pH, <span class="dt">data =</span> FloridaLakes)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example2.45-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r">Mer.Fun &lt;-<span class="st"> </span><span class="kw">makeFun</span>(<span class="kw">lm</span>(AvgMercury <span class="op">~</span><span class="st"> </span>pH, <span class="dt">data =</span> FloridaLakes))
+<span class="kw">Mer.Fun</span>(<span class="dt">pH =</span> <span class="fl">7.5</span>) <span class="co"># predicted mercury level at 7.5 pH</span></code></pre>
+<pre><code>##         1 
+## 0.3886622</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">Resid &lt;-<span class="st"> </span><span class="fl">1.10</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.388</span> <span class="co"># residual at 7.5 pH</span>
+Resid</code></pre>
+<pre><code>## [1] 0.712</code></pre>
+<!-- <<Figure2.67, include = FALSE>>= -->
+<!-- <<Example2.45>> -->
+<!-- @ -->
+</div>
+<div id="example-2.46" class="section level4 unnumbered">
+<h4>Example 2.46</h4>
+<pre class="sourceCode r"><code class="sourceCode r">Cal.Fun &lt;-<span class="st"> </span><span class="kw">makeFun</span>(<span class="kw">lm</span>(Calcium <span class="op">~</span><span class="st"> </span>pH, <span class="dt">data =</span> FloridaLakes))
+Cal.Fun</code></pre>
+<pre><code>## function (pH, ..., transformation = function (x) 
+## x) 
+## return(transformation(predict(model, newdata = data.frame(pH = pH), 
+##     ...)))
+## &lt;environment: 0x0000000025203aa0&gt;
+## attr(,&quot;coefficients&quot;)
+## (Intercept)          pH 
+##   -51.40157    11.16800</code></pre>
+</div>
+<div id="figure-2.68" class="section level4 unnumbered">
+<h4>Figure 2.68</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_point</span>(Calcium <span class="op">~</span><span class="st"> </span>pH, <span class="dt">data =</span> FloridaLakes) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gf_lm</span>(Calcium <span class="op">~</span><span class="st"> </span>pH, <span class="dt">data =</span> FloridaLakes)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure2.68-1.png" width="65%" /></p>
+<!-- ####################################################### -->
+<!-- ## Graphical Summaries -- Important Ideas -->
+<!-- ### Patterns and Deviations from Patterns -->
+<!-- The goal of a statistical plot is to help us see  -->
+<!-- <!-- begin itemize -->
+<!-- #.  -->
+<!-- potential patterns in the data, and  -->
+<!-- #. deviations from those patterns.   -->
+<!-- <!-- end itemize -->
+<!-- ### Different Plots for Different Kinds of Variables -->
+<!-- Graphical summaries can help us see the _distribution_ of a variable  -->
+<!-- or the _relationships_ between two (or more) variables.  The type of plot -->
+<!-- used will depend on the kinds of variables involved. You can use `demo()()` to see how -->
+<!-- to get R  to make the plots in this section. -->
+<!-- When we do statistical analysis, we will see that the analysis we use will  -->
+<!-- also depend on the kinds of variables involved, so this is an important idea. -->
+<!-- ### Side-by-side Plots and Overlays Can Reveal Importance of Additional Factors -->
+<!-- The **`ggformula`** graphics plots make it particularly easy to generate plots that  -->
+<!-- divide the data into groups and either produce a panel for each group (using |!) -->
+<!-- or display each group in a different way (different colors or symbols, using  -->
+<!-- the <span style="color:brown">fill</span> or <span style="color:brown">colour</span> arguments).  These plots can reveal the  -->
+<!-- possible influence of additional variables -- sometimes called covariates. -->
+<!-- ### Area = (relative) frequency -->
+<!-- Many plots are based on the key idea that our eyes are good at comparing areas.  Plots  -->
+<!-- that use area (e.g., histograms, mosaic plots, bar charts, pie charts) should always obey -->
+<!-- this principle -->
+<!-- <!-- begin center -->
+<!-- <span style="font-size:larger;">%s</span>Area $=$ (relative) frequency -->
+<!-- <!-- end center -->
+<!-- Plots that violate this principle can be deceptive and distort the true nature -->
+<!-- of the data.   -->
+<!-- ### An Example: Histogram with unequal bin widths -->
+<!-- It is possible to make histograms with bins that have different widths. -->
+<!-- But in this case it is important that the height of the bars is chosen so  -->
+<!-- that area (_NOT height_) is proportional to frequency.   -->
+<!-- Using height instead of area would distort the picture. -->
+<!-- When unequal bin sizes are specified, you should use `gf_dhistogram()()` -->
+<!-- ```{r hist-unequal-bins, fig.width = 3, fig.height = 2} -->
+<!-- gf_dhistogram( ~ Sepal.Length, data = iris, breaks = c(4,5,5.5,5.75,6,6.5,7,8,9)) -->
+<!-- ``` -->
+<!-- The density scale is important. -->
+<!-- It tells R  to use a scale such that  -->
+<!-- the area (height $Ã— width) of the rectangles is equal to the relative frequency. -->
+<!-- For example, the bar from 5.0 to 5.5 has width $\frac12$ and height about $0.36$, so  -->
+<!-- the area is $0.18$, which means approximately 18\% of the sepal lengths are  -->
+<!-- between 5.0 and 5.5. -->
+<!-- It would be incorrect to choose `gf_histogram()()` since -->
+<!-- this distorts the picture of the data. -->
+<!-- ```{r hist-unequal-bins-bad-echo, fig.width = 3, fig.height = 2, eval = FALSE} -->
+<!-- gf_histogram( ~ Sepal.Length, data = iris, breaks = c(4,5,5.5,5.75,6,6.5,7,8,9)) -->
+<!-- ``` -->
+<!-- <!-- ```{r hist-unequal-bins-bad, fig.width = 3, fig.height = 2, echo = FALSE} -->
+<!-- <!-- trellis.par.set(theme = col.mosaic(bw = TRUE)) -->
+<!-- <!-- gf_histogram( ~ Sepal.Length, data = iris, breaks = c(4,5,5.5,5.75,6,6.5,7,8,9)) -->
+<!-- <!-- trellis.focus('panel', 1, 1) -->
+<!-- <!-- grid::grid.text(y = .7, 'Never do this!', gp = grid::gpar(col = 'red', cex = 2, alpha = .6)) -->
+<!-- <!-- trellis.unfocus() -->
+<!-- <!-- trellis.par.set(theme = col.mosaic()) -->
+<!-- <!-- ``` -->
+<!-- <!-- AuthNote --- I'm not sure what this is displaying since it doesn't compile -->
+<!-- Notice how different this looks.  Now the heights are equal to the relative -->
+<!-- frequency, but this makes the wider bars have too much area. -->
+<!-- ## More on Plots -->
+<!-- There are lots of arguments that control how these plots look.  Here are just a -->
+<!-- few examples, some of which we have already seen. -->
+<!-- ### show.legend -->
+<!-- <span style="color:brown">show.legend = TRUE</span> turns on a simple legend for the grouping variable.   -->
+<!-- (There are ways to have more control, if you need it.) It is on by default in ggformula plots -->
+<!-- ```{r iris-xyplot-key, cache = TRUE, fig.width = 2.6, fig.height = 2.4} -->
+<!-- gf_point(Sepal.Length ~ Sepal.Width, colour = ~Species, data = iris,  -->
+<!--    show.legend = TRUE) -->
+<!-- ``` -->
+<!-- ### alpha, cex -->
+<!-- Sometimes it is nice to have elements of a plot be partly transparent.  When -->
+<!-- such elements overlap, they get darker, showing us where data are "piling up." -->
+<!-- Setting the <span style="color:brown">alpha</span> argument to a value between 0 and 1 controls the -->
+<!-- degree of transparency: 1 is completely opaque, 0 is invisible.  The -->
+<!-- <span style="color:brown">dotsize</span> for `gf_dotplot()()` and <span style="color:brown">size</span> for `gf_point()()` arguments control "character expansion" and can be used to make -->
+<!-- the plotting "characters" larger or smaller by specifying the scaling ratio. -->
+<!-- Here is another example using data on 150 iris plants of three species. -->
+<!-- ```{r iris-xyplot-alpha, cache = TRUE, fig.width = 2.7, fig.height = 2.2} -->
+<!-- xyplot(Sepal.Length ~ Sepal.Width, groups = Species, data = iris,  -->
+<!--    auto.key = list(columns = 3), -->
+<!--    alpha = .5, -->
+<!--    cex = 1.3)    -->
+<!-- gf_point(Sepal.Length ~ Sepal.Width, colour = ~Species, data = iris,  -->
+<!--    show.legend = TRUE, -->
+<!--    alpha = .5, -->
+<!--    size = 1.3)   -->
+<!-- ``` -->
+<!-- <!-- AuthNote --- couldn't figure out how to format the legend -->
+<!-- ### gf_labs(), xlab, ylab, title, subtitle -->
+<!-- You can add a title or subtitle, or change the default labels of the axes in one of two ways. `gf_labs()()` allows the chaining syntax to be used. -->
+<!-- ```{r iris-xyplot-text, cache = TRUE, fig.width = 3, fig.height = 2.5} -->
+<!-- gf_point(Sepal.Length ~ Sepal.Width, colour = ~Species, data = iris, alpha = .5)  %>% gf_labs( -->
+<!--   x = "sepal width (cm)",  -->
+<!--   y = "sepal length (cm)",  -->
+<!--   subtitle = "(R. A. Fisher analysized this data in 1936)",  -->
+<!--   title = "Some Iris Data") -->
+<!-- gf_point(Sepal.Length ~ Sepal.Width, colour = ~Species, data = iris, alpha = .5,  -->
+<!--          xlab = "sepal width (cm)",  -->
+<!--          ylab = "sepal length (cm)",  -->
+<!--          subtitle = "(R. A. Fisher analysized this data in 1936)",  -->
+<!--          title = "Some Iris Data") -->
+<!-- ``` -->
+<!-- ### layout -->
+<!-- <span style="color:brown">layout</span> can be used to control the arrangement of panels in a multi-panel -->
+<!-- plot.  The format is -->
+<!-- ```{r eval = FALSE} -->
+<!-- layout = c(cols, rows) -->
+<!-- ``` -->
+<!-- where `cols` is the number of columns and `rows` is the number of  -->
+<!-- rows.  (Columns first because that is the $x$-coordinate of the plot.) -->
+<!-- #### size, theme, color, shape -->
+<!-- These can be used to change the size of the data visual, set theme of the plot, change the color of the data visual and its shape. -->
+<!-- ```{r pch-lwd-lty, cache = TRUE} -->
+<!-- gf_dens( ~age, data = HELPrct, colour = ~sex, size = 2) %>% gf_theme(theme = theme_dark()) -->
+<!-- gf_histogram( ~ age, data = HELPrct, fill = 'skyblue') -->
+<!-- ``` -->
+<!-- ```{r col, opts.label = "fig1", tidy = FALSE} -->
+<!-- # There are 25 numbered plot symbols; shape = plot character -->
+<!-- gf_point( mcs ~ age, data = HELPrct, colour = ~sex,  -->
+<!--        shape = 8, size = 2 )   -->
+<!-- ``` -->
+<!-- You can a list of the hundreds of available color names using -->
+<!-- <tt>colors()</tt> <!-- This term should be indexed -->
+<!--  -->
+<!-- ```{r colors, eval = FALSE} -->
+<!-- colors() -->
+<!-- ``` -->
+<!-- ### trellis.par.set() -->
+<!-- Default settings for lattice graphics are set using  -->
+<!-- `trellis.par.set()()`. -->
+<!-- Don't like the default font sizes?  You can change to a 7 point (base) font using -->
+<!-- ```{r fontsize, eval = TRUE} -->
+<!-- trellis.par.set(fontsize = list(text = 7))    # base size for text is 7 point  -->
+<!-- ``` -->
+<!-- Nearly every feature of a lattice plot can be controlled: fonts, colors, -->
+<!-- symbols, line thicknesses, colors, etc.  Rather than describe them all here, -->
+<!-- we'll mention only that groups of these settings  -->
+<!-- can be collected into a theme.   -->
+<!-- `show.settings()()` will show you what the theme looks like. -->
+<!-- ```{r themes-whitbg, cache = TRUE, fig.height = 5, fig.width = 6} -->
+<!-- trellis.par.set(theme = col.whitebg())      # a theme in the lattice package -->
+<!-- show.settings() -->
+<!-- ``` -->
+<!-- \newpage -->
+<!-- <<themes-mosaic, cache = TRUE, fig.height = 4.0, fig.width = 6, out.height = '.4\\textheight'>>= -->
+<!-- trellis.par.set(theme = col.mosaic())          # a theme in the mosaic package -->
+<!-- show.settings() -->
+<!-- @ -->
+<!-- <<themes-mosaic2, cache = TRUE, fig.height = 4, fig.width = 6, out.height = '.4\\textheight'>>= -->
+<!-- trellis.par.set(theme = col.mosaic(bw = TRUE))   # black and white version -->
+<!-- show.settings() -->
+<!-- @ -->
+<!-- ```{r themes-mosaic-redo} -->
+<!-- trellis.par.set(theme = col.mosaic())       # back to the mosaic theme -->
+<!-- trellis.par.set(fontsize = list(text = 9))    # and back to a 9 point font -->
+<!-- ``` -->
+<!-- Want to save your settings? -->
+<!-- ```{r save-settings} -->
+<!-- # save current settings -->
+<!-- mySettings <- trellis.par.get() -->
+<!-- # switch to mosaic defaults -->
+<!-- trellis.par.set(theme = col.mosaic()) -->
+<!-- # switch back to my saved settings -->
+<!-- trellis.par.set(mySettings) -->
+<!-- ``` -->
+<!-- <!-- ### Working with Pre-Tabulated Data -->
+<!-- <!--  -->
+<!-- <!-- Sometimes data arrive pre-calculated.  We can use `barchart()()` instead of `bargraph()()` -->
+<!-- <!-- to graph pre-tabulated data. -->
+<!-- <!-- ^[`bargraph()()` converts raw data into a summary table and then -->
+<!-- <!-- calls `barchart()()` to do the plotting.] -->
+<!-- <!-- <<teen-deaths>>= -->
+<!-- <!-- TeenDeaths -->
+<!-- <!-- barchart(deaths ~ cause, data = TeenDeaths) -->
+<!-- <!-- barchart(cause ~ deaths, data = TeenDeaths) -->
+<!-- <!-- @ -->
+<!-- <!--  -->
+<!-- <!-- Notice that by default the causes are displayed in alphabetical order.  R  assumes that categorical -->
+<!-- <!-- data is nominal unless you say otherwise.  Here's one way to make it ordinal using the order in which  -->
+<!-- <!-- things appear in the <span style="color:blue">TeenDeaths</span> data frame. -->
+<!-- <!-- <<teen-deaths-reordered>>= -->
+<p>–&gt;
+<!-- <!-- barchart( ordered(cause, levels = cause) ~ deaths, TeenDeaths) -->
+<!-- <!-- @ --></p>
+<!-- ## Exporting Plots -->
+<!-- You can save plots to files or copy them to the clipboard using the  -->
+<!-- <span class="tab"> Export </span> menu in the <span class="tab"> Plots </span> tab.  It is quite simple to copy the  -->
+<!-- plots to the clipboard and then paste them into a Word document, for example. -->
+<!-- You can even adjust the height and width of the plot first to get it the  -->
+<!-- shape you want. -->
+<!-- R  code and output can be copied and pasted as well.  It's best to use a  -->
+<!-- fixed width font (like Courier) for R  code so that things align properly. -->
+<!-- RStudio  also provides a way (actually multiple ways) to create documents -->
+<!-- that include text, R  code, R  output, and graphics all in one document so you don't  -->
+<!-- have to do any copying and pasting.  This is a much better workflow since it avoids  -->
+<!-- copy-and-paste which is error prone and makes it easy to regenerate an entire report -->
+<!-- should the data change (because you get more of it or correct an error, for example). -->
+<!-- \newpage -->
+<!-- ## Exercises -->
+<!-- For problems 1--\@ref(prob:CPSmulti), -->
+<!-- include both the plots and the code you used to make them as well as any -->
+<!-- required discussion.  Once you get the plots figured out, feel free to  -->
+<!-- use some of the bells and whistles to make the plots even better. -->
+<!-- <!-- begin problem -->
+<!--   Use R s help system to find out what the <span style="color:green">i1</span> and <span style="color:green">i2</span> -->
+<!--    variables are in the <span style="color:blue">HELPrct</span> data frame.  Make histograms -->
+<!--    for each variable and comment on what you find out.  How would you describe -->
+<!--    the shape of these distributions?  Do you see any outliers (observations -->
+<!--    that don't seem to fit the pattern of the rest of the data)?   -->
+<!-- <!-- end problem -->
+<!-- <!-- begin problem -->
+<!--   Compare the distributions of <span style="color:green">i1</span> and <span style="color:green">i2</span> among men -->
+<!--   and women. -->
+<!-- <!-- end problem -->
+<!-- <!-- begin solution -->
+<!-- ```{r } -->
+<!-- gf_dens( ~i1, colour = ~sex, data = HELPrct ) -->
+<!-- gf_dens( ~i2, colour = ~sex, data = HELPrct ) -->
+<!-- ``` -->
+<!-- <!-- end solution -->
+<!-- <!-- begin problem -->
+<!--    Compare the distributions of <span style="color:green">i1</span> and <span style="color:green">i2</span> among  -->
+<!--    the three <span style="color:green">substance</span> groups. -->
+<!-- <!-- end problem -->
+<!-- <!-- begin solution -->
+<!-- ```{r } -->
+<!-- gf_dens( ~i1, colour = ~substance, data = HELPrct ) -->
+<!-- gf_dens( ~i2, colour = ~substance, data = HELPrct ) -->
+<!-- ``` -->
+<!-- ```{r } -->
+<!-- gf_dens( ~i1|sex, colour = ~substance, data = HELPrct ) -->
+<!-- gf_dens( ~i2|sex, colour = ~substance, data = HELPrct ) -->
+<!-- ``` -->
+<!-- ```{r } -->
+<!-- gf_point( i2 ~ i1, colour = ~sex, data= HELPrct, alpha = .6, size = .6 ) -->
+<!-- ``` -->
+<!-- <!-- end solution -->
+<!-- <!-- begin problem -->
+<!--    prob:CPS1 -->
+<!--    Where do the data in the <span style="color:blue">CPS85</span> data frame (in the  -->
+<!--    **`mosaic`** package) come from?  What are the observational  -->
+<!--    units?  How many are there? -->
+<!-- <!-- end problem -->
+<!-- <!-- begin problem -->
+<!--    Choose a quantitative variable that interests you in the <span style="color:blue">CPS85</span> -->
+<!--    data set.  Make an appropriate plot and comment on what you see. -->
+<!-- <!-- end problem -->
+<!-- <!-- begin problem -->
+<!--    Choose a categorical variable that interests you in the <span style="color:blue">CPS85</span> -->
+<!--    data set.  Make an appropriate plot and comment on what you see. -->
+<!-- <!-- end problem -->
+<!-- <!-- begin problem -->
+<!--    prob:CPSmulti -->
+<!--    Create a plot that displays two or more variables from the  -->
+<!--    <span style="color:blue">CPS85</span> data.  At least one should be quantitative  -->
+<!--    and at least one should be categorical. -->
+<!--    Comment on what you can learn from your plot. -->
+<!-- <!-- end problem -->
+<!-- <!-- begin problem -->
+<!-- The <span style="color:blue">fusion2</span> data set in the **`fastR`** package contains genotypes for  -->
+<!-- another SNP.  Merge <span style="color:blue">fusion1</span>, <span style="color:blue">fusion2</span>, and <span style="color:blue">pheno</span> into a single data -->
+<!-- frame. -->
+<!-- Note that <span style="color:blue">fusion1</span> and <span style="color:blue">fusion2</span> have the same columns. -->
+<!-- ```{r } -->
+<!-- head(fusion1, 2) -->
+<!-- head(fusion2, 2) -->
+<!-- ``` -->
+<!-- You may want to use the <span style="color:brown">suffixes</span> argument to `merge()()` or rename the variables -->
+<!-- after you are done merging to make the resulting data frame easier to navigate. -->
+<!-- Tidy up your data frame by dropping any columns that are redundant or that you just don't want to -->
+<!-- have in your final data frame. -->
+<!-- <!-- end problem -->
+<!-- <!-- \shipoutProblems -->
+
+<!-- r set_parent('Lock5withR.Rnw') -->
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="3">
+<li id="fn3"><p>For coloring a line or point, <code>colour()</code> is used<a href="describing-data.html#fnref3" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="collecting-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="confidence-intervals.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["Lock5WithR.pdf"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

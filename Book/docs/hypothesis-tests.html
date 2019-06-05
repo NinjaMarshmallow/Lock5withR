@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4 Hypothesis Tests | Lock5 With R</title>
+  <meta name="description" content="Code, exercises and discussion to accompany a course taught from ‘Statistics: Unlocking the Power of Data’" />
+  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4 Hypothesis Tests | Lock5 With R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Code, exercises and discussion to accompany a course taught from ‘Statistics: Unlocking the Power of Data’" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 Hypothesis Tests | Lock5 With R" />
+  
+  <meta name="twitter:description" content="Code, exercises and discussion to accompany a course taught from ‘Statistics: Unlocking the Power of Data’" />
+  
+
+<meta name="author" content="R Pruim" />
+
+
+<meta name="date" content="2019-06-05" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="confidence-intervals.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Lock5 With R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Lock 5 With R</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html"><i class="fa fa-check"></i>Introduction to R and Statistics</a><ul>
+<li class="chapter" data-level="0.1" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#getting-started-with-rstudio"><i class="fa fa-check"></i><b>0.1</b> Getting Started With RStudio</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#rstudio"><i class="fa fa-check"></i>RStudio</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#loading-packages"><i class="fa fa-check"></i>Loading packages</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#using-r-as-a-calculator"><i class="fa fa-check"></i>Using R as a calculator</a></li>
+</ul></li>
+<li class="chapter" data-level="0.2" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#getting-help-in-rstudio"><i class="fa fa-check"></i><b>0.2</b> Getting Help in RStudio</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#the-rstudio-help-system"><i class="fa fa-check"></i>The RStudio help system</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#history"><i class="fa fa-check"></i>History</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#error-messages"><i class="fa fa-check"></i>Error messages</a></li>
+</ul></li>
+<li class="chapter" data-level="0.3" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#four-things-to-know-about-r"><i class="fa fa-check"></i><b>0.3</b> Four Things to Know About R</a></li>
+<li class="chapter" data-level="0.4" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#data-in-r"><i class="fa fa-check"></i><b>0.4</b> Data in R</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#data-in-packages"><i class="fa fa-check"></i>Data in Packages</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#the-helprct-data-set"><i class="fa fa-check"></i>The HELPrct data set</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#using-your-own-data"><i class="fa fa-check"></i>Using your own data</a></li>
+</ul></li>
+<li class="chapter" data-level="0.5" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#the-most-important-template"><i class="fa fa-check"></i><b>0.5</b> The Most Important Template</a></li>
+<li class="chapter" data-level="0.6" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#manipulating-your-data"><i class="fa fa-check"></i><b>0.6</b> Manipulating your data</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#creating-a-subset"><i class="fa fa-check"></i>Creating a subset</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#choosing-specific-columns"><i class="fa fa-check"></i>Choosing specific columns</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#dropping-variables"><i class="fa fa-check"></i>Dropping Variables</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#creating-new-variables"><i class="fa fa-check"></i>Creating new variables</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#saving-data"><i class="fa fa-check"></i>Saving Data</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#merging-datasets"><i class="fa fa-check"></i>Merging datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="0.7" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#using-r-markdown"><i class="fa fa-check"></i><b>0.7</b> Using R Markdown</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#r-markdown-files-must-be-self-contained"><i class="fa fa-check"></i>R Markdown files must be self-contained</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#output-formats"><i class="fa fa-check"></i>Output formats</a></li>
+</ul></li>
+<li class="chapter" data-level="0.8" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#statistics-answering-questions-with-data"><i class="fa fa-check"></i><b>0.8</b> Statistics: Answering Questions With Data</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#data-the-raw-material"><i class="fa fa-check"></i>Data – the raw material</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#information-the-goal"><i class="fa fa-check"></i>Information – the goal</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#uncertainty-the-context"><i class="fa fa-check"></i>Uncertainty – the context</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#probability-the-tool"><i class="fa fa-check"></i>Probability – the tool</a></li>
+</ul></li>
+<li class="chapter" data-level="0.9" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#a-first-example-the-lady-tasting-tea"><i class="fa fa-check"></i><b>0.9</b> A First Example: The Lady Tasting Tea</a></li>
+<li class="chapter" data-level="0.10" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#coins-and-cups"><i class="fa fa-check"></i><b>0.10</b> Coins and Cups</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="collecting-data.html"><a href="collecting-data.html"><i class="fa fa-check"></i><b>1</b> Collecting Data</a><ul>
+<li class="chapter" data-level="1.1" data-path="collecting-data.html"><a href="collecting-data.html#the-structure-of-data"><i class="fa fa-check"></i><b>1.1</b> The Structure of Data</a><ul>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#cases-and-variables"><i class="fa fa-check"></i>Cases and Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#categorical-and-quantitative-variables"><i class="fa fa-check"></i>Categorical and Quantitative Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#investigating-variables-and-relationships-between-variables"><i class="fa fa-check"></i>Investigating Variables and Relationships between Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#using-data-to-answer-a-question"><i class="fa fa-check"></i>Using Data to Answer a Question</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="collecting-data.html"><a href="collecting-data.html#sampling-from-a-population"><i class="fa fa-check"></i><b>1.2</b> Sampling from a Population</a><ul>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#samples-from-populations"><i class="fa fa-check"></i>Samples from Populations</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#sampling-bias"><i class="fa fa-check"></i>Sampling Bias</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#simple-random-sample"><i class="fa fa-check"></i>Simple Random Sample</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="collecting-data.html"><a href="collecting-data.html#experiments-and-observational-studies"><i class="fa fa-check"></i><b>1.3</b> Experiments and Observational Studies</a><ul>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#confounding-variables"><i class="fa fa-check"></i>Confounding Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#observational-studies-vs.-experiments"><i class="fa fa-check"></i>Observational Studies vs. Experiments</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="describing-data.html"><a href="describing-data.html"><i class="fa fa-check"></i><b>2</b> Describing Data</a><ul>
+<li class="chapter" data-level="2.1" data-path="describing-data.html"><a href="describing-data.html#categorical-variables"><i class="fa fa-check"></i><b>2.1</b> Categorical Variables</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#one-categorical-variable"><i class="fa fa-check"></i>One Categorical Variable</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#two-categorical-variables-two-way-tables"><i class="fa fa-check"></i>Two Categorical Variables: Two-Way Tables</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="describing-data.html"><a href="describing-data.html#one-quantitative-variable-shape-and-center"><i class="fa fa-check"></i><b>2.2</b> One Quantitative Variable: Shape and Center</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#the-shape-of-a-distribution"><i class="fa fa-check"></i>The Shape of a Distribution</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#the-center-of-a-distribution"><i class="fa fa-check"></i>The Center of a Distribution</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#resistance"><i class="fa fa-check"></i>Resistance</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="describing-data.html"><a href="describing-data.html#one-quantitative-variable-measures-of-spread"><i class="fa fa-check"></i><b>2.3</b> One Quantitative Variable: Measures of Spread</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#standard-deviation"><i class="fa fa-check"></i>Standard Deviation</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#percentiles"><i class="fa fa-check"></i>Percentiles</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#five-number-summary"><i class="fa fa-check"></i>Five Number Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="describing-data.html"><a href="describing-data.html#outliers-boxplots-and-quantitativecategorical-relationships"><i class="fa fa-check"></i><b>2.4</b> Outliers, Boxplots, and Quantitative/Categorical Relationships</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#detection-of-outliers"><i class="fa fa-check"></i>Detection of Outliers</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#boxplots"><i class="fa fa-check"></i>Boxplots</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#one-quantitative-and-one-categorical-variable"><i class="fa fa-check"></i>One Quantitative and One Categorical Variable</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="describing-data.html"><a href="describing-data.html#two-quantitative-variables-scatterplot-and-correlation"><i class="fa fa-check"></i><b>2.5</b> Two Quantitative Variables: Scatterplot and Correlation</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#visualizing-a-relationship-between-two-quantitative-variables-scatterplots"><i class="fa fa-check"></i>Visualizing a Relationship between Two Quantitative Variables: Scatterplots</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#summarizing-a-relationship-between-two-quantitative-variables-correlation"><i class="fa fa-check"></i>Summarizing a Relationship between Two Quantitative Variables: Correlation</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="describing-data.html"><a href="describing-data.html#two-quantitative-variables-linear-regression"><i class="fa fa-check"></i><b>2.6</b> Two Quantitative Variables: Linear Regression</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>3</b> Confidence Intervals</a><ul>
+<li class="chapter" data-level="3.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#sampling-distributions"><i class="fa fa-check"></i><b>3.1</b> Sampling Distributions</a><ul>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#variability-of-sample-statistics"><i class="fa fa-check"></i>Variability of Sample Statistics</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#measuring-sampling-variability-the-standard-error"><i class="fa fa-check"></i>Measuring Sampling Variability: The Standard Error</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#the-importance-of-sample-size"><i class="fa fa-check"></i>The Importance of Sample Size</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#understanding-and-interpreting-confidence-intervals"><i class="fa fa-check"></i><b>3.2</b> Understanding and Interpreting Confidence Intervals</a><ul>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#interval-estimates-and-margin-of-error"><i class="fa fa-check"></i>Interval Estimates and Margin of Error</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#confidence-intervals-1"><i class="fa fa-check"></i>Confidence Intervals</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#understanding-confidence-intervals"><i class="fa fa-check"></i>Understanding Confidence Intervals</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#interpreting-confidence-intervals"><i class="fa fa-check"></i>Interpreting Confidence Intervals</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#constructing-bootstrap-confidence-intervals"><i class="fa fa-check"></i><b>3.3</b> Constructing Bootstrap Confidence Intervals</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-samples"><i class="fa fa-check"></i><b>3.3.1</b> Bootstrap Samples</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-distribution"><i class="fa fa-check"></i>Bootstrap Distribution</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#estimating-standard-error-based-on-a-bootstrap-distribution"><i class="fa fa-check"></i>Estimating Standard Error Based on a Bootstrap Distribution</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#confidence-interval-based-on-a-bootstrap-standard-error"><i class="fa fa-check"></i>95% Confidence Interval Based on a Bootstrap Standard Error</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-confidence-intervals-using-percentiles"><i class="fa fa-check"></i><b>3.4</b> Bootstrap Confidence Intervals Using Percentiles</a><ul>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#confidence-intervals-based-on-bootstrap-percentiles"><i class="fa fa-check"></i>Confidence Intervals Based on Bootstrap Percentiles</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#finding-confidence-intervals-for-many-different-parameters"><i class="fa fa-check"></i>Finding Confidence Intervals for Many Different Parameters</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#another-look-at-the-effect-of-sample-size"><i class="fa fa-check"></i>Another Look at the Effect of Sample Size</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#one-caution-on-constructing-bootstrap-confidence-intervals"><i class="fa fa-check"></i>One Caution on Constructing Bootstrap Confidence Intervals</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html"><i class="fa fa-check"></i><b>4</b> Hypothesis Tests</a><ul>
+<li class="chapter" data-level="4.1" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#introducing-hypothesis-tests"><i class="fa fa-check"></i><b>4.1</b> Introducing Hypothesis Tests</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#the-4-step-outline"><i class="fa fa-check"></i>The 4-step outline</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#null-and-alternative-hypotheses"><i class="fa fa-check"></i>Null and Alternative Hypotheses</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#measuring-evidence-with-p-values"><i class="fa fa-check"></i><b>4.2</b> Measuring Evidence with P-values</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#p-values-from-randomization-distributions"><i class="fa fa-check"></i>P-values from Randomization Distributions</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#p-values-and-the-alternative-hypothesis"><i class="fa fa-check"></i>P-values and the Alternative Hypothesis</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#determining-statisical-significance"><i class="fa fa-check"></i><b>4.3</b> Determining Statisical Significance</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#less-formal-statistical-decisions"><i class="fa fa-check"></i>Less Formal Statistical Decisions</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#creating-randomization-distributions"><i class="fa fa-check"></i><b>4.4</b> Creating Randomization Distributions</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-test-for-a-difference-in-proportions-cocaine-addiction"><i class="fa fa-check"></i>Randomization Test for a Difference in Proportions: Cocaine Addiction</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-test-for-a-correlation-malevolent-uniforms-and-penalties"><i class="fa fa-check"></i>Randomization Test for a Correlation: Malevolent Uniforms and Penalties</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-test-for-a-mean-body-temperature"><i class="fa fa-check"></i>Randomization Test for a Mean: Body Temperature</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#confidence-intervals-and-hypothesis-tests"><i class="fa fa-check"></i><b>4.5</b> Confidence Intervals and Hypothesis Tests</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-and-bootstrap-distributions"><i class="fa fa-check"></i>Randomization and Bootstrap Distributions</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Lock5 With R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="hypothesis-tests" class="section level1">
+<h1><span class="header-section-number">4</span> Hypothesis Tests</h1>
+<div id="introducing-hypothesis-tests" class="section level2">
+<h2><span class="header-section-number">4.1</span> Introducing Hypothesis Tests</h2>
+<div id="the-4-step-outline" class="section level3 unnumbered">
+<h3>The 4-step outline</h3>
+<p>The following 4-step outline is a useful way to organize the ideas of hypothesis testing.</p>
+<!-- begin enumerate -->
+<ol>
+<li><p>State the Null and Alternative Hypotheses</p></li>
+<li><p>Compute the Test Statistic</p>
+<p>The test statistic is a number that summarizes the evidence</p></li>
+<li><p>Determine the p-value (from the Randomization Distribution)</p></li>
+<li><p>Draw a conclusion
+<!-- end enumerate --></p></li>
+</ol>
+</div>
+<div id="null-and-alternative-hypotheses" class="section level3 unnumbered">
+<h3>Null and Alternative Hypotheses</h3>
+<!-- Example 4.1 -->
+<!-- Example 4.2 -->
+<!-- Example 4.3 -->
+<div id="figure-4.1" class="section level4 unnumbered">
+<h4>Figure 4.1</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_point</span>(ZPenYds <span class="op">~</span><span class="st"> </span>NFL_Malevolence, <span class="dt">data =</span> MalevolentUniformsNFL) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">gf_lm</span>(ZPenYds <span class="op">~</span><span class="st"> </span>NFL_Malevolence, <span class="dt">data =</span> MalevolentUniformsNFL)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure4.1-1.png" width="65%" /></p>
+<!-- Example 4.4 -->
+<!-- Example 4.5 -->
+<!-- Example 4.6 -->
+<!-- Example 4.7 -->
+<!-- Example 4.8 -->
+<!-- Example 4.9 -->
+<!-- Example 4.10 -->
+<!-- Example 4.11 -->
+<!-- Example 4.12 -->
+</div>
+</div>
+</div>
+<div id="measuring-evidence-with-p-values" class="section level2">
+<h2><span class="header-section-number">4.2</span> Measuring Evidence with P-values</h2>
+<p>Randomization distributions are a bit like bootstrap distributions except that instead of resampling from our sample (in an attempt to approximate resampling from the population), we need to sample from a situation in which our null hypothesis is true.</p>
+<div id="p-values-from-randomization-distributions" class="section level3 unnumbered">
+<h3>P-values from Randomization Distributions</h3>
+<div id="example-4.13" class="section level4 unnumbered">
+<h4>Example 4.13</h4>
+<p>Testing one proportion.
+<!-- begin enumerate --></p>
+<ol>
+<li><p><span class="math inline">\(H_0\)</span>: <span class="math inline">\(p = 0.5\)</span></p>
+<p><span class="math inline">\(H_a\)</span>: <span class="math inline">\(p &gt; 0.5\)</span></p></li>
+<li><p>Test statistic: <span class="math inline">\(\hat p = 16/25\)</span> (the sample proportion)</p></li>
+<li><p>We can simulate a world in which <span class="math inline">\(p = 0.5\)</span> using <code>rflip()()</code>:</p></li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r">Randomization.Match &lt;-<span class="st"> </span>
+<span class="st">  </span><span class="kw">do</span>(<span class="dv">10000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">rflip</span>(<span class="dv">25</span>, <span class="fl">.5</span>)  <span class="co"># 25 because n = 25</span>
+<span class="kw">head</span>(Randomization.Match)</code></pre>
+<pre><code>##    n heads tails prop
+## 1 25    15    10 0.60
+## 2 25    12    13 0.48
+## 3 25    15    10 0.60
+## 4 25    11    14 0.44
+## 5 25     7    18 0.28
+## 6 25    11    14 0.44</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_histogram</span>( <span class="op">~</span><span class="st"> </span>prop, <span class="dt">binwidth =</span> <span class="fl">0.04</span>, <span class="dt">data =</span> Randomization.Match)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example4.13-1.png" width="65%" /></p>
+<p>Here we find the proportion of the simulations which resulted in 16 or more matches out of 25, or 0.64 or greater, for the p-value.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>( <span class="op">~</span><span class="st"> </span>(prop <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.64</span>), <span class="dt">data =</span> Randomization.Match ) <span class="co"># 16/25</span></code></pre>
+<pre><code>## prop_TRUE 
+##    0.1152</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_histogram</span>( <span class="op">~</span><span class="st"> </span>prop, <span class="dt">binwidth =</span> <span class="fl">0.04</span>, <span class="dt">fill =</span> <span class="op">~</span>(prop <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.64</span>), 
+              <span class="dt">data =</span> Randomization.Match, <span class="dt">show.legend =</span> <span class="ot">FALSE</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example4.13b-1.png" width="65%" /></p>
+<!-- ```{r Figure4.7, include=FALSE} -->
+<!-- <<Example4.13b>> -->
+<!-- ``` -->
+<!-- end enumerate -->
+<!-- Example 4.14 -->
+</div>
+<div id="example-4.15" class="section level4 unnumbered">
+<h4>Example 4.15</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>( <span class="op">~</span><span class="st"> </span>(prop <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.60</span>), <span class="dt">data =</span> Randomization.Match ) <span class="co"># 15/25</span></code></pre>
+<pre><code>## prop_TRUE 
+##    0.2118</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>( <span class="op">~</span><span class="st"> </span>(prop <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.76</span>), <span class="dt">data =</span> Randomization.Match ) <span class="co"># 19/25</span></code></pre>
+<pre><code>## prop_TRUE 
+##    0.0067</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_histogram</span>( <span class="op">~</span><span class="st"> </span>prop, <span class="dt">binwidth =</span> <span class="fl">0.04</span>, <span class="dt">fill =</span> <span class="op">~</span>(prop <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.60</span>), 
+              <span class="dt">data =</span> Randomization.Match, <span class="dt">show.legend =</span> <span class="ot">FALSE</span> )</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example4.15-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_histogram</span>( <span class="op">~</span><span class="st"> </span>prop, <span class="dt">binwidth =</span> <span class="fl">0.04</span>, <span class="dt">fill =</span> <span class="op">~</span>(prop <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.76</span>), 
+              <span class="dt">data =</span> Randomization.Match, <span class="dt">show.legend =</span> <span class="ot">FALSE</span> )</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example4.15-2.png" width="65%" /></p>
+<!-- ```{r Figure4.9, include=FALSE} -->
+<!-- <<Example4.15>> -->
+<!-- ``` -->
+</div>
+<div id="example-4.16" class="section level4 unnumbered">
+<h4>Example 4.16</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>( <span class="op">~</span><span class="st"> </span>(prop <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.88</span>), <span class="dt">data =</span> Randomization.Match ) <span class="co"># 22/25</span></code></pre>
+<pre><code>## prop_TRUE 
+##         0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_histogram</span>(<span class="op">~</span><span class="st"> </span>prop, <span class="dt">binwidth =</span> <span class="fl">0.04</span>, <span class="dt">data =</span> Randomization.Match ) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_vline</span>(<span class="dt">xintercept =</span> <span class="fl">.88</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example4.16-1.png" width="65%" /></p>
+<!-- Example 4.17 -->
+</div>
+<div id="figure-4.10" class="section level4 unnumbered">
+<h4>Figure 4.10</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dotplot</span>(<span class="op">~</span><span class="st"> </span>Taps, <span class="dt">binwidth =</span> <span class="dv">1</span>, <span class="dt">dotsize =</span> <span class="fl">.3</span>, <span class="dt">data =</span> CaffeineTaps) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_facet_grid</span>(Group <span class="op">~</span><span class="st"> </span>.)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure4.10-1.png" width="65%" /></p>
+</div>
+<div id="example-4.18" class="section level4 unnumbered">
+<h4>Example 4.18</h4>
+<p>Testing two means.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(Taps <span class="op">~</span><span class="st"> </span>Group, <span class="dt">data =</span> CaffeineTaps)</code></pre>
+<pre><code>##    Caffeine No Caffeine 
+##       248.3       244.8</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">diff</span>( <span class="kw">mean</span>(Taps <span class="op">~</span><span class="st"> </span>Group, <span class="dt">data =</span> CaffeineTaps) )</code></pre>
+<pre><code>## No Caffeine 
+##        -3.5</code></pre>
+<!-- begin enumerate -->
+<ol>
+<li><p><span class="math inline">\(H_0\)</span>: <span class="math inline">\(\mu_1 = \mu_2\)</span></p>
+<p><span class="math inline">\(H_a\)</span>: <span class="math inline">\(\mu_1 &gt; \mu_2\)</span></p></li>
+<li><p>Test statistic: <span class="math inline">\(\bar x_1 - \bar x_2 = 3.5\)</span> (the difference in sample means)</p></li>
+<li><p>We simulate a world in which <span class="math inline">\(\mu_1 = \mu_2\)</span> or <span class="math inline">\(\mu_1 - \mu_2 = 0\)</span>:</p></li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r">Randomization.Caff &lt;-<span class="st"> </span><span class="kw">do</span> (<span class="dv">1000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">ediff</span>( <span class="kw">mean</span>( Taps <span class="op">~</span><span class="st"> </span><span class="kw">shuffle</span>(Group), <span class="dt">data =</span> CaffeineTaps ) )
+<span class="kw">head</span>(Randomization.Caff,<span class="dv">3</span>)</code></pre>
+<pre><code>##   V1 No.Caffeine
+## 1 NA         1.1
+## 2 NA        -0.1
+## 3 NA         1.3</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dotplot</span>( <span class="op">~</span><span class="st"> </span>No.Caffeine, <span class="dt">binwidth =</span> <span class="fl">0.1</span>, <span class="dt">dotsize =</span> <span class="fl">.7</span>, <span class="dt">data =</span> Randomization.Caff)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example4.18b-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>( <span class="op">~</span><span class="st"> </span>(No.Caffeine <span class="op">&gt;=</span><span class="st"> </span><span class="fl">3.5</span>), <span class="dt">data =</span> Randomization.Caff )</code></pre>
+<pre><code>## prop_TRUE 
+##     0.001</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dotplot</span>( <span class="op">~</span><span class="st"> </span>No.Caffeine, <span class="dt">binwidth =</span> <span class="fl">0.1</span>, <span class="dt">dotsize =</span> <span class="fl">.6</span>, <span class="dt">colour =</span> <span class="op">~</span>(No.Caffeine <span class="op">&gt;=</span><span class="fl">3.5</span>), 
+            <span class="dt">data =</span> Randomization.Caff, <span class="dt">show.legend =</span> <span class="ot">FALSE</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example4.18c-1.png" width="65%" /></p>
+<!-- ```{r Figure4.11, include=FALSE} -->
+<!-- <<Example4.18c>> -->
+<!-- ``` -->
+<!-- end enumerate -->
+</div>
+</div>
+<div id="p-values-and-the-alternative-hypothesis" class="section level3 unnumbered">
+<h3>P-values and the Alternative Hypothesis</h3>
+<div id="example-4.19" class="section level4 unnumbered">
+<h4>Example 4.19</h4>
+<p>Testing one proportion.
+<!-- begin enumerate --></p>
+<ol>
+<li><p><span class="math inline">\(H_0\)</span>: <span class="math inline">\(p = 0.5\)</span></p>
+<p><span class="math inline">\(H_a\)</span>: <span class="math inline">\(p &gt; 0.5\)</span></p></li>
+<li><p>Test statistic: <span class="math inline">\(\hat p = 0.8, 0.6, 0.4\)</span> (the sample proportion of 8/10, 6/10, 4/10 heads)</p></li>
+<li><p>We simulate a world in which <span class="math inline">\(p = 0.5\)</span>:</p></li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r">RandomizationDist &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">1000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">rflip</span>(<span class="dv">10</span>, <span class="fl">.5</span>)  <span class="co"># 10 because n = 10</span>
+<span class="kw">head</span>(RandomizationDist)</code></pre>
+<pre><code>##    n heads tails prop
+## 1 10     6     4  0.6
+## 2 10     3     7  0.3
+## 3 10     7     3  0.7
+## 4 10     6     4  0.6
+## 5 10     4     6  0.4
+## 6 10     8     2  0.8</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_histogram</span>( <span class="op">~</span><span class="st"> </span>prop, <span class="dt">binwidth =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">10</span>, <span class="dt">data =</span> RandomizationDist)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example4.19-1.png" width="65%" /></p>
+<!-- AuthNote --- need to label each bar, in lattice 'label = TRUE', gf_text() needs y ~ x arg and doesn't take ..count.. -->
+<!-- ```{r Figure4.12,include=FALSE} -->
+<!-- <<Example4.19>> -->
+<!-- ``` -->
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>( <span class="op">~</span><span class="st"> </span>(prop <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.8</span>), <span class="dt">data =</span> RandomizationDist )</code></pre>
+<pre><code>## prop_TRUE 
+##     0.061</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>( <span class="op">~</span><span class="st"> </span>(prop <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.6</span>), <span class="dt">data =</span> RandomizationDist )</code></pre>
+<pre><code>## prop_TRUE 
+##     0.406</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>( <span class="op">~</span><span class="st"> </span>(prop <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.4</span>), <span class="dt">data =</span> RandomizationDist )</code></pre>
+<pre><code>## prop_TRUE 
+##     0.835</code></pre>
+<!-- end enumerate -->
+</div>
+<div id="example-4.20" class="section level4 unnumbered">
+<h4>Example 4.20</h4>
+<p>Testing one proportion.
+<!-- begin enumerate --></p>
+<ol>
+<li><p><span class="math inline">\(H_0\)</span>: <span class="math inline">\(p = 0.5\)</span></p>
+<p><span class="math inline">\(H_a\)</span>: <span class="math inline">\(p \neq 0.5\)</span></p></li>
+<li><p>Test statistic: <span class="math inline">\(\hat p = 0.8\)</span> (the sample proportion of 8/10 heads)</p></li>
+<li><p>We use the simulated world in which <span class="math inline">\(p = 0.5\)</span>:</p></li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>(<span class="op">~</span><span class="st"> </span>(prop <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.8</span>), <span class="dt">data =</span> RandomizationDist)</code></pre>
+<pre><code>## prop_TRUE 
+##     0.061</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>(<span class="op">~</span><span class="st"> </span>(prop <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.2</span>), <span class="dt">data =</span> RandomizationDist)</code></pre>
+<pre><code>## prop_TRUE 
+##     0.046</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># a 2-sided p-value is the sum of the values above</span>
+<span class="kw">prop</span>(<span class="op">~</span><span class="st"> </span>(prop <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.2</span> <span class="op">|</span><span class="st"> </span>prop <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.8</span>), <span class="dt">data =</span> RandomizationDist)</code></pre>
+<pre><code>## prop_TRUE 
+##     0.107</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># We can also approximate the p-value by doubling one side</span>
+<span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">prop</span>(<span class="op">~</span><span class="st"> </span>prop <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.80</span>, <span class="dt">data =</span> RandomizationDist)</code></pre>
+<pre><code>## prop_TRUE 
+##     0.122</code></pre>
+<!-- Why wrong histogram? -->
+<!-- ```{r Figure4.13,include=FALSE} -->
+<!-- <<Example4.20>> -->
+<!-- ``` -->
+<!-- end enumerate -->
+</div>
+</div>
+</div>
+<div id="determining-statisical-significance" class="section level2">
+<h2><span class="header-section-number">4.3</span> Determining Statisical Significance</h2>
+<!-- Example 4.21 -->
+<!-- Example 4.22 -->
+<!-- Example 4.23 -->
+<!-- Example 4.24 -->
+<!-- Example 4.25 -->
+<!-- Example 4.26 -->
+<div id="less-formal-statistical-decisions" class="section level3 unnumbered">
+<h3>Less Formal Statistical Decisions</h3>
+<div id="example-4.27" class="section level4 unnumbered">
+<h4>Example 4.27</h4>
+<p>Testing two means.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(Smiles)</code></pre>
+<pre><code>##   Leniency Group
+## 1      7.0 smile
+## 2      3.0 smile
+## 3      6.0 smile
+## 4      4.5 smile
+## 5      3.5 smile
+## 6      4.0 smile</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(Leniency <span class="op">~</span><span class="st"> </span>Group, <span class="dt">data =</span> Smiles)</code></pre>
+<pre><code>##  neutral    smile 
+## 4.117647 4.911765</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">diffmean</span>(Leniency <span class="op">~</span><span class="st"> </span>Group, <span class="dt">data =</span> Smiles)</code></pre>
+<pre><code>##  diffmean 
+## 0.7941176</code></pre>
+<!-- begin enumerate -->
+<ol>
+<li><p><span class="math inline">\(H_0\)</span>: <span class="math inline">\(\mu_1 = \mu_2\)</span></p>
+<p><span class="math inline">\(H_a\)</span>: <span class="math inline">\(\mu_1 \neq \mu_2\)</span></p></li>
+<li><p>Test statistic: <span class="math inline">\(\bar x_1 - \bar x_2 = 0.79\)</span> (the difference in sample means)</p></li>
+<li><p>We simulate a world in which <span class="math inline">\(\mu_1 = \mu_2\)</span>:</p></li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r">Randomization.Smiles &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">1000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">diffmean</span>(Leniency <span class="op">~</span><span class="st"> </span><span class="kw">shuffle</span>(Group), <span class="dt">data =</span> Smiles)
+<span class="kw">head</span>(Randomization.Smiles, <span class="dv">3</span>)</code></pre>
+<pre><code>##      diffmean
+## 1  0.05882353
+## 2 -0.52941176
+## 3  0.17647059</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>(<span class="op">~</span><span class="st"> </span>(diffmean <span class="op">&lt;=</span><span class="st"> </span><span class="fl">-0.79</span> <span class="op">|</span><span class="st"> </span>diffmean <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.79</span>), <span class="dt">data =</span> Randomization.Smiles)</code></pre>
+<pre><code>## prop_TRUE 
+##     0.049</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">prop</span>(<span class="op">~</span><span class="st"> </span>diffmean <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.79</span>, <span class="dt">data =</span> Randomization.Smiles )</code></pre>
+<pre><code>## prop_TRUE 
+##     0.052</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dotplot</span>(<span class="op">~</span><span class="st"> </span>diffmean, <span class="dt">binwidth =</span> <span class="fl">0.03</span>, <span class="dt">dotsize =</span> <span class="fl">.7</span>, <span class="dt">colour =</span> <span class="op">~</span>(diffmean <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.79</span>), 
+        <span class="dt">xlab =</span> <span class="st">&quot;Diff&quot;</span>, <span class="dt">data =</span> Randomization.Smiles, <span class="dt">show.legend =</span> <span class="ot">FALSE</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example4.27c-1.png" width="65%" /></p>
+<!-- ```{r Figure4.24,include=FALSE} -->
+<!-- <<Example4.27c>> -->
+<!-- ``` -->
+<p>Now we find the p-value:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>( <span class="op">~</span><span class="st"> </span>(diffmean <span class="op">&lt;=</span><span class="st"> </span><span class="fl">-0.79</span> <span class="op">|</span><span class="st"> </span>diffmean <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.79</span>), <span class="dt">data =</span> Randomization.Smiles)</code></pre>
+<pre><code>## prop_TRUE 
+##     0.049</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">prop</span>( <span class="op">~</span><span class="st"> </span>diffmean <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.79</span>, <span class="dt">data =</span> Randomization.Smiles )</code></pre>
+<pre><code>## prop_TRUE 
+##     0.052</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dotplot</span>( <span class="op">~</span><span class="st"> </span>diffmean, <span class="dt">binwidth =</span> <span class="fl">.03</span>, <span class="dt">dotsize =</span> <span class="fl">.7</span>, <span class="dt">colour =</span> <span class="op">~</span>(diffmean <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.79</span>), 
+            <span class="dt">data =</span> Randomization.Smiles, <span class="dt">show.legend =</span> <span class="ot">FALSE</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example4.27d-1.png" width="65%" /></p>
+<!-- end enumerate -->
+</div>
+</div>
+</div>
+<div id="creating-randomization-distributions" class="section level2">
+<h2><span class="header-section-number">4.4</span> Creating Randomization Distributions</h2>
+<p>In order to use these methods to estimate a p-value, we must be able to generate a randomization distribution. In the case of a test with null hypothesis claiming that a proportion has a particular value (e.g, <span class="math inline">\(H_0\)</span>: <span class="math inline">\(p=0.5\)</span>), this is pretty easy. If the population has proportion 0.50, we can simulate sampling from that proportion by flipping a fair coin. If the proportion is some value other than 0.50, we simply flip a coin that has the appropriate probability of resulting in heads. So the general template for creating such a randomization distribution is</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">do</span>(<span class="dv">1000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">rflip</span>( n, hypothesized_proportion )</code></pre>
+<p>where <code>n</code> is the size of the original sample.</p>
+<p>In other situations, it can be more challenging to create a randomization distribution because the null hypothesis does not directly specify all of the information needed to simulate samples.
+<!-- begin itemize --></p>
+<ol>
+<li><p><span class="math inline">\(H_0\)</span>: <span class="math inline">\(p_1 = p_2\)</span></p>
+<p>This would be simple <em>if</em> we new the value of <span class="math inline">\(p_1\)</span> and <span class="math inline">\(p_2\)</span> (we could use <code>rflip()()</code> twice, once for each group),</p></li>
+<li><p><span class="math inline">\(H_0\)</span>: <span class="math inline">\(\mu\)</span> = some number</p>
+<p>Just knowing the mean does not tell us enough about the distribution.
+We need to know about its shape. (We might need to know the standard
+deviation, for example, or whether the distribution is skewed.)</p></li>
+<li><p><span class="math inline">\(H_0\)</span>: <span class="math inline">\(\mu_1 \neq \mu_2\)</span> some number.</p>
+<p>Now we don’t know the common mean and we don’t know the things mentioned in the previous example either.
+<!-- end itemize --></p></li>
+</ol>
+<p>So how do we come up with randomization distribution?</p>
+<hr />
+<p>The main criteria to consider when creating randomization samples for a statistical test are:</p>
+<ol>
+<li><p>Be consistent with the null hypothesis.</p>
+<p>If we don’t do this, we won’t be testing our null hypothesis.</p></li>
+<li><p>Use the data in the original sample.</p>
+<p>With luck, the original data will shed light on some aspects of the distribution
+that are not determined by null hypothesis.</p></li>
+<li><p>Reflect the way the original data were collected.
+<!-- end itemize --></p></li>
+</ol>
+<hr />
+<div id="randomization-test-for-a-difference-in-proportions-cocaine-addiction" class="section level3 unnumbered">
+<h3>Randomization Test for a Difference in Proportions: Cocaine Addiction</h3>
+<div id="data-4.7" class="section level4 unnumbered">
+<h4>Data 4.7</h4>
+<p>Data 4.7 in the text describes some data that are not in a data frame. This often happens when a data set has only categorical variables because a simple table completely describes the distributions involved. Here’s the table from the book:<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="left">Relapse</th>
+<th>No Relapse</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Lithium</td>
+<td align="left">18</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td>Placebo</td>
+<td align="left">20</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<!--         Desipramine & 10 & 14 \\ -->
+<p>Here’s one way to create the data in R
+<!--   do(10) * data.frame( treatment = "Desipramine", response="Relapse"), -->
+<!--   do(14) * data.frame( treatment = "Desipramine", response="No Relapse"), --></p>
+<pre class="sourceCode r"><code class="sourceCode r">Cocaine &lt;-<span class="st"> </span><span class="kw">rbind</span>( 
+  <span class="kw">do</span>(<span class="dv">18</span>) <span class="op">*</span><span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">treatment =</span> <span class="st">&quot;Lithium&quot;</span>, <span class="dt">response =</span> <span class="st">&quot;Relapse&quot;</span>),
+  <span class="kw">do</span>(<span class="dv">6</span>)  <span class="op">*</span><span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">treatment =</span> <span class="st">&quot;Lithium&quot;</span>, <span class="dt">response =</span> <span class="st">&quot;No Relapse&quot;</span>),
+  <span class="kw">do</span>(<span class="dv">20</span>) <span class="op">*</span><span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">treatment =</span> <span class="st">&quot;Placebo&quot;</span>, <span class="dt">response =</span> <span class="st">&quot;Relapse&quot;</span>),
+  <span class="kw">do</span>(<span class="dv">4</span>)  <span class="op">*</span><span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">treatment =</span> <span class="st">&quot;Placebo&quot;</span>, <span class="dt">response =</span> <span class="st">&quot;No Relapse&quot;</span>)
+  )</code></pre>
+<!-- Example 4.28 -->
+</div>
+<div id="example-4.29" class="section level4 unnumbered">
+<h4>Example 4.29</h4>
+<p>Testing two proportions.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tally</span>( response <span class="op">~</span><span class="st"> </span>treatment, <span class="dt">data =</span> Cocaine )</code></pre>
+<pre><code>##             treatment
+## response     Lithium Placebo
+##   Relapse         18      20
+##   No Relapse       6       4</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>( response <span class="op">~</span><span class="st"> </span>treatment,  <span class="dt">data =</span> Cocaine )</code></pre>
+<pre><code>## prop_Relapse.Lithium prop_Relapse.Placebo 
+##            0.7500000            0.8333333</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">diff</span>( <span class="kw">prop</span>( response <span class="op">~</span><span class="st"> </span>treatment, <span class="dt">data =</span> Cocaine ))</code></pre>
+<pre><code>## prop_Relapse.Placebo 
+##           0.08333333</code></pre>
+<!-- begin enumerate -->
+<ol>
+<li><p><span class="math inline">\(H_0\)</span>: <span class="math inline">\(p_1 = p_2\)</span></p>
+<p><span class="math inline">\(H_a\)</span>: <span class="math inline">\(p_1 &lt; p_2\)</span></p></li>
+<li><p>Test statistic: <span class="math inline">\(\hat p_1 = \hat p_2\)</span> (the difference in sample proportions)</p></li>
+<li><p>We simulate a world in which <span class="math inline">\(p_1 = p_2\)</span> or <span class="math inline">\(p_1 - p_2 = 0\)</span>:</p></li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r">Randomization.Coc &lt;-<span class="st"> </span><span class="kw">do</span> (<span class="dv">5000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">diff</span>( <span class="kw">prop</span>( response <span class="op">~</span><span class="st"> </span><span class="kw">shuffle</span>(treatment), <span class="dt">data =</span> Cocaine ) )
+<span class="kw">head</span>(Randomization.Coc)</code></pre>
+<pre><code>##   prop_Relapse.Placebo
+## 1           0.16666667
+## 2           0.08333333
+## 3          -0.16666667
+## 4          -0.08333333
+## 5           0.08333333
+## 6          -0.08333333</code></pre>
+<!-- RELAPSE>PLACEBO NOT FOUND -->
+<!-- ```{r Example4.29c} -->
+<!-- prop( ~ (Relapse.Placebo < -0.0833 ), data = Randomization.Coc ) -->
+<!-- gf_histogram( ~ Relapse.Placebo, data = Randomization.Coc, binwidth = 0.08) %>%  -->
+<!--   gf_vline(xintercept = -.0833) -->
+<!-- ``` -->
+<!-- ```{r Figure4.28, include=FALSE} -->
+<!-- <<Example4.29c>> -->
+<!-- ``` -->
+<!-- end enumerate -->
+</div>
+</div>
+<div id="randomization-test-for-a-correlation-malevolent-uniforms-and-penalties" class="section level3 unnumbered">
+<h3>Randomization Test for a Correlation: Malevolent Uniforms and Penalties</h3>
+<!-- Example 4.30 -->
+<div id="example-4.31" class="section level4 unnumbered">
+<h4>Example 4.31</h4>
+<p>Testing correlation.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_point</span>(ZPenYds <span class="op">~</span><span class="st"> </span>NFL_Malevolence, <span class="dt">data =</span> MalevolentUniformsNFL) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">gf_lm</span>(ZPenYds <span class="op">~</span><span class="st"> </span>NFL_Malevolence, <span class="dt">data =</span> MalevolentUniformsNFL)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example4.31-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(ZPenYds <span class="op">~</span><span class="st"> </span>NFL_Malevolence, <span class="dt">data =</span> MalevolentUniformsNFL)</code></pre>
+<pre><code>## [1] 0.429796</code></pre>
+<!-- begin enumerate -->
+<ol>
+<li><p><span class="math inline">\(H_0\)</span>: <span class="math inline">\(\rho = 0\)</span></p>
+<p><span class="math inline">\(H_a\)</span>: <span class="math inline">\(\rho &gt; 0\)</span></p></li>
+<li><p>Test statistic: <span class="math inline">\(r = 0.43\)</span> (the sample correlation)</p></li>
+<li><p>We simulate a world in which <span class="math inline">\(\rho = 0\)</span>:</p></li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r">Randomization.Mal &lt;-<span class="st"> </span>
+<span class="st">  </span><span class="kw">do</span>(<span class="dv">10000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">cor</span>(NFL_Malevolence <span class="op">~</span><span class="st"> </span><span class="kw">shuffle</span>(ZPenYds), <span class="dt">data =</span> MalevolentUniformsNFL)
+<span class="kw">head</span>(Randomization.Mal)</code></pre>
+<pre><code>##           cor
+## 1 -0.13541976
+## 2  0.10549967
+## 3  0.10137539
+## 4  0.33179991
+## 5 -0.06182464
+## 6 -0.17591371</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>( <span class="op">~</span><span class="st"> </span>(cor <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.43</span> ), <span class="dt">data =</span> Randomization.Mal )</code></pre>
+<pre><code>## prop_TRUE 
+##    0.0112</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_histogram</span>(<span class="op">~</span><span class="st"> </span>cor, <span class="dt">binwidth =</span> <span class="fl">0.05</span>, <span class="dt">data =</span> Randomization.Mal) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">gf_vline</span>(<span class="dt">xintercept =</span> <span class="fl">.43</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example4.32c-1.png" width="65%" /></p>
+<!-- ```{r Figure4.29, include=FALSE} -->
+<!-- <<Example4.32c>> -->
+<!-- ``` -->
+<!-- end enumerate -->
+</div>
+</div>
+<div id="randomization-test-for-a-mean-body-temperature" class="section level3 unnumbered">
+<h3>Randomization Test for a Mean: Body Temperature</h3>
+<!-- Example 4.32 -->
+<div id="example-4.33" class="section level4 unnumbered">
+<h4>Example 4.33</h4>
+<p>Testing one mean.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>BodyTemp, <span class="dt">data =</span> BodyTemp50)</code></pre>
+<pre><code>## [1] 98.26</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dotplot</span>(<span class="op">~</span><span class="st"> </span>BodyTemp, <span class="dt">binwidth =</span> <span class="fl">.1</span>, <span class="dt">stackratio =</span> <span class="dv">2</span>, <span class="dt">dotsize =</span> <span class="dv">1</span>, 
+            <span class="dt">data =</span> BodyTemp50) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gf_vline</span>(<span class="dt">xintercept =</span> <span class="fl">98.26</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example4.33-1.png" width="65%" /></p>
+<!-- ```{r Figure4.30,include=FALSE} -->
+<!-- <<Example4.33>> -->
+<!-- ``` -->
+<!-- begin enumerate -->
+<ol>
+<li><p><span class="math inline">\(H_0\)</span>: <span class="math inline">\(\mu = 98.6\)</span></p>
+<p><span class="math inline">\(H_a\)</span>: <span class="math inline">\(\mu \neq 98.6\)</span></p></li>
+<li><p>Test statistic: <span class="math inline">\(\bar x = 98.26\)</span> (the sample mean)</p></li>
+</ol>
+<p>Notice that the test statistic differs a bit from 98.6</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="fl">98.6</span> <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>BodyTemp, <span class="dt">data =</span> BodyTemp50)  </code></pre>
+<pre><code>## [1] 0.34</code></pre>
+<p>But might this just be random variation?
+We need a randomization distribution to compare against.</p>
+<ol>
+<li>If we resample, the mean will not be 98.6. But we shift the distribution a bit, then we will have the desired mean while preserving the shape of the distribution indicated by our sample. We simulate a world in which <span class="math inline">\(\mu = 98.6\)</span>:</li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r">Randomization.Temp &lt;-<span class="st"> </span>
+<span class="st">  </span><span class="kw">do</span>(<span class="dv">10000</span>) <span class="op">*</span><span class="st"> </span>( <span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>BodyTemp, <span class="dt">data =</span> <span class="kw">resample</span>(BodyTemp50) ) <span class="op">+</span><span class="st"> </span><span class="fl">0.34</span> ) 
+<span class="kw">head</span>(Randomization.Temp, <span class="dv">3</span>)</code></pre>
+<pre><code>##   result
+## 1 98.708
+## 2 98.590
+## 3 98.716</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>result, <span class="dt">data =</span> Randomization.Temp )</code></pre>
+<pre><code>## [1] 98.59943</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cdata</span>( <span class="op">~</span><span class="st"> </span>result, <span class="fl">0.95</span>, <span class="dt">data =</span> Randomization.Temp )</code></pre>
+<pre><code>##       low        hi central.p 
+##    98.392    98.814     0.950</code></pre>
+<p>From this we can estimate the p-value:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>( <span class="op">~</span><span class="st"> </span><span class="kw">abs</span>(result <span class="op">-</span><span class="st"> </span><span class="fl">98.6</span>) <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.34</span>, <span class="dt">data =</span> Randomization.Temp)</code></pre>
+<pre><code>## prop_TRUE 
+##    0.0023</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_histogram</span>( <span class="op">~</span><span class="st"> </span>result, <span class="dt">binwidth =</span> <span class="fl">.01</span>, <span class="dt">data =</span> Randomization.Temp) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_vline</span>(<span class="dt">xintercept =</span> <span class="fl">98.4</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_vline</span>(<span class="dt">xintercept =</span> <span class="fl">98.6</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_vline</span>(<span class="dt">xintercept =</span> <span class="fl">98.81</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example4.33d-1.png" width="65%" /></p>
+<!-- ```{r Figure4.31,include=FALSE} -->
+<!-- <<Example4.33d>> -->
+<!-- ``` -->
+<!-- end enumerate -->
+<p>How do we interpret this (estimated) p-value of 0? Is it impossible to have a sample mean so
+far from 98.6 if the true population mean is 98.6? No. This merely means that we didn’t see any
+such cases <em>in our 10000 randomization samples</em>.<br />
+We might estimate the p-value as <span class="math inline">\(p &lt; 0.001\)</span>. Generally, to more accurately estimate small p-values, we must use many more randomization samples.</p>
+</div>
+<div id="example-4.33-a-different-approach" class="section level4 unnumbered">
+<h4>Example 4.33: A different approach</h4>
+<p>An equivalent way to do the preceding test is based on a different way of expressing our
+hypotheses.
+<!-- begin enumerate --></p>
+<ol>
+<li><p><span class="math inline">\(H_0\)</span>: <span class="math inline">\(\mu - 98.6 = 0\)</span></p>
+<p><span class="math inline">\(H_a\)</span>: <span class="math inline">\(\mu - 98.6 \neq 0\)</span></p></li>
+<li><p>Test statistic: <span class="math inline">\(\bar x - 98.6 = -0.34\)</span></p></li>
+<li><p>We we create a randomization distribution centered at <span class="math inline">\(\mu - 98.6 = 0\)</span>:</p></li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r">Randomization.Temp2 &lt;-<span class="st"> </span>
+<span class="st">  </span><span class="kw">do</span>(<span class="dv">5000</span>) <span class="op">*</span><span class="st"> </span>( <span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>BodyTemp, <span class="dt">data =</span> <span class="kw">resample</span>(BodyTemp50) ) <span class="op">-</span><span class="st"> </span><span class="fl">98.26</span> ) 
+<span class="kw">head</span>(Randomization.Temp2, <span class="dv">3</span>)</code></pre>
+<pre><code>##   result
+## 1 -0.190
+## 2  0.060
+## 3  0.172</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>result, <span class="dt">data =</span> Randomization.Temp2 )</code></pre>
+<pre><code>## [1] -0.0008952</code></pre>
+<p>From this we can estimate the p-value:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>( <span class="op">~</span><span class="st"> </span><span class="kw">abs</span>(result) <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.34</span>, <span class="dt">data =</span> Randomization.Temp2 )</code></pre>
+<pre><code>## prop_TRUE 
+##    0.0016</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_histogram</span>( <span class="op">~</span><span class="st"> </span>result, <span class="dt">binwidth =</span> <span class="fl">.01</span>, <span class="dt">data =</span> Randomization.Temp2) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_vline</span>(<span class="dt">xintercept =</span> <span class="fl">.34</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_vline</span>(<span class="dt">xintercept =</span> <span class="fl">-.34</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example4.33f,%20-1.png" width="65%" /></p>
+<!-- end enumerate -->
+<p>Often there are multiple ways to express the same hypothesis test.</p>
+<!-- Example 4.34 -->
+</div>
+</div>
+</div>
+<div id="confidence-intervals-and-hypothesis-tests" class="section level2">
+<h2><span class="header-section-number">4.5</span> Confidence Intervals and Hypothesis Tests</h2>
+<p>If your randomization distribution is centered at the wrong value, then it isn’t simulating a world in which the null hypothesis is true. This would happen, for example, if we got confused about randomization vs. bootstrapping.</p>
+<div id="randomization-and-bootstrap-distributions" class="section level3 unnumbered">
+<h3>Randomization and Bootstrap Distributions</h3>
+<div id="figure-4.32" class="section level4 unnumbered">
+<h4>Figure 4.32</h4>
+<pre class="sourceCode r"><code class="sourceCode r">Boot.Temp &lt;-<span class="st"> </span><span class="kw">do</span> (<span class="dv">5000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">mean</span>(<span class="op">~</span><span class="st"> </span>BodyTemp, <span class="dt">data =</span> <span class="kw">resample</span>(BodyTemp50))
+<span class="kw">head</span>(Boot.Temp,<span class="dv">3</span>)</code></pre>
+<pre><code>##     mean
+## 1 98.148
+## 2 98.258
+## 3 98.362</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(<span class="op">~</span><span class="st"> </span>mean, <span class="dt">data =</span> Boot.Temp)</code></pre>
+<pre><code>## [1] 98.25733</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cdata</span>( <span class="op">~</span><span class="st"> </span>mean, <span class="fl">0.95</span>, <span class="dt">data =</span> Boot.Temp)</code></pre>
+<pre><code>##       low        hi central.p 
+##    98.052    98.472     0.950</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_histogram</span>( <span class="op">~</span><span class="st"> </span>mean, <span class="dt">binwidth =</span> <span class="fl">.01</span>, <span class="dt">v =</span> <span class="kw">c</span>(<span class="fl">98.26</span>, <span class="fl">98.6</span>), 
+      <span class="dt">fill =</span> <span class="op">~</span>(<span class="fl">98.05</span> <span class="op">&lt;=</span><span class="st"> </span>mean <span class="op">&amp;</span><span class="st"> </span>mean <span class="op">&lt;=</span><span class="st"> </span><span class="fl">98.46</span>), <span class="dt">data =</span> Boot.Temp, <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_vline</span>(<span class="dt">xintercept =</span> <span class="fl">98.26</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_vline</span>(<span class="dt">xintercept =</span> <span class="fl">98.6</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure4.32-1.png" width="65%" /></p>
+<p>Notice that the distribution is now centered at our test statistic instead of at the value
+from the null hypothesis.</p>
+</div>
+<div id="example-4.35" class="section level4 unnumbered">
+<h4>Example 4.35</h4>
+<!-- begin enumerate -->
+<ol>
+<li><p><span class="math inline">\(H_0\)</span>: <span class="math inline">\(\mu = 98.4\)</span></p>
+<p><span class="math inline">\(H_a\)</span>: <span class="math inline">\(\mu \neq 98.4\)</span></p></li>
+<li><p>Test statistic: <span class="math inline">\(\bar x = 98.26\)</span> (the sample mean)</p></li>
+<li><p>We simulate a world in which <span class="math inline">\(\mu = 98.4\)</span>:</p></li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r">Randomization.Temp3 &lt;-<span class="st"> </span>
+<span class="st">  </span><span class="kw">do</span>(<span class="dv">5000</span>) <span class="op">*</span><span class="st"> </span>( <span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>BodyTemp, <span class="dt">data =</span> <span class="kw">resample</span>(BodyTemp50) ) <span class="op">+</span><span class="st"> </span><span class="fl">0.14</span> ) 
+<span class="kw">head</span>(Randomization.Temp3, <span class="dv">3</span>)</code></pre>
+<pre><code>##   result
+## 1 98.592
+## 2 98.376
+## 3 98.464</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>result, <span class="dt">data =</span> Randomization.Temp3 )</code></pre>
+<pre><code>## [1] 98.39952</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cdata</span>(<span class="op">~</span><span class="st"> </span>result, <span class="fl">0.95</span>, <span class="dt">data =</span> Randomization.Temp3)</code></pre>
+<pre><code>##       low        hi central.p 
+##    98.190    98.612     0.950</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_histogram</span>( <span class="op">~</span><span class="st"> </span>result, <span class="dt">binwidth =</span> <span class="fl">.01</span>,<span class="dt">fill =</span> <span class="op">~</span>(<span class="fl">98.19</span> <span class="op">&lt;=</span><span class="st"> </span>result <span class="op">&amp;</span><span class="st"> </span>result <span class="op">&lt;=</span><span class="st"> </span><span class="fl">98.62</span>), 
+          <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="fl">97.8</span>, <span class="fl">99.0</span>), <span class="dt">data =</span> Randomization.Temp3, <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_vline</span>(<span class="dt">xintercept =</span> <span class="fl">98.26</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_vline</span>(<span class="dt">xintercept =</span> <span class="fl">98.4</span>)<span class="co"># randomization</span></code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example4.35-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_histogram</span>( <span class="op">~</span><span class="st"> </span>mean, <span class="dt">binwidth =</span> <span class="fl">.01</span>, <span class="dt">fill =</span> <span class="op">~</span>(<span class="fl">98.05</span> <span class="op">&lt;=</span><span class="st"> </span>mean <span class="op">&amp;</span><span class="st"> </span>mean <span class="op">&lt;=</span><span class="st"> </span><span class="fl">98.46</span>), 
+          <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="fl">97.8</span>, <span class="fl">99.0</span>), <span class="dt">data =</span> Boot.Temp, <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_vline</span>(<span class="dt">xintercept =</span> <span class="fl">98.26</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_vline</span>(<span class="dt">xintercept =</span> <span class="fl">98.4</span>)<span class="co"># bootstrap</span></code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example4.35-2.png" width="65%" /></p>
+<!-- end enumerate -->
+<!-- Example 4.36 -->
+<!-- Example 4.37 -->
+<!-- Example 4.38 -->
+<!-- Example 4.39 -->
+<!-- Example 4.40 -->
+<!--  -->
+<!-- The block below should be commented out -->
+<!-- #### An Observational Study: ??  -->
+<!-- Once again, we are interested in comparing two proportions: -->
+<!-- <!-- begin itemize -->
+<!--    #. $p_t = $ the proportion of people who lost a ticket that say they would buy a new one. -->
+<!--    #. $p_c = $ the proportion of people who lost cash that say they would buy a ticket. -->
+<!-- <!-- end itemize -->
+<!-- And our null hypothesis is again  -->
+<!-- <!-- begin itemize -->
+<!--    #. $H_0$:  $p_t = p_c$  -->
+<!-- <!-- end itemize -->
+<!-- But the design of this study is different. -->
+<!-- ### Testing Whether Two Means are Equal -->
+<!-- #### Random assignment -->
+<!-- The procedure for comparing two means is very similar -->
+<!-- ```{r } -->
+<!-- mean(BodyTemp ~ Sex, data = BodyTemp50) -->
+<!-- diffmean(BodyTemp ~ Sex, data = BodyTemp50)  -->
+<!-- ``` -->
+<!-- ```{r } -->
+<!-- Randomization.Temp <-  -->
+<!--   do (1000) * diffmean( BodyTemp ~ shuffle(Sex), data = BodyTemp50) -->
+<!-- head(Randomization.Temp,3) -->
+<!-- gf_histogram( ~ diffmean, data = Randomization.Temp, binwidth = .12) %>% -->
+<!--   gf_vline(xintercept = .176) %>% -->
+<!--   gf_vline(xintercept = -.176) -->
+<!-- ``` -->
+<!-- ```{r } -->
+<!-- prop( ~ (diffmean > 0.176), data = Randomization.Temp )       # 1-sided -->
+<!-- 2 * prop( ~ (diffmean > 0.176), data = Randomization.Temp )   # 2-sided -->
+<!-- prop( ~ (abs(diffmean) > 0.176), data = Randomization.Temp )  # 2-sided -->
+<!-- ``` -->
+<!-- #### Separate sampling from two groups -->
+<!-- But wait; one of our criteria was that we our randomization should mimic the design of the study. -->
+<!-- In this case, we did not randomly assign the sex of the subjects (for obvious reasons).  Is there -->
+<!-- a randomization method that more accurately reflects what actually happened?  It turns out there is. -->
+<!-- We could  -->
+<!-- <!-- begin itemize -->
+<!--    #.      First pool the 50 subjects' body temperatures.   -->
+<!--        (If men and women aren't different, then -->
+<!--        they really form one population with the same distribution rather than two different  -->
+<!--        distributions, so we can safely combine in this way when the null hypothesis is true.) -->
+<!--    #.      Then randomly draw two samples of size 25 with replacement to create simulated -->
+<!--        groups of women and men. -->
+<!-- <!-- end itemize -->
+<!-- Here's a way to do this in R  -->
+<!-- ```{r } -->
+<!-- Randomization.Temp2 <-  -->
+<!--   do (1000) * diffmean( resample(BodyTemp) ~ shuffle(Sex), data = BodyTemp50 ) -->
+<!-- head(Randomization.Temp2, 3) -->
+<!-- gf_histogram( ~ diffmean, data = Randomization.Temp2, binwidth = .15) %>% -->
+<!--   gf_vline(xintercept = .176) %>% -->
+<!--   gf_vline(xintercept = -.176) -->
+<!-- ``` -->
+<!-- ```{r } -->
+<!-- prop( ~ (diffmean > 0.176), data = Randomization.Temp2 )       # 1-sided -->
+<!-- 2 * prop( ~ (diffmean > 0.176), data = Randomization.Temp2 )   # 2-sided -->
+<!-- prop( ~ (abs(diffmean) > 0.176), data = Randomization.Temp2 )  # 2-sided -->
+<!-- ``` -->
+<!-- #### Sampling from one population with two variables -->
+<!-- If on the other hand our study design was to randomly sample 50 people and record their  -->
+<!-- body temperature and their sex, then another approach could be used: -->
+<!-- ```{r } -->
+<!-- Randomization.Temp3 <-  -->
+<!--   do (1000) * diffmean( BodyTemp ~ shuffle(Sex), data = resample(BodyTemp50)) -->
+<!-- head(Randomization.Temp3, 3) -->
+<!-- gf_histogram( ~ diffmean, data = Randomization.Temp3, binwidth = .12) %>% -->
+<!--   gf_vline(xintercept = .176) %>% -->
+<!--   gf_vline(xintercept = -.176) -->
+<!-- ``` -->
+<!-- ```{r } -->
+<!-- prop( ~ (diffmean > 0.176), data = Randomization.Temp3 )       # 1-sided -->
+<!-- 2 * prop( ~ (diffmean > 0.176), data = Randomization.Temp3 )   # 2-sided -->
+<!-- prop( ~ (abs(diffmean) > 0.176), data = Randomization.Temp3 )  # 2-sided -->
+<!-- ``` -->
+<!-- As we see, the three methods give essentially the same results in this case.  But they correspond to -->
+<!-- three different study designs: -->
+<!-- <!-- begin enumerate -->
+<!--    #.      Randomized assignment of treatments (shuffle the treatment) -->
+<!--    #.      Separate sampling from two populations (resample the response, shuffle the treatment) -->
+<!--        Each randomization sample will have the same number of cases in each group. -->
+<!--    #.      Observational study on two variables (resample entire data set, and shuffle the  -->
+<!--        explanatory variable) -->
+<!--        Different randomization samples will have different numbers of cases in the two groups. -->
+<!-- <!-- end enumerate -->
+<!-- Similar approaches work for testing whether two proportions are equal as well. -->
+<!-- Take a look at the three histograms in this section.  Notice how each is centered at 0.   (They -->
+<!-- also have our hoped for bell shape.) -->
+<!-- ```{r } -->
+<!-- mean( ~ diffmean, data = Randomization.Temp ) -->
+<!-- mean( ~ diffmean, data = Randomization.Temp2 ) -->
+<!-- mean( ~ diffmean, data = Randomization.Temp3 ) -->
+<!-- ``` -->
+<!-- This is because we are computing the difference in means _assuming the difference in means is 0_. -->
+<!-- \fi -->
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+<div class="footnotes">
+<hr />
+<ol start="4">
+<li id="fn4"><p>The book includes data on an additional treatment group which we are omitting here.<a href="hypothesis-tests.html#fnref4" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="confidence-intervals.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["Lock5WithR.pdf"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

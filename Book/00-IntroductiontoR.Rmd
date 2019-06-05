@@ -1,3 +1,5 @@
+# Introduction to R and Statistics {-}
+
 ```{r, echo=FALSE, include=FALSE}
 figure <- 0
 chapter <- 0
@@ -5,13 +7,11 @@ require(mosaic)
 if(!require(fastR)) install.packages("fastR",repos = "http://cran.us.r-project.org")
 require("fastR")
 ```
-# Introduction to R and Statistics
 
 ## Getting Started With RStudio
 
-
 <!-- \iffalse -->
-<!-- \subsection*{Logging in and changing your password} -->
+<!-- ### Logging in and changing your password {-} -->
 <!-- You will be prompted to login.  Your login and password are both your Calvin userid.   -->
 <!-- Once you are logged in, you will see something like  -->
 <!-- Figure~\@ref(fig:Rstudio-welcome). -->
@@ -20,30 +20,30 @@ require("fastR")
 You should change your password. Here's how.
 <!-- begin enumerate -->
 
-#. From the **Tools** menu, select **Shell**
+#. From the <span class="tab">Tools</span> menu, select <span class="tab"Shell</span>
 #. Type `yppasswd`
 #. You will be prompted for your old password, then your new password twice.
 #. If you give a sufficiently strong new password (at least six letters, at least one capital, etc.) you will receive notice that your password has been reset.  If there was a problem, you will see a message about it and can try again.
-#. Once you have reset your password, click on **Close** to close the shell and get back to (ref:RStudio). 
+#. Once you have reset your password, click on <span class="tab">Close</span> to close the shell and get back to RStudio. 
 <!-- end enumerate -->
 
 <!-- \fi -->
 
-### RStudio
+### RStudio {-}
 
-(ref:RStudio)  provides an integrated development environment (IDE) for (ref:R-package)  that makes (ref:R-package)  much easier to use.
+RStudio  provides an integrated development environment (IDE) for R  that makes R  much easier to use.
 It is freely available from [rstudio.com](http://rstudio.com) in versions for Macintosh, PC, or Linux. 
-RStudio server provides access to (ref:RStudio)  via a web browser.  We will generally assume that (ref:RStudio) 
-is being used throughout. Although most things can be done without (ref:RStudio)  as well, our descriptions
-may apply only to (ref:RStudio) .
+RStudio server provides access to RStudio  via a web browser.  We will generally assume that RStudio 
+is being used throughout. Although most things can be done without RStudio  as well, our descriptions
+may apply only to RStudio .
 
 
-### Loading packages
+### Loading packages {-}
 
-(ref:R-package)  is divided up into packages.  A few of these are loaded every time you run (ref:R-package)  but most have to be selected.  
-This way you only have as much of (ref:R-package)  as you need.
+R  is divided up into packages.  A few of these are loaded every time you run R  but most have to be selected.  
+This way you only have as much of R  as you need.
 
-In the **Packages** tab in (ref:RStudio) , 
+In the <span class="tab">Packages</span> tab in RStudio , 
 check the boxes next to the following packages to load them:
 <!-- begin itemize -->
 
@@ -53,22 +53,23 @@ check the boxes next to the following packages to load them:
 <!-- end itemize -->
 
 You can also load these packages with the following commands:
-<<require-packages, message=FALSE>>=
+```{r require-packages, message=FALSE}
 require(Lock5withR)
 require(mosaic)
 require(mosaicData)
-@
+```
+
 We will always assume that these three packages have been loaded.  
 
 !["Welcome to RStudio."](images/RStudio-Welcome.png)
 Figure `r {figure <- figure + 1; figure}`: Welcome to RStudio
 
-### Using R as a calculator
+### Using R as a calculator {-}
 
-Notice that (ref:RStudio)  divides its world into four panels.  Several of the panels are further subdivided into multiple tabs. 
-The console panel is where we type commands that (ref:R-package)  will execute. 
+Notice that RStudio  divides its world into four panels.  Several of the panels are further subdivided into multiple tabs. 
+The console panel is where we type commands that R  will execute. 
 
-(ref:R-package)  can be used as a calculator.  Try typing the following commands in the console panel.
+R  can be used as a calculator.  Try typing the following commands in the console panel.
 ```{r eval=TRUE} 
 
 5 + 3
@@ -98,9 +99,9 @@ The semi-colon can be used to place multiple commands on one line.  One frequent
 
 ## Getting Help in RStudio
 
-### The (ref:RStudio)  help system
+### The RStudio help system {-}
 
-There are several ways to get (ref:RStudio)  to help you when you forget something. Most objects in packages have help files that you can access by typing something like:
+There are several ways to get RStudio  to help you when you forget something. Most objects in packages have help files that you can access by typing something like:
 ```r
 ?bargraph
 ?histogram
@@ -113,11 +114,11 @@ help.search('Grand Rapids')    # Does R know anything about Grand Rapids?
 ```
 This can be useful if you don't know the name of the function or data set you are looking for.
 
-### History
+### History {-}
 If you know you have done something before, but can't remember how, you can search your history.  The history tab shows a list of recently executed commands.  There is also a search bar to help you find things from longer ago.
 
-### Error messages
-When things go wrong, (ref:R-package)  tries to help you out by providing an error message. If you can't make sense of the message, you can try copying and pasting your command and the error message and sending to me in an email.  One common error message is illustrated below.
+### Error messages {-}
+When things go wrong, R  tries to help you out by providing an error message. If you can't make sense of the message, you can try copying and pasting your command and the error message and sending to me in an email.  One common error message is illustrated below.
 <<error-message, purl=FALSE>>=
 fred <- 23
 frd
@@ -126,15 +127,15 @@ The object `frd` is not found because it was mistyped.  It should have been `fre
 
 
 ## Four Things to Know About R
-Computers are great for doing complicated computations quickly, but you have to speak to them on their terms.  Here are few things that will help you communicate with (ref:R-package) 
+Computers are great for doing complicated computations quickly, but you have to speak to them on their terms.  Here are few things that will help you communicate with R 
 <!-- begin enumerate -->
 
-(@) (ref:R-package)  is case-sensitive
+(@) R  is case-sensitive
 
-    If you mis-capitalize something in (ref:R-package)  it won't do what you want.
+    If you mis-capitalize something in R  it won't do what you want.
 
 (@) 
-Functions in (ref:R-package)  use the following syntax:
+Functions in R  use the following syntax:
     ```{r function-syntax, eval=FALSE}
       functionname( argument1, argument2, ... )
     ```
@@ -150,17 +151,17 @@ Functions in (ref:R-package)  use the following syntax:
 
 (@) TAB completion and arrows can improve typing speed and accuracy.
 
-    If you begin a command and hit the TAB key, (ref:R-package)  will show you a list of possible ways to complete the command.  If you hit TAB after the opening parenthesis of a function, it will show you the list of arguments it expects. The up and down arrows can be used to retrieve past commands.
+    If you begin a command and hit the TAB key, R  will show you a list of possible ways to complete the command.  If you hit TAB after the opening parenthesis of a function, it will show you the list of arguments it expects. The up and down arrows can be used to retrieve past commands.
 
 (@) If you get into some sort of mess typing (usually indicated by extra '$+$' 
 	signs along the left edge), you can hit the escape key to get back to
 	a clean prompt.
 <!-- end enumerate -->
 
-## Data in (ref:R-package) 
+## Data in R 
 
-### Data in Packages
-Most often, data sets in (ref:R-package)  are stored in a structure called a **data frame**.  There are a number of data sets built into (ref:R-package)  and many more that come in various add on packages.  The **`Lock5withR`** package, for example, contains all the data sets from our text book. In the book, data set names are printed in bold text.
+### Data in Packages {-}
+Most often, data sets in R  are stored in a structure called a **data frame**.  There are a number of data sets built into R  and many more that come in various add on packages.  The **`Lock5withR`** package, for example, contains all the data sets from our text book. In the book, data set names are printed in bold text.
 
 You can see a list of them using 
 ```r
@@ -172,7 +173,7 @@ You can find a longer list of all data sets available in any loaded package usin
 data()
 ```
 
-### The HELPrct data set
+### The HELPrct data set {-}
 
 The <span style="color:blue">HELPrct</span> data frame from the **`mosaicData`** package contains data from the 
 Health Evaluation and Linkage to Primary Care randomized clinical trial.  
@@ -203,30 +204,30 @@ head(HELPrct)
 
 That's plenty of variables to get us started with exploration of data.
 
-### Using your own data
+### Using your own data {-}
 
-#### From Excel or Google to R
+#### From Excel or Google to R {-}
 
-So far we have been using data that lives in (ref:R-package)  packages.  This has allowed us
+So far we have been using data that lives in R  packages.  This has allowed us
 to focus on things like how to make plots and create numerical summaries
 without worrying too much about the data themselves.  But if you are going to
 do any of your own statistical analyses, then you will need to import your own
-data into (ref:R-package)  and have some tools for manipulating the data once it is there.  
+data into R  and have some tools for manipulating the data once it is there.  
 
 Excel or Google spreadsheets are reasonable tools for entering (small) data
 sets by hand and doing basic data tidying (organizing) and cleaning (correcting
-errors).  This section describes how to get data from a spreadsheet into (ref:R-package) 
+errors).  This section describes how to get data from a spreadsheet into R 
 
-#### While you are still in the spreadsheet
+#### While you are still in the spreadsheet {-}
 
 If you are creating your own data in a spreadsheet with the intent of bringing
-into (ref:R-package)  (or some other statistical package) for analysis, it is important that
+into R  (or some other statistical package) for analysis, it is important that
 you design your spreadsheet appropriately.  For most data sets this will mean 
 <!-- begin enumerate -->
 
 1. The first row should contain variables names.
 
-    These should be names that will work well in (ref:R-package)   This usually means they will be relatively short and avoid spaces and punctuation.
+    These should be names that will work well in R   This usually means they will be relatively short and avoid spaces and punctuation.
 1. Each additional row corresponds to a case/observational unit.
 1. Each column corresponds to a variable.
 1. There is **nothing** else in the spreadsheet.
@@ -234,13 +235,13 @@ you design your spreadsheet appropriately.  For most data sets this will mean
     Do not include notes to yourself, plots, numerical summaries, etc.  These things can be kept in a separate worksheet, another file, your lab notebook, just not in the worksheet you are going to export.
 <!-- end enumerate -->
 
-#### Exporting to csv
+#### Exporting to csv {-}
 
-The comma separated values (csv) format has become a standard way of transferring data between programs. Both Google and Excel can export to this format, and (ref:R-package)  can import from this format.  Once your dataare ready to go, export them to csv.  Give the file a good name, and remember where you have put it.
+The comma separated values (csv) format has become a standard way of transferring data between programs. Both Google and Excel can export to this format, and R  can import from this format.  Once your dataare ready to go, export them to csv.  Give the file a good name, and remember where you have put it.
 
-#### Uploading the data ((ref:RStudio)  server only)
+#### Uploading the data (RStudio  server only) {-}
 
-To get the data from your computer onto the server, you need to **upload** the data.  (You can skip this step if you are working with a local copy of (ref:RStudio) )  Uploading transfers a copy of your data from your computer onto the server (the "cloud").  This is like uploading pictures to Facebook so you can later use them in posts or as a cover photo or tag your friends or whatever else once the photo is on Facebook.
+To get the data from your computer onto the server, you need to **upload** the data.  (You can skip this step if you are working with a local copy of RStudio )  Uploading transfers a copy of your data from your computer onto the server (the "cloud").  This is like uploading pictures to Facebook so you can later use them in posts or as a cover photo or tag your friends or whatever else once the photo is on Facebook.
 
 To upload the data, go to the **Files** tab and click on **Upload**:
 
@@ -250,9 +251,9 @@ To upload the data, go to the **Files** tab and click on **Upload**:
 
 A window will pop up prompting you to browse to the file's location on your computer.  Choose the file and it will upload to the server.  You should see it appear in your file menu.
 
-#### Importing the data into R
+#### Importing the data into R {-}
 
-Now that the file is on the server, you can import it into (ref:R-package)   This takes place in the **Environment** tab.  Once there, choose **Import Dataset** and then **From Text File...**.  
+Now that the file is on the server, you can import it into R   This takes place in the **Environment** tab.  Once there, choose **Import Dataset** and then **From Text File...**.  
 <!-- begin center -->
 ![Caption](images/Import1.png)
 <!-- end center -->
@@ -268,18 +269,18 @@ The instructions are pretty clear from there, but here are some things to watch 
 ![Caption](images/Import2.png)
 <!-- end center -->
 
-The data set should now be ready for use in (ref:R-package) 
+The data set should now be ready for use in R 
 
-#### A shortcut for Google Spreadsheets
+#### A shortcut for Google Spreadsheets {-}
 
 The new **`googlesheets`** package provides a number of utilities
 for reading and writing between R and Google sheets.  At the time 
 of this writing, it is in active development and available via github.
 
 
-#### Using R commands to read a data file
+#### Using R commands to read a data file {-}
 
-Even if you primarily use the (ref:RStudio)  interface to import data, it is good to know about the command line methods since these are required to import data into scripts, RMarkdown, and Rnw files.  CSV files (and a few other types of files as well) can be read with 
+Even if you primarily use the RStudio  interface to import data, it is good to know about the command line methods since these are required to import data into scripts, RMarkdown, and Rnw files.  CSV files (and a few other types of files as well) can be read with 
 ```{r eval=FALSE, purl=FALSE}
 someData <- read.file("file.csv")
 ```
@@ -317,7 +318,7 @@ loaded above.  You can find it at
 http://www.census.gov/popest/data/national/totals/2012/files/NST-EST2012-alldata.pdf
 
 
-#### Missing Data
+#### Missing Data {-}
 
 The <span style="color:brown">na.strings</span> argument can be used to specify codes for missing values.  The following can be useful, for example:
 ```{r tidy=FALSE, eval=FALSE}
@@ -325,12 +326,12 @@ someData <- read.file('file.csv', na.strings = '.')
 someData <- read.file('file.csv', na.strings = '-')
 ```
 
-because SAS uses a period (.) to code missing data, and some csv exporters use ``-`'.  By default (ref:R-package)  reads these as string data, which forces the entire variable to be of character type instead of numeric.
+because SAS uses a period (.) to code missing data, and some csv exporters use ``-`'.  By default R  reads these as string data, which forces the entire variable to be of character type instead of numeric.
 
 
-#### Importing Other Kinds of Data
+#### Importing Other Kinds of Data {-}
 
-Many (ref:R-package)  packages provide the ability to load data from special data files.  If you have data in some other format, there may well be
+Many R  packages provide the ability to load data from special data files.  If you have data in some other format, there may well be
 a package that makes it easy to load your data into R.  For example, several packages (including **`readxl`**) provide the ability to read data
 directly from Excel files without first saving the data as a csv file.  If you make frequent use of Excel spreadsheets, you may find
 this convenient.  **`rdrop2`** provides the ability to manage data with Dropbox.  And the **`foreign`** package provides functions 
@@ -340,7 +341,7 @@ learning a workflow that goes through CSV is a broadly applicable skill.
 
 ## The Most Important Template
 
-Most of what we will do in this chapter makes use of a single (ref:R-package)  template:
+Most of what we will do in this chapter makes use of a single R  template:
 
 \def\phbox#1{\fbox{`________`}}
 \def\ttfbox#1{\fbox{#1}}
@@ -370,10 +371,10 @@ goal( formula , data = mydata )
 To use the template (we'll call it the formula template because there is always
 a formula involved), you just need to know what goes in each slot.  This can be determined by asking yourself two questions:
 
-1. What do you want (ref:R-package)  to do?
+1. What do you want R  to do?
     * this determines what function to use (goal).
     
-1. What must (ref:R-package)  know to do that?
+1. What must R  know to do that?
     * this determines the inputs to the function
     * for describing data, must must identify _which data frame_ and _which variable(s)_.
 
@@ -381,7 +382,7 @@ a formula involved), you just need to know what goes in each slot.  This can be 
 Let's try an example.  Suppose we want to make this plot
 ```{r echo=FALSE}
   
-  xyplot(births ~ date, data = Births78)
+  gf_point(births ~ date, data = Births78)
 ```
 
 
@@ -391,7 +392,7 @@ Let's try an example.  Suppose we want to make this plot
 
     Our goal is to make a scatter plot. The function that does this is called `xyplot()()`.  That takes care of the first slot.
 
-1. What does (ref:R-package)  need to know to do this?
+1. What does R  need to know to do this?
 
     It needs to know what data set to use, and which varialbes to use on the x and y axes.  These data are in the <span style="color:blue">Births78</span> data set in the **`mosaicData`** package.  Let's take a quick look at the data:
 ```{r births-head}
@@ -424,7 +425,7 @@ We'll see more examples of this template as we go along.
 
 ## Manipulating your data
 
-### Creating a subset
+### Creating a subset {-}
 
 The `filter()()` command can be used to create subsets.  The population
 data set we downloaded has population for states and various other regions.  If we
@@ -444,7 +445,7 @@ That two states too many.  We can scan the list to see what else is in there.
 
 The two extras are Washington, DC and Peurto Rico.
 
-### Choosing specific columns
+### Choosing specific columns {-}
 `filter()()` chooses rows from a data frame.  `select()()` selects
 columns.  This can be handy if you have a data set with many more variables than you are interested in.  Let's pick just a handful from the <span style="color:blue">Population</span> data
 set.
@@ -456,7 +457,7 @@ set.
 <!-- ``` -->
 
 
-### Dropping Variables
+### Dropping Variables {-}
 
 Sometimes it is easier to think about dropping variables.
 We can use `select()()` for this as well:
@@ -466,7 +467,7 @@ head(iris2, 3)
 ```
 
 
-### Creating new variables
+### Creating new variables {-}
 
 We can add a new variable to data set using `mutate()()`:
 <!-- Relies on data from a broken link -->
@@ -482,24 +483,24 @@ We can add a new variable to data set using `mutate()()`:
 <!--                            main = "<!--  Population increase (2010 to 2012)") --> -->
 <!-- ``` -->
 
-Generally, it is a good idea to keep raw data (like <span style="color:green">Sepal.Length</span> and <span style="color:green">Sepal.Width</span> in your data file, but let (ref:R-package)  do the computation of derived variables for you.  Among other advantages, if you ever fix an error in a <span style="color:green">Sepal.Length</span> measurement, you don't have to worry about remembering to also recompute the ratio.  Futhermore, your (ref:R-package)  code documents how the derived value was computed.
+Generally, it is a good idea to keep raw data (like <span style="color:green">Sepal.Length</span> and <span style="color:green">Sepal.Width</span> in your data file, but let R  do the computation of derived variables for you.  Among other advantages, if you ever fix an error in a <span style="color:green">Sepal.Length</span> measurement, you don't have to worry about remembering to also recompute the ratio.  Futhermore, your R  code documents how the derived value was computed.
 
-### Saving Data
+### Saving Data {-}
 
-`write.csv()()` can be used to save data from (ref:R-package)  into csv formatted files. This can be useful for exporting to some other program.
+`write.csv()()` can be used to save data from R  into csv formatted files. This can be useful for exporting to some other program.
 <!-- Relies on data from a broken link -->
 <!-- ```{r writingData} -->
 <!-- write.csv(iris3, "iris3.csv") -->
 <!-- ``` -->
 
 
-Data can also be saved in native (ref:R-package)  format.  Saving data sets (and other (ref:R-package)  objects) using `save()()` has some advantages over other file formats:
+Data can also be saved in native R  format.  Saving data sets (and other R  objects) using `save()()` has some advantages over other file formats:
 <!-- begin itemize -->
 #. Complete information about the objects is saved, including attributes.
 #. Data saved this way takes less space and loads much more quickly.
 #. Multiple objects can be saved to and loaded from a single file.
 <!-- end itemize -->
-The downside is that these files are only readable in (ref:R-package) 
+The downside is that these files are only readable in R 
 <!-- Relies on data from a broken link -->
 <!-- ```{r savingData, exec=FALSE, echo=TRUE} -->
 <!-- save(iris3, file = "iris3.rda")   # the traditional file extension is rda for R native data. -->
@@ -510,7 +511,7 @@ The downside is that these files are only readable in (ref:R-package)
 For more on importing and exporting data, especially from other formats, see the *R Data Import/Export* manual available on [CRAN](http://cran.r-project.org/manuals.html).
 
 
-### Merging datasets
+### Merging datasets {-}
 
 The <span style="color:blue">fusion1</span> data frame in the **`fastR`** package contains genotype information for a SNP (single nucleotide polymorphism) in the gene _TCF7L2_.  The <span style="color:blue">pheno</span> data frame contains phenotypes (including type 2 diabetes case/control status) for an intersecting set of individuals. We can merge these together to explore the association between genotypes and phenotypes using merge().
 
@@ -537,8 +538,8 @@ tally(~t2d + genotype, fusion1m)
 
 ## Using R Markdown
 
-Although you can export plots from (ref:RStudio)  for use in other applications, there is another way of preparing documents that has many advantages.  
-(ref:RStudio)  provides several ways to create documents that include text, (ref:R-package)  code, (ref:R-package)  output, graphics, even mathematical notation all in one document.  The simplest of these is R Markdown.  
+Although you can export plots from RStudio  for use in other applications, there is another way of preparing documents that has many advantages.  
+RStudio  provides several ways to create documents that include text, R  code, R  output, graphics, even mathematical notation all in one document.  The simplest of these is R Markdown.  
 
 To create a new R Markdown document, go to "File", "New", then "R Markdown":
 <!-- begin center -->
@@ -554,20 +555,20 @@ If you look at the template file you will see that the file has two kinds of sec
   ![Caption](images/MardownQuickReference.png)
 <!-- end center -->
 
-The second type of section is an (ref:R-package)  code chunk.  These are colored differently to make them easier to see.  You can insert a new code chunk by selecting "Insert Chunk" from the "Chunks" 
+The second type of section is an R  code chunk.  These are colored differently to make them easier to see.  You can insert a new code chunk by selecting "Insert Chunk" from the "Chunks" 
 menu:
 <!-- begin center -->
 
   ![Caption](images/InsertChunk.png)
 <!-- end center -->
-(You can also type ```{r}! to begin and ```! to end the code chunk if you would rather type.) You can put any (ref:R-package)  code in these code chunks and the results (text output or graphics) as well as the (ref:R-package)  code will be displayed in your HTML file.
+(You can also type ```{r}! to begin and ```! to end the code chunk if you would rather type.) You can put any R  code in these code chunks and the results (text output or graphics) as well as the R  code will be displayed in your HTML file.
 
-There are options to do things like (a) run (ref:R-package)  code without displaying it, (b) run (ref:R-package)  code without
+There are options to do things like (a) run R  code without displaying it, (b) run R  code without
 displaying the output, (c) controling size of plots, etc., etc.  
 But for starting out, this is really all you need to know.
 
 
-### R Markdown files must be self-contained
+### R Markdown files must be self-contained {-}
 
 R Markdown files do not have access to things you have done in your console.  (This is good, else your document would change based on things not in the file.)  This means that you must explicitly load data, and require packages _in the R Markdown file_ in order to use them.  In this class, this means that most of your R Markdown files will have a chunk near the beginning that includes
 
@@ -577,18 +578,18 @@ require(Lock5withR)    # get data sets from the book
 ```
 
 
-The **`mosaic`** package provides some templates that are available if you choose "from template" when creating an RMarkdown file in (ref:RStudio) .
+The **`mosaic`** package provides some templates that are available if you choose "from template" when creating an RMarkdown file in RStudio .
 Among other things, this will insert the code required to load the **`mosaic`** package, change some default settings, and include a reminder to 
 load any additional packages you will be using.
 
-### Output formats
+### Output formats {-}
 
-(ref:RStudio)  makes it easy to generate HTML, PDF, or Word documents from your RMarkdown.  Just remember that if you edit any of these files after you generate them 
+RStudio  makes it easy to generate HTML, PDF, or Word documents from your RMarkdown.  Just remember that if you edit any of these files after you generate them 
 with RMarkdown, then you will need to redo those edits if you ever go back and change the RMarkdown file, but if you change the RMarkdown file, one click will 
 generate the new HTML, PDF, or Word document.  (There are even ways to get it to generate all three in one go; 
 see the `render()()` function in the **`rmarkdown`** package.)  So it is best to keep you editing to the RMarkdown document as much as possible.
 
-<!-- ### {Printing your document} -->
+<!-- ### Printing your document {-} -->
 <!--  -->
 <!-- The preview window has an icon that looks like an arrow pointing at a window. -->
 <!-- If you click on that the document will open in a regular browser window.  From -->
@@ -639,12 +640,12 @@ This definition gets at two important elements of the longer definitions above:
 <!-- ### {Four Key Components} -->
 
 
-### Data -- the raw material
+### Data -- the raw material {-}
 
 data <!-- This term should be indexed -->
 Data are the raw material for doing statistics.  We will learn more about different types of data, how to collect data, and how to summarize data as we go along.  
 
-### Information -- the goal
+### Information -- the goal {-}
 
 The goal of doing statistics is to gain some information or to make a decision -- that is, to answer some question.
 
@@ -663,7 +664,7 @@ In this sense, statistics is a science -- a method for obtaining new knowledge.<
 Our simple definition is light on describing the context in which this takes place.
 So let's add two more important aspects of statistics.
 
-### Uncertainty -- the context
+### Uncertainty -- the context {-}
 
 randomness <!-- This term should be indexed -->
 The tricky thing about statistics is the uncertainty involved. If we measure one box of cereal, how do we know that all the others are similarly filled?  If every box of cereal were identical and every measurement perfectly exact, then one measurement would suffice.  But the boxes may differ from one another, and even if we measure the same box multiple times, we may get different answers to the question 
@@ -678,7 +679,7 @@ that will give us absolute certainty.
 So we need to answer questions like 
 _How sure do we need to be?_
 
-### Probability -- the tool
+### Probability -- the tool {-}
 
 In order to answer a question like _How sure do we need to be?_, we need some way of measuring our level of certainty.  This is where mathematics enters into statistics.  Probability is the area of mathematics that deals with reasoning about uncertainty.  
 
@@ -736,12 +737,12 @@ What steps are involved?
     	$50$ cups?
 
     What if she makes a mistake?  If we present her with $10$ cups and she
-    correctly identifies $9$ of the $10$, what will we conclude?  <!-- \authNote{added A success rate of -- 2010-10-23}% -->
+    correctly identifies $9$ of the $10$, what will we conclude?  <!-- authNote --- added A success rate of -- 2010-10-23 -->
     A success rate of $90$\% is, it seems,
     much better than just guessing, and anyone can make a mistake now and then.
     But what if she correctly identifies $8$ out of $10$? $80$ out of $100$?
 	
-    And how should we prepare the cups?  Should we make $5$ each way? <!-- \authNote{Left it as "and how" -- 2010-10-23}% --> 
+    And how should we prepare the cups?  Should we make $5$ each way? <!-- authNote --- Left it as "and how" -- 2010-10-23 --> 
     Does it matter if we tell the woman that there are $5$ prepared 
     each way?
     Should we flip a coin to decide even if that means we might end 
@@ -830,7 +831,7 @@ Now let's suppose the lady gets 9 out of 10 correct.  That's not perfect, but it
 
 But how do we figure out how unusual it is to get 9 out of 10 just by guessing?  We'll learn another method later, but for now, let's just flip a bunch of coins and keep track.  If the lady is just guessing, she might as well be flipping a coin.
 
-So here's the plan.  We'll flip 10 coins.  We'll call the heads correct guesses and the tails incorrect guesses.  Then we'll flip 10 more coins, and 10 more, and 10 more, and ...  That would get pretty tedious. Fortunately, computers are good at tedious things, so we'll let the computer do the flipping for us using a tool in the **`mosaic`** package. This package is already installed in our (ref:RStudio)  server.  If you are running your own installation of (ref:R-package)  you can install **`mosaic`** using the following command:
+So here's the plan.  We'll flip 10 coins.  We'll call the heads correct guesses and the tails incorrect guesses.  Then we'll flip 10 more coins, and 10 more, and 10 more, and ...  That would get pretty tedious. Fortunately, computers are good at tedious things, so we'll let the computer do the flipping for us using a tool in the **`mosaic`** package. This package is already installed in our RStudio  server.  If you are running your own installation of R  you can install **`mosaic`** using the following command:
 ```{r install-mosaic, eval=FALSE}
 install.packages("mosaic")
 ```
@@ -850,7 +851,7 @@ rflip(10)
 
 and show us the results.
 
-Typing `rflip(10)` a bunch of times is almost as tedious as flipping all those coins.   But it is not too hard to tell (ref:R-package)  to `do()()` this a bunch of times.
+Typing `rflip(10)` a bunch of times is almost as tedious as flipping all those coins.   But it is not too hard to tell R  to `do()()` this a bunch of times.
 ```{r flip2, cache=TRUE}
 do(2) * rflip(10)
 ```
@@ -863,7 +864,7 @@ do(2) * rflip(10)
 <!-- @ -->
 
 
-Let's get (ref:R-package)  to `do()()` it for us 10,000 times and make a table of the results.
+Let's get R  to `do()()` it for us 10,000 times and make a table of the results.
 ```{r seed123, echo=FALSE}
 set.seed(123)
 ```

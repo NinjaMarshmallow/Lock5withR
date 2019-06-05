@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>1 Collecting Data | Lock5 With R</title>
+  <meta name="description" content="Code, exercises and discussion to accompany a course taught from ‘Statistics: Unlocking the Power of Data’" />
+  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="1 Collecting Data | Lock5 With R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Code, exercises and discussion to accompany a course taught from ‘Statistics: Unlocking the Power of Data’" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="1 Collecting Data | Lock5 With R" />
+  
+  <meta name="twitter:description" content="Code, exercises and discussion to accompany a course taught from ‘Statistics: Unlocking the Power of Data’" />
+  
+
+<meta name="author" content="R Pruim" />
+
+
+<meta name="date" content="2019-06-05" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introduction-to-r-and-statistics.html">
+<link rel="next" href="describing-data.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Lock5 With R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Lock 5 With R</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html"><i class="fa fa-check"></i>Introduction to R and Statistics</a><ul>
+<li class="chapter" data-level="0.1" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#getting-started-with-rstudio"><i class="fa fa-check"></i><b>0.1</b> Getting Started With RStudio</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#rstudio"><i class="fa fa-check"></i>RStudio</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#loading-packages"><i class="fa fa-check"></i>Loading packages</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#using-r-as-a-calculator"><i class="fa fa-check"></i>Using R as a calculator</a></li>
+</ul></li>
+<li class="chapter" data-level="0.2" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#getting-help-in-rstudio"><i class="fa fa-check"></i><b>0.2</b> Getting Help in RStudio</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#the-rstudio-help-system"><i class="fa fa-check"></i>The RStudio help system</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#history"><i class="fa fa-check"></i>History</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#error-messages"><i class="fa fa-check"></i>Error messages</a></li>
+</ul></li>
+<li class="chapter" data-level="0.3" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#four-things-to-know-about-r"><i class="fa fa-check"></i><b>0.3</b> Four Things to Know About R</a></li>
+<li class="chapter" data-level="0.4" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#data-in-r"><i class="fa fa-check"></i><b>0.4</b> Data in R</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#data-in-packages"><i class="fa fa-check"></i>Data in Packages</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#the-helprct-data-set"><i class="fa fa-check"></i>The HELPrct data set</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#using-your-own-data"><i class="fa fa-check"></i>Using your own data</a></li>
+</ul></li>
+<li class="chapter" data-level="0.5" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#the-most-important-template"><i class="fa fa-check"></i><b>0.5</b> The Most Important Template</a></li>
+<li class="chapter" data-level="0.6" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#manipulating-your-data"><i class="fa fa-check"></i><b>0.6</b> Manipulating your data</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#creating-a-subset"><i class="fa fa-check"></i>Creating a subset</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#choosing-specific-columns"><i class="fa fa-check"></i>Choosing specific columns</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#dropping-variables"><i class="fa fa-check"></i>Dropping Variables</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#creating-new-variables"><i class="fa fa-check"></i>Creating new variables</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#saving-data"><i class="fa fa-check"></i>Saving Data</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#merging-datasets"><i class="fa fa-check"></i>Merging datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="0.7" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#using-r-markdown"><i class="fa fa-check"></i><b>0.7</b> Using R Markdown</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#r-markdown-files-must-be-self-contained"><i class="fa fa-check"></i>R Markdown files must be self-contained</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#output-formats"><i class="fa fa-check"></i>Output formats</a></li>
+</ul></li>
+<li class="chapter" data-level="0.8" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#statistics-answering-questions-with-data"><i class="fa fa-check"></i><b>0.8</b> Statistics: Answering Questions With Data</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#data-the-raw-material"><i class="fa fa-check"></i>Data – the raw material</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#information-the-goal"><i class="fa fa-check"></i>Information – the goal</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#uncertainty-the-context"><i class="fa fa-check"></i>Uncertainty – the context</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#probability-the-tool"><i class="fa fa-check"></i>Probability – the tool</a></li>
+</ul></li>
+<li class="chapter" data-level="0.9" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#a-first-example-the-lady-tasting-tea"><i class="fa fa-check"></i><b>0.9</b> A First Example: The Lady Tasting Tea</a></li>
+<li class="chapter" data-level="0.10" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#coins-and-cups"><i class="fa fa-check"></i><b>0.10</b> Coins and Cups</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="collecting-data.html"><a href="collecting-data.html"><i class="fa fa-check"></i><b>1</b> Collecting Data</a><ul>
+<li class="chapter" data-level="1.1" data-path="collecting-data.html"><a href="collecting-data.html#the-structure-of-data"><i class="fa fa-check"></i><b>1.1</b> The Structure of Data</a><ul>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#cases-and-variables"><i class="fa fa-check"></i>Cases and Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#categorical-and-quantitative-variables"><i class="fa fa-check"></i>Categorical and Quantitative Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#investigating-variables-and-relationships-between-variables"><i class="fa fa-check"></i>Investigating Variables and Relationships between Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#using-data-to-answer-a-question"><i class="fa fa-check"></i>Using Data to Answer a Question</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="collecting-data.html"><a href="collecting-data.html#sampling-from-a-population"><i class="fa fa-check"></i><b>1.2</b> Sampling from a Population</a><ul>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#samples-from-populations"><i class="fa fa-check"></i>Samples from Populations</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#sampling-bias"><i class="fa fa-check"></i>Sampling Bias</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#simple-random-sample"><i class="fa fa-check"></i>Simple Random Sample</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="collecting-data.html"><a href="collecting-data.html#experiments-and-observational-studies"><i class="fa fa-check"></i><b>1.3</b> Experiments and Observational Studies</a><ul>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#confounding-variables"><i class="fa fa-check"></i>Confounding Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#observational-studies-vs.-experiments"><i class="fa fa-check"></i>Observational Studies vs. Experiments</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="describing-data.html"><a href="describing-data.html"><i class="fa fa-check"></i><b>2</b> Describing Data</a><ul>
+<li class="chapter" data-level="2.1" data-path="describing-data.html"><a href="describing-data.html#categorical-variables"><i class="fa fa-check"></i><b>2.1</b> Categorical Variables</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#one-categorical-variable"><i class="fa fa-check"></i>One Categorical Variable</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#two-categorical-variables-two-way-tables"><i class="fa fa-check"></i>Two Categorical Variables: Two-Way Tables</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="describing-data.html"><a href="describing-data.html#one-quantitative-variable-shape-and-center"><i class="fa fa-check"></i><b>2.2</b> One Quantitative Variable: Shape and Center</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#the-shape-of-a-distribution"><i class="fa fa-check"></i>The Shape of a Distribution</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#the-center-of-a-distribution"><i class="fa fa-check"></i>The Center of a Distribution</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#resistance"><i class="fa fa-check"></i>Resistance</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="describing-data.html"><a href="describing-data.html#one-quantitative-variable-measures-of-spread"><i class="fa fa-check"></i><b>2.3</b> One Quantitative Variable: Measures of Spread</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#standard-deviation"><i class="fa fa-check"></i>Standard Deviation</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#percentiles"><i class="fa fa-check"></i>Percentiles</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#five-number-summary"><i class="fa fa-check"></i>Five Number Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="describing-data.html"><a href="describing-data.html#outliers-boxplots-and-quantitativecategorical-relationships"><i class="fa fa-check"></i><b>2.4</b> Outliers, Boxplots, and Quantitative/Categorical Relationships</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#detection-of-outliers"><i class="fa fa-check"></i>Detection of Outliers</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#boxplots"><i class="fa fa-check"></i>Boxplots</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#one-quantitative-and-one-categorical-variable"><i class="fa fa-check"></i>One Quantitative and One Categorical Variable</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="describing-data.html"><a href="describing-data.html#two-quantitative-variables-scatterplot-and-correlation"><i class="fa fa-check"></i><b>2.5</b> Two Quantitative Variables: Scatterplot and Correlation</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#visualizing-a-relationship-between-two-quantitative-variables-scatterplots"><i class="fa fa-check"></i>Visualizing a Relationship between Two Quantitative Variables: Scatterplots</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#summarizing-a-relationship-between-two-quantitative-variables-correlation"><i class="fa fa-check"></i>Summarizing a Relationship between Two Quantitative Variables: Correlation</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="describing-data.html"><a href="describing-data.html#two-quantitative-variables-linear-regression"><i class="fa fa-check"></i><b>2.6</b> Two Quantitative Variables: Linear Regression</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>3</b> Confidence Intervals</a><ul>
+<li class="chapter" data-level="3.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#sampling-distributions"><i class="fa fa-check"></i><b>3.1</b> Sampling Distributions</a><ul>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#variability-of-sample-statistics"><i class="fa fa-check"></i>Variability of Sample Statistics</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#measuring-sampling-variability-the-standard-error"><i class="fa fa-check"></i>Measuring Sampling Variability: The Standard Error</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#the-importance-of-sample-size"><i class="fa fa-check"></i>The Importance of Sample Size</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#understanding-and-interpreting-confidence-intervals"><i class="fa fa-check"></i><b>3.2</b> Understanding and Interpreting Confidence Intervals</a><ul>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#interval-estimates-and-margin-of-error"><i class="fa fa-check"></i>Interval Estimates and Margin of Error</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#confidence-intervals-1"><i class="fa fa-check"></i>Confidence Intervals</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#understanding-confidence-intervals"><i class="fa fa-check"></i>Understanding Confidence Intervals</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#interpreting-confidence-intervals"><i class="fa fa-check"></i>Interpreting Confidence Intervals</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#constructing-bootstrap-confidence-intervals"><i class="fa fa-check"></i><b>3.3</b> Constructing Bootstrap Confidence Intervals</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-samples"><i class="fa fa-check"></i><b>3.3.1</b> Bootstrap Samples</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-distribution"><i class="fa fa-check"></i>Bootstrap Distribution</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#estimating-standard-error-based-on-a-bootstrap-distribution"><i class="fa fa-check"></i>Estimating Standard Error Based on a Bootstrap Distribution</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#confidence-interval-based-on-a-bootstrap-standard-error"><i class="fa fa-check"></i>95% Confidence Interval Based on a Bootstrap Standard Error</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-confidence-intervals-using-percentiles"><i class="fa fa-check"></i><b>3.4</b> Bootstrap Confidence Intervals Using Percentiles</a><ul>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#confidence-intervals-based-on-bootstrap-percentiles"><i class="fa fa-check"></i>Confidence Intervals Based on Bootstrap Percentiles</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#finding-confidence-intervals-for-many-different-parameters"><i class="fa fa-check"></i>Finding Confidence Intervals for Many Different Parameters</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#another-look-at-the-effect-of-sample-size"><i class="fa fa-check"></i>Another Look at the Effect of Sample Size</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#one-caution-on-constructing-bootstrap-confidence-intervals"><i class="fa fa-check"></i>One Caution on Constructing Bootstrap Confidence Intervals</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html"><i class="fa fa-check"></i><b>4</b> Hypothesis Tests</a><ul>
+<li class="chapter" data-level="4.1" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#introducing-hypothesis-tests"><i class="fa fa-check"></i><b>4.1</b> Introducing Hypothesis Tests</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#the-4-step-outline"><i class="fa fa-check"></i>The 4-step outline</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#null-and-alternative-hypotheses"><i class="fa fa-check"></i>Null and Alternative Hypotheses</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#measuring-evidence-with-p-values"><i class="fa fa-check"></i><b>4.2</b> Measuring Evidence with P-values</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#p-values-from-randomization-distributions"><i class="fa fa-check"></i>P-values from Randomization Distributions</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#p-values-and-the-alternative-hypothesis"><i class="fa fa-check"></i>P-values and the Alternative Hypothesis</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#determining-statisical-significance"><i class="fa fa-check"></i><b>4.3</b> Determining Statisical Significance</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#less-formal-statistical-decisions"><i class="fa fa-check"></i>Less Formal Statistical Decisions</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#creating-randomization-distributions"><i class="fa fa-check"></i><b>4.4</b> Creating Randomization Distributions</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-test-for-a-difference-in-proportions-cocaine-addiction"><i class="fa fa-check"></i>Randomization Test for a Difference in Proportions: Cocaine Addiction</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-test-for-a-correlation-malevolent-uniforms-and-penalties"><i class="fa fa-check"></i>Randomization Test for a Correlation: Malevolent Uniforms and Penalties</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-test-for-a-mean-body-temperature"><i class="fa fa-check"></i>Randomization Test for a Mean: Body Temperature</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#confidence-intervals-and-hypothesis-tests"><i class="fa fa-check"></i><b>4.5</b> Confidence Intervals and Hypothesis Tests</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-and-bootstrap-distributions"><i class="fa fa-check"></i>Randomization and Bootstrap Distributions</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Lock5 With R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="collecting-data" class="section level1">
+<h1><span class="header-section-number">1</span> Collecting Data</h1>
+<!-- r set_parent('Lock5withR.Rnw') -->
+<!-- In this chapter we discuss graphical and numerical summaries of data.  These notes focus primarily on how to get (ref:R-package)  to do the work for you.  The text book includes more information about why and when to use various kinds of summaries. -->
+<div id="the-structure-of-data" class="section level2">
+<h2><span class="header-section-number">1.1</span> The Structure of Data</h2>
+<div id="cases-and-variables" class="section level3 unnumbered">
+<h3>Cases and Variables</h3>
+<p>Data sets in R are usually stored as <strong>data frames</strong> in a rectangular arrangement with rows corresponding to observational units and columns corresponding to variables. A number of data sets are built into (ref:R-package) and its packages. The package for our text is <strong><code>Lock5withR</code></strong> which comes with a number of data sets. <!-- 1.4 p.13 --></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(Lock5withR)  <span class="co"># Tell R to use the package for our text book</span>
+<span class="kw">require</span>(mosaic) <span class="co"># Tell R to use the package for creating plots</span>
+<span class="kw">data</span>(StudentSurvey) <span class="co"># load the StudentSurvey data set</span></code></pre>
+<hr />
+<p>Imagine data as a 2-dimensional structure (like a spreadsheet).</p>
+<ol>
+<li>Rows correspond to <strong>observational units</strong> (people, animals, plants, or other objects we are collecting data about).</li>
+<li>Columns correspond to <strong>variables</strong> (measurements collected on each observational unit).</li>
+<li>At the intersection of a row and a column is the <strong>value</strong> of the variable for a particular observational unit.</li>
+</ol>
+<hr />
+<!-- end boxedText -->
+<p>Observational units go by many names, depending on the kind of thing being studied. Popular names include subjects, individuals, and cases. Whatever you call them, it is important that you always understand what your observational units are.</p>
+<p>Let’s take a look at the data frame for the Student Survey example in the text. If we type the name of the data set, (ref:R-package) will display it in its entirety for us. However, <span style="color:blue">StudentSurvey</span> is a larger data set, so it is more useful to look at some sort of summary or subset of the data. <!-- 1.4 p14 --></p>
+<div id="table-1.1" class="section level4 unnumbered">
+<h4>Table 1.1</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(StudentSurvey) <span class="co"># first six cases of the data set</span></code></pre>
+<pre><code>##        Year Gender Smoke   Award HigherSAT Exercise TV Height Weight
+## 1    Senior      M    No Olympic      Math       10  1     71    180
+## 2 Sophomore      F   Yes Academy      Math        4  7     66    120
+## 3 FirstYear      M    No   Nobel      Math       14  5     72    208
+## 4    Junior      M    No   Nobel      Math        3  1     63    110
+## 5 Sophomore      F    No   Nobel    Verbal        3  3     65    150
+## 6 Sophomore      F    No   Nobel    Verbal        5  4     65    114
+##   Siblings BirthOrder VerbalSAT MathSAT  SAT  GPA Pulse Piercings    Sex
+## 1        4          4       540     670 1210 3.13    54         0   Male
+## 2        2          2       520     630 1150 2.50    66         3 Female
+## 3        2          1       550     560 1110 2.55   130         0   Male
+## 4        1          1       490     630 1120 3.10    78         0   Male
+## 5        1          1       720     450 1170 2.70    40         6 Female
+## 6        2          2       600     550 1150 3.20    80         4 Female</code></pre>
+<p>We can easily classify variables as either <strong>categorical</strong> or <strong>quantitative</strong> by studying the result of <code>head()()</code>, but there are some summaries of the data set which reveal such information.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(StudentSurvey)     <span class="co"># structure of the data set</span></code></pre>
+<pre><code>## &#39;data.frame&#39;:    362 obs. of  18 variables:
+##  $ Year      : Factor w/ 5 levels &quot;&quot;,&quot;FirstYear&quot;,..: 4 5 2 3 5 5 2 5 3 2 ...
+##  $ Gender    : Factor w/ 2 levels &quot;F&quot;,&quot;M&quot;: 2 1 2 2 1 1 1 2 1 1 ...
+##  $ Smoke     : Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 1 2 1 1 1 1 1 1 1 1 ...
+##  $ Award     : Factor w/ 3 levels &quot;Academy&quot;,&quot;Nobel&quot;,..: 3 1 2 2 2 2 3 3 2 2 ...
+##  $ HigherSAT : Factor w/ 3 levels &quot;&quot;,&quot;Math&quot;,&quot;Verbal&quot;: 2 2 2 2 3 3 2 2 3 2 ...
+##  $ Exercise  : num  10 4 14 3 3 5 10 13 3 12 ...
+##  $ TV        : int  1 7 5 1 3 4 10 8 6 1 ...
+##  $ Height    : int  71 66 72 63 65 65 66 74 61 60 ...
+##  $ Weight    : int  180 120 208 110 150 114 128 235 NA 115 ...
+##  $ Siblings  : int  4 2 2 1 1 2 1 1 2 7 ...
+##  $ BirthOrder: int  4 2 1 1 1 2 1 1 2 8 ...
+##  $ VerbalSAT : int  540 520 550 490 720 600 640 660 550 670 ...
+##  $ MathSAT   : int  670 630 560 630 450 550 680 710 550 700 ...
+##  $ SAT       : int  1210 1150 1110 1120 1170 1150 1320 1370 1100 1370 ...
+##  $ GPA       : num  3.13 2.5 2.55 3.1 2.7 3.2 2.77 3.3 2.8 3.7 ...
+##  $ Pulse     : int  54 66 130 78 40 80 94 77 60 94 ...
+##  $ Piercings : int  0 3 0 0 6 4 8 0 7 2 ...
+##  $ Sex       : Factor w/ 2 levels &quot;Female&quot;,&quot;Male&quot;: 2 1 2 2 1 1 1 2 1 1 ...</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(StudentSurvey) <span class="co"># summary of each variable</span></code></pre>
+<pre><code>##         Year     Gender  Smoke         Award      HigherSAT  
+##           :  2   F:169   No :319   Academy: 31         :  7  
+##  FirstYear: 94   M:193   Yes: 43   Nobel  :149   Math  :205  
+##  Junior   : 35                     Olympic:182   Verbal:150  
+##  Senior   : 36                                               
+##  Sophomore:195                                               
+##                                                              
+##                                                              
+##     Exercise            TV             Height          Weight     
+##  Min.   : 0.000   Min.   : 0.000   Min.   :59.00   Min.   : 95.0  
+##  1st Qu.: 5.000   1st Qu.: 3.000   1st Qu.:65.00   1st Qu.:138.0  
+##  Median : 8.000   Median : 5.000   Median :68.00   Median :155.0  
+##  Mean   : 9.054   Mean   : 6.504   Mean   :68.42   Mean   :159.8  
+##  3rd Qu.:12.000   3rd Qu.: 9.000   3rd Qu.:71.00   3rd Qu.:180.0  
+##  Max.   :40.000   Max.   :40.000   Max.   :83.00   Max.   :275.0  
+##  NA&#39;s   :1        NA&#39;s   :1        NA&#39;s   :7       NA&#39;s   :5      
+##     Siblings       BirthOrder     VerbalSAT        MathSAT     
+##  Min.   :0.000   Min.   :1.00   Min.   :390.0   Min.   :400.0  
+##  1st Qu.:1.000   1st Qu.:1.00   1st Qu.:550.0   1st Qu.:560.0  
+##  Median :1.000   Median :2.00   Median :600.0   Median :610.0  
+##  Mean   :1.727   Mean   :1.83   Mean   :594.2   Mean   :609.4  
+##  3rd Qu.:2.000   3rd Qu.:2.00   3rd Qu.:640.0   3rd Qu.:650.0  
+##  Max.   :8.000   Max.   :8.00   Max.   :800.0   Max.   :800.0  
+##                  NA&#39;s   :3                                     
+##       SAT            GPA            Pulse          Piercings     
+##  Min.   : 800   Min.   :2.000   Min.   : 35.00   Min.   : 0.000  
+##  1st Qu.:1130   1st Qu.:2.900   1st Qu.: 62.00   1st Qu.: 0.000  
+##  Median :1200   Median :3.200   Median : 70.00   Median : 0.000  
+##  Mean   :1204   Mean   :3.158   Mean   : 69.57   Mean   : 1.673  
+##  3rd Qu.:1270   3rd Qu.:3.400   3rd Qu.: 77.75   3rd Qu.: 3.000  
+##  Max.   :1550   Max.   :4.000   Max.   :130.00   Max.   :10.000  
+##                 NA&#39;s   :17                       NA&#39;s   :1       
+##      Sex     
+##  Female:169  
+##  Male  :193  
+##              
+##              
+##              
+##              
+## </code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">inspect</span>(StudentSurvey) <span class="co"># summary of each variable</span></code></pre>
+<pre><code>## 
+## categorical variables:  
+##        name  class levels   n missing
+## 1      Year factor      5 362       0
+## 2    Gender factor      2 362       0
+## 3     Smoke factor      2 362       0
+## 4     Award factor      3 362       0
+## 5 HigherSAT factor      3 362       0
+## 6       Sex factor      2 362       0
+##                                    distribution
+## 1 Sophomore (53.9%), FirstYear (26%) ...       
+## 2 M (53.3%), F (46.7%)                         
+## 3 No (88.1%), Yes (11.9%)                      
+## 4 Olympic (50.3%), Nobel (41.2%) ...           
+## 5 Math (56.6%), Verbal (41.4%),  (1.9%)        
+## 6 Male (53.3%), Female (46.7%)                 
+## 
+## quantitative variables:  
+##          name   class min     Q1 median      Q3  max        mean
+## 1    Exercise numeric   0    5.0    8.0   12.00   40    9.054017
+## 2          TV integer   0    3.0    5.0    9.00   40    6.504155
+## 3      Height integer  59   65.0   68.0   71.00   83   68.422535
+## 4      Weight integer  95  138.0  155.0  180.00  275  159.798319
+## 5    Siblings integer   0    1.0    1.0    2.00    8    1.726519
+## 6  BirthOrder integer   1    1.0    2.0    2.00    8    1.830084
+## 7   VerbalSAT integer 390  550.0  600.0  640.00  800  594.190608
+## 8     MathSAT integer 400  560.0  610.0  650.00  800  609.436464
+## 9         SAT integer 800 1130.0 1200.0 1270.00 1550 1203.627072
+## 10        GPA numeric   2    2.9    3.2    3.40    4    3.157942
+## 11      Pulse integer  35   62.0   70.0   77.75  130   69.574586
+## 12  Piercings integer   0    0.0    0.0    3.00   10    1.673130
+##             sd   n missing
+## 1    5.7407405 361       1
+## 2    5.5837671 361       1
+## 3    4.0785437 355       7
+## 4   31.6194667 357       5
+## 5    1.1791417 362       0
+## 6    1.1244305 359       3
+## 7   74.1763984 362       0
+## 8   68.4900672 362       0
+## 9  121.2852074 362       0
+## 10   0.3983207 345      17
+## 11  12.2051356 362       0
+## 12   2.1727027 361       1</code></pre>
+<p>Here are some more summaries:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nrow</span>(StudentSurvey) <span class="co"># number of rows</span></code></pre>
+<pre><code>## [1] 362</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ncol</span>(StudentSurvey) <span class="co"># number of columns</span></code></pre>
+<pre><code>## [1] 18</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(StudentSurvey)  <span class="co"># number of rows and columns</span></code></pre>
+<pre><code>## [1] 362  18</code></pre>
+<p>Many of the datasets in R have useful help files that describe the data and explain how they were collected or give references to the original studies. You can access this information for the <span style="color:blue">StudentSurvey</span> data set by typing</p>
+<pre class="sourceCode r"><code class="sourceCode r">?StudentSurvey</code></pre>
+<p>We’ll learn how to make more customized summaries (numerical and graphical) soon. For now, it is only important to observe how the organization of data in R reflects the observational units and variables in the data set.</p>
+<p>This is important if you want to construct your own data set (in Excel or a google spreadhseet, for example) that you will later import into R You want to be sure that the structure of your spread sheet uses rows and columns in this same way, and that you don’t put any extra stuff into the spread sheet. It is a good idea to include an extra row at the top which names the variables. Take a look at Chapter 0 to learn how to get the data from Excel into R.</p>
+</div>
+</div>
+<div id="categorical-and-quantitative-variables" class="section level3 unnumbered">
+<h3>Categorical and Quantitative Variables</h3>
+<!-- begin description -->
+<ol>
+<li><p><strong>categorical variable</strong> a variable that places observational units into one of two or more categories (examples: color, sex, case/control status, species, etc.)</p>
+<p>These can be further sub-divided into ordinal and nominal variables. If the categories have a natural and meaningful order, we will call them <strong>ordered</strong> or <strong>ordinal</strong> variables. Otherwise, they are <strong>nominal</strong> variables.</p></li>
+<li><p><strong>quantitative variable</strong> a variable that records measurements along some scale (examples: weight, height, age, temperature) or counts something (examples: number of siblings, number of colonies of bacteria, etc.)</p>
+<p>Quantitative variables can be <strong>continuous</strong> or <strong>discrete</strong>. Continuous variables can (in principle) take on any real-number value in some range. Values of discrete variables are limited to some list and “in-between values” are not possible. Counts are a good example of discrete variables.</p></li>
+</ol>
+<!-- end description -->
+</div>
+<div id="investigating-variables-and-relationships-between-variables" class="section level3 unnumbered">
+<h3>Investigating Variables and Relationships between Variables</h3>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(AllCountries)</code></pre>
+<pre><code>##          Country Code LandArea Population Energy Rural Military Health HIV
+## 1    Afghanistan  AFG   652230     29.021     NA  76.0      4.4    3.7  NA
+## 2        Albania  ALB    27400      3.143   2088  53.3       NA    8.2  NA
+## 3        Algeria  ALG  2381740     34.373  37069  34.8     13.0   10.6 0.1
+## 4 American Samoa  ASA      200      0.066     NA   7.7       NA     NA  NA
+## 5        Andorra  AND      470      0.084     NA  11.1       NA   21.3  NA
+## 6         Angola  ANG  1246700     18.021  10972  43.3       NA    6.8 2.0
+##   Internet Developed BirthRate ElderlyPop LifeExpectancy        CO2
+## 1      1.7        NA      46.5        2.2           43.9 0.02503483
+## 2     23.9         1      14.6        9.3           76.6 1.31285501
+## 3     10.2         1      20.8        4.6           72.4 3.23296040
+## 4       NA        NA        NA         NA             NA         NA
+## 5     70.5        NA      10.4         NA             NA 6.52783463
+## 6      3.1         1      42.9        2.5           47.0 1.35108829
+##         GDP      Cell Electricity  kwhPerCap
+## 1  501.4709  37.80711          NA       &lt;NA&gt;
+## 2 3678.2317 141.92896   1747.0980 Under 2500
+## 3 4494.8867  92.42126    970.9825 Under 2500
+## 4        NA        NA          NA       &lt;NA&gt;
+## 5        NA  77.17642          NA       &lt;NA&gt;
+## 6 4422.5428  46.68924    202.1545 Under 2500</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">inspect</span>(AllCountries)</code></pre>
+<pre><code>## 
+## categorical variables:  
+##        name   class levels   n missing
+## 1   Country  factor    213 213       0
+## 2      Code  factor    211 213       0
+## 3 kwhPerCap ordered      3 135      78
+##                                    distribution
+## 1 Afghanistan (0.5%), Albania (0.5%) ...       
+## 2  (1.4%), AFG (0.5%), ALB (0.5%) ...          
+## 3 Under 2500 (54.1%), Over 5000 (30.4%) ...    
+## 
+## quantitative variables:  
+##              name   class          min           Q1       median
+## 1        LandArea integer   2.00000000 1.083000e+04 94080.000000
+## 2      Population numeric   0.02000000 7.727500e-01     5.613500
+## 3          Energy integer 159.00000000 5.251750e+03 17478.000000
+## 4           Rural numeric   0.00000000 2.290000e+01    40.400000
+## 5        Military numeric   0.00000000 3.800000e+00     5.850000
+## 6          Health numeric   0.70000000 8.000000e+00    11.300000
+## 7             HIV numeric   0.10000000 1.000000e-01     0.400000
+## 8        Internet numeric   0.20000000 5.650000e+00    22.800000
+## 9       Developed integer   1.00000000 1.000000e+00     1.000000
+## 10      BirthRate numeric   8.20000000 1.210000e+01    19.400000
+## 11     ElderlyPop numeric   1.00000000 3.400000e+00     5.400000
+## 12 LifeExpectancy numeric  43.90000000 6.280000e+01    71.900000
+## 13            CO2 numeric   0.02262046 6.176463e-01     2.736944
+## 14            GDP numeric 192.12381400 1.252696e+03  4408.837950
+## 15           Cell numeric   1.23845433 5.920582e+01    93.695810
+## 16    Electricity numeric  35.68444850 8.003194e+02  2237.508632
+##              Q3          max         mean           sd   n missing
+## 1  4.463000e+05 1.637687e+07 6.081201e+05 1.766860e+06 213       0
+## 2  2.058350e+01 1.324655e+03 3.148489e+01 1.242709e+02 212       1
+## 3  5.248550e+04 2.283722e+06 8.631240e+04 2.797468e+05 136      77
+## 4  6.320000e+01 8.960000e+01 4.213380e+01 2.438970e+01 213       0
+## 5  1.217500e+01 2.930000e+01 8.276531e+00 6.143000e+00  98     115
+## 6  1.445000e+01 2.610000e+01 1.122460e+01 4.366174e+00 187      26
+## 7  1.300000e+00 2.590000e+01 1.977241e+00 4.441186e+00 145      68
+## 8  4.815000e+01 9.050000e+01 2.896281e+01 2.630818e+01 199      14
+## 9  3.000000e+00 3.000000e+00 1.762963e+00 8.911456e-01 135      78
+## 10 2.890000e+01 5.350000e+01 2.202234e+01 1.070333e+01 197      16
+## 11 1.160000e+01 2.140000e+01 7.473298e+00 5.071683e+00 191      22
+## 12 7.602500e+01 8.280000e+01 6.894286e+01 1.024365e+01 196      17
+## 13 7.016559e+00 4.905058e+01 5.085573e+00 6.726036e+00 198      15
+## 14 1.243103e+04 1.054377e+05 1.129842e+04 1.675920e+04 173      40
+## 15 1.211598e+02 2.064285e+02 9.109300e+01 4.484740e+01 201      12
+## 16 5.824237e+03 5.125919e+04 4.109127e+03 5.826901e+03 135      78</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">AllCountries[<span class="dv">86</span>, ]</code></pre>
+<pre><code>##    Country Code LandArea Population Energy Rural Military Health HIV
+## 86 Iceland  ISL   100250      0.317   5255   7.7      0.1   13.1 0.3
+##    Internet Developed BirthRate ElderlyPop LifeExpectancy      CO2
+## 86     90.5         3      15.2       11.7           81.3 7.024063
+##         GDP    Cell Electricity kwhPerCap
+## 86 39616.84 109.662    51259.19 Over 5000</code></pre>
+</div>
+<div id="using-data-to-answer-a-question" class="section level3 unnumbered">
+<h3>Using Data to Answer a Question</h3>
+<!-- begin description -->
+<ol>
+<li><strong>response variable</strong>
+a variable we are trying to predict or explain</li>
+<li><strong>explanatory variable</strong>
+a variable used to predict or explain a response variable
+<!-- end description --></li>
+</ol>
+</div>
+</div>
+<div id="sampling-from-a-population" class="section level2">
+<h2><span class="header-section-number">1.2</span> Sampling from a Population</h2>
+<div id="samples-from-populations" class="section level3 unnumbered">
+<h3>Samples from Populations</h3>
+<!-- begin description -->
+<ol>
+<li><strong>population</strong>
+the collection of animals, plants, objects, etc. that we want to know about</li>
+<li><strong>sample</strong>
+the (smaller) set of animals, plants, objects, etc. about which we have data</li>
+<li><strong>parameter</strong>
+a number that describes a population or model.</li>
+<li><strong>statistic</strong>
+a number that describes a sample.
+<!-- end description --></li>
+</ol>
+<p>Much of statistics centers around this question:</p>
+<hr />
+<p><em>What can we learn about a population from a sample?</em></p>
+<hr />
+</div>
+<div id="sampling-bias" class="section level3 unnumbered">
+<h3>Sampling Bias</h3>
+<p>Often we are interested in knowing (approximately) the value of some parameter. A statistic used for this purpose is called an <strong>estimate</strong>. For example, if you want to know the mean length of the tails of lemurs (that’s a <em>parameter</em>), you might take a sample of lemurs and measure their tails. The mean length of the tails of the lemurs in your sample is a <em>statistic</em>. It is also an <em>estimate</em>, because we use it to estimate the parameter.</p>
+<p>Statistical estimation methods attempt to
+<!-- begin itemize --></p>
+<ol>
+<li>reduce <strong>bias</strong>, and</li>
+<li>increase <strong>precision</strong>.
+<!-- end itemize --></li>
+</ol>
+<!-- begin description -->
+<ol>
+<li><strong>bias</strong>
+the systematic tendency of sample estimates to either overestimate or underestimate population parameters; that is, a <em>systematic tendency to be off in a particular direction</em>.</li>
+<li><strong>precision</strong>
+the measure of how close estimates are to the thing being estimated (called the <strong>estimand</strong>).
+<!-- end description --></li>
+</ol>
+</div>
+<div id="simple-random-sample" class="section level3 unnumbered">
+<h3>Simple Random Sample</h3>
+<p><strong>Sampling</strong> is the process of selecting a sample. Statisticians use <strong>random samples</strong>
+<!-- begin itemize --></p>
+<ol>
+<li>to avoid (or at least reduce) <strong>bias</strong>, and</li>
+<li>so they can quantify <strong>sampling variability</strong> (the amount samples differ from each other), which in turn allows us to quantify precision.
+<!-- end itemize --></li>
+</ol>
+<p>The simplest kind of random sample is called a <strong>simple random sample</strong> (aren’t statisticians clever about naming things?). A simple random sample is equivalent to putting all individuals in the population into a big hat, mixing thoroughly, and selecting some out of the hat to be in the sample. In particular, in a simple random sample, <em>every individual has an equal chance to be in the sample</em>, in fact, every subset of the population of a fixed size has an equal chance to be in the sample.</p>
+<p>Other sampling methods include
+<!-- begin description --></p>
+<ol>
+<li><strong>convenience sampling</strong> using whatever individuals are easy to obtain</li>
+</ol>
+<p>This is usually a terrible idea. If the convenient members of the population differ from the inconvenient members, then the sample will not be representative of the population.</p>
+<ol>
+<li><strong>volunteer sampling</strong> using people who volunteer to be in the sample</li>
+</ol>
+<p>This is usually a terrible idea. Most likely the volunteers will differ in some ways from the non-volunteers, so again the sample will not be representative of the population.</p>
+<ol>
+<li><strong>systematic sampling</strong> sampling done in some systematic way
+(every tenth unit, for example).</li>
+</ol>
+<p>This can sometimes be a reasonable approach.</p>
+<ol>
+<li><strong>stratified sampling</strong> sampling separately in distinct sub-populations (called <em>strata</em>)</li>
+</ol>
+<p>This is more complicated (and sometimes necessary) but fine as long as the sampling methods in each stratum are good and the analysis takes the sampling method into account.</p>
+<!-- end description -->
+<!-- The block below should be commented out -->
+<!-- If a poor sampling method is chosen, the sample may not be representative of the population we are trying to study, leading us to draw inaccurate or incorrect conclusions. -->
+<div id="example-1.15" class="section level4 unnumbered">
+<h4>Example 1.15</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sample</span>(AllCountries, <span class="dv">5</span>)</code></pre>
+<pre><code>##              Country Code LandArea Population Energy Rural Military Health
+## 211      Yemen, Rep.  YEM   527970     22.917   7478  69.4       NA    4.3
+## 168       Seychelles  SEY      460      0.087     NA  45.7      3.1   10.1
+## 2            Albania  ALB    27400      3.143   2088  53.3       NA    8.2
+## 123 Marshall Islands  MHL      180      0.060     NA  28.9       NA   14.6
+## 68             Gabon  GAB   257670      1.448   2073  15.0       NA    6.6
+##     HIV Internet Developed BirthRate ElderlyPop LifeExpectancy      CO2
+## 211  NA      1.6         1      36.8        2.4           62.9 1.033494
+## 168  NA     39.0        NA      17.8         NA           73.2 7.843760
+## 2    NA     23.9         1      14.6        9.3           76.6 1.312855
+## 123  NA      3.7        NA        NA         NA             NA 1.872334
+## 68  5.3      6.2         1      27.3        4.3           60.4 1.704158
+##           GDP       Cell Electricity  kwhPerCap orig.id
+## 211        NA  46.086659    218.8337 Under 2500     211
+## 168 10824.724 135.899451          NA       &lt;NA&gt;     168
+## 2    3678.232 141.928961   1747.0980 Under 2500       2
+## 123  3015.209   7.032089          NA       &lt;NA&gt;     123
+## 68   8642.804 106.943844    922.4955 Under 2500      68</code></pre>
+</div>
+</div>
+</div>
+<div id="experiments-and-observational-studies" class="section level2">
+<h2><span class="header-section-number">1.3</span> Experiments and Observational Studies</h2>
+<div id="confounding-variables" class="section level3 unnumbered">
+<h3>Confounding Variables</h3>
+<div id="table-1.2" class="section level4 unnumbered">
+<h4>Table 1.2</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(LifeExpectancyVehicles, <span class="dv">10</span>)</code></pre>
+<pre><code>##    Year LifeExpectancy Vehicles
+## 1  1970           70.8    108.4
+## 2  1971           71.1    113.0
+## 3  1972           71.2    118.8
+## 4  1973           71.4    125.7
+## 5  1974           72.0    129.9
+## 6  1975           72.6    132.9
+## 7  1976           72.9    138.5
+## 8  1977           73.3    142.1
+## 9  1978           73.5    148.4
+## 10 1979           73.9    151.9</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">Sub &lt;-<span class="st"> </span><span class="kw">filter</span>(LifeExpectancyVehicles, Year <span class="op">%%</span><span class="st"> </span><span class="dv">4</span><span class="op">==</span><span class="dv">2</span>)
+Sub</code></pre>
+<pre><code>##    Year LifeExpectancy Vehicles
+## 1  1970           70.8    108.4
+## 2  1974           72.0    129.9
+## 3  1978           73.5    148.4
+## 4  1982           74.5    159.6
+## 5  1986           74.7    175.7
+## 6  1990           75.4    188.8
+## 7  1994           75.7    198.0
+## 8  1998           76.7    211.6
+## 9  2002           77.3    229.6
+## 10 2006           77.7    244.2</code></pre>
+<!-- fix for every 4 years? -->
+</div>
+<div id="figure-1.2" class="section level4 unnumbered">
+<h4>Figure 1.2</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_point</span>(LifeExpectancy <span class="op">~</span><span class="st"> </span>Vehicles, <span class="dt">xlab =</span> <span class="st">&quot;Vehicles (millions)&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Life Expectancy&quot;</span>, 
+       <span class="dt">data =</span> LifeExpectancyVehicles)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure1.2-1.png" width="65%" /></p>
+</div>
+</div>
+<div id="observational-studies-vs.-experiments" class="section level3 unnumbered">
+<h3>Observational Studies vs. Experiments</h3>
+<p>Statisticians use the word experiment to mean something very specific. <em>In an <strong>experiment</strong>, the researcher determines the values of one or more (explanatory) variables</em>, typically by random assignment. If there is no such assignment by the researcher, the study is an <strong>observational study</strong>.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduction-to-r-and-statistics.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="describing-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["Lock5WithR.pdf"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
