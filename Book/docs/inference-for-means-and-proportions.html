@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>6 Inference for Means and Proportions | Lock5 With R</title>
+  <meta name="description" content="Code, exercises and discussion to accompany a course taught from ‘Statistics: Unlocking the Power of Data’" />
+  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="6 Inference for Means and Proportions | Lock5 With R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Code, exercises and discussion to accompany a course taught from ‘Statistics: Unlocking the Power of Data’" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="6 Inference for Means and Proportions | Lock5 With R" />
+  
+  <meta name="twitter:description" content="Code, exercises and discussion to accompany a course taught from ‘Statistics: Unlocking the Power of Data’" />
+  
+
+<meta name="author" content="R Pruim" />
+
+
+<meta name="date" content="2019-06-06" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="approximating-with-a-distribution.html">
+<link rel="next" href="chi-squared-tests-for-categorical-variables.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Lock5 With R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Lock 5 With R</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html"><i class="fa fa-check"></i>Introduction to R and Statistics</a><ul>
+<li class="chapter" data-level="0.1" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#getting-started-with-rstudio"><i class="fa fa-check"></i><b>0.1</b> Getting Started With RStudio</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#rstudio"><i class="fa fa-check"></i>RStudio</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#loading-packages"><i class="fa fa-check"></i>Loading packages</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#using-r-as-a-calculator"><i class="fa fa-check"></i>Using R as a calculator</a></li>
+</ul></li>
+<li class="chapter" data-level="0.2" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#getting-help-in-rstudio"><i class="fa fa-check"></i><b>0.2</b> Getting Help in RStudio</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#the-rstudio-help-system"><i class="fa fa-check"></i>The RStudio help system</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#history"><i class="fa fa-check"></i>History</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#error-messages"><i class="fa fa-check"></i>Error messages</a></li>
+</ul></li>
+<li class="chapter" data-level="0.3" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#four-things-to-know-about-r"><i class="fa fa-check"></i><b>0.3</b> Four Things to Know About R</a></li>
+<li class="chapter" data-level="0.4" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#data-in-r"><i class="fa fa-check"></i><b>0.4</b> Data in R</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#data-in-packages"><i class="fa fa-check"></i>Data in Packages</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#the-helprct-data-set"><i class="fa fa-check"></i>The HELPrct data set</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#using-your-own-data"><i class="fa fa-check"></i>Using your own data</a></li>
+</ul></li>
+<li class="chapter" data-level="0.5" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#the-most-important-template"><i class="fa fa-check"></i><b>0.5</b> The Most Important Template</a></li>
+<li class="chapter" data-level="0.6" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#manipulating-your-data"><i class="fa fa-check"></i><b>0.6</b> Manipulating your data</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#creating-a-subset"><i class="fa fa-check"></i>Creating a subset</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#choosing-specific-columns"><i class="fa fa-check"></i>Choosing specific columns</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#dropping-variables"><i class="fa fa-check"></i>Dropping Variables</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#creating-new-variables"><i class="fa fa-check"></i>Creating new variables</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#saving-data"><i class="fa fa-check"></i>Saving Data</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#merging-datasets"><i class="fa fa-check"></i>Merging datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="0.7" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#using-r-markdown"><i class="fa fa-check"></i><b>0.7</b> Using R Markdown</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#r-markdown-files-must-be-self-contained"><i class="fa fa-check"></i>R Markdown files must be self-contained</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#output-formats"><i class="fa fa-check"></i>Output formats</a></li>
+</ul></li>
+<li class="chapter" data-level="0.8" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#statistics-answering-questions-with-data"><i class="fa fa-check"></i><b>0.8</b> Statistics: Answering Questions With Data</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#data-the-raw-material"><i class="fa fa-check"></i>Data – the raw material</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#information-the-goal"><i class="fa fa-check"></i>Information – the goal</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#uncertainty-the-context"><i class="fa fa-check"></i>Uncertainty – the context</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#probability-the-tool"><i class="fa fa-check"></i>Probability – the tool</a></li>
+</ul></li>
+<li class="chapter" data-level="0.9" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#a-first-example-the-lady-tasting-tea"><i class="fa fa-check"></i><b>0.9</b> A First Example: The Lady Tasting Tea</a></li>
+<li class="chapter" data-level="0.10" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#coins-and-cups"><i class="fa fa-check"></i><b>0.10</b> Coins and Cups</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="collecting-data.html"><a href="collecting-data.html"><i class="fa fa-check"></i><b>1</b> Collecting Data</a><ul>
+<li class="chapter" data-level="1.1" data-path="collecting-data.html"><a href="collecting-data.html#the-structure-of-data"><i class="fa fa-check"></i><b>1.1</b> The Structure of Data</a><ul>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#cases-and-variables"><i class="fa fa-check"></i>Cases and Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#categorical-and-quantitative-variables"><i class="fa fa-check"></i>Categorical and Quantitative Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#investigating-variables-and-relationships-between-variables"><i class="fa fa-check"></i>Investigating Variables and Relationships between Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#using-data-to-answer-a-question"><i class="fa fa-check"></i>Using Data to Answer a Question</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="collecting-data.html"><a href="collecting-data.html#sampling-from-a-population"><i class="fa fa-check"></i><b>1.2</b> Sampling from a Population</a><ul>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#samples-from-populations"><i class="fa fa-check"></i>Samples from Populations</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#sampling-bias"><i class="fa fa-check"></i>Sampling Bias</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#simple-random-sample"><i class="fa fa-check"></i>Simple Random Sample</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="collecting-data.html"><a href="collecting-data.html#experiments-and-observational-studies"><i class="fa fa-check"></i><b>1.3</b> Experiments and Observational Studies</a><ul>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#confounding-variables"><i class="fa fa-check"></i>Confounding Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#observational-studies-vs.-experiments"><i class="fa fa-check"></i>Observational Studies vs. Experiments</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="describing-data.html"><a href="describing-data.html"><i class="fa fa-check"></i><b>2</b> Describing Data</a><ul>
+<li class="chapter" data-level="2.1" data-path="describing-data.html"><a href="describing-data.html#categorical-variables"><i class="fa fa-check"></i><b>2.1</b> Categorical Variables</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#one-categorical-variable"><i class="fa fa-check"></i>One Categorical Variable</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#two-categorical-variables-two-way-tables"><i class="fa fa-check"></i>Two Categorical Variables: Two-Way Tables</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="describing-data.html"><a href="describing-data.html#one-quantitative-variable-shape-and-center"><i class="fa fa-check"></i><b>2.2</b> One Quantitative Variable: Shape and Center</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#the-shape-of-a-distribution"><i class="fa fa-check"></i>The Shape of a Distribution</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#the-center-of-a-distribution"><i class="fa fa-check"></i>The Center of a Distribution</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#resistance"><i class="fa fa-check"></i>Resistance</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="describing-data.html"><a href="describing-data.html#one-quantitative-variable-measures-of-spread"><i class="fa fa-check"></i><b>2.3</b> One Quantitative Variable: Measures of Spread</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#standard-deviation"><i class="fa fa-check"></i>Standard Deviation</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#percentiles"><i class="fa fa-check"></i>Percentiles</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#five-number-summary"><i class="fa fa-check"></i>Five Number Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="describing-data.html"><a href="describing-data.html#outliers-boxplots-and-quantitativecategorical-relationships"><i class="fa fa-check"></i><b>2.4</b> Outliers, Boxplots, and Quantitative/Categorical Relationships</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#detection-of-outliers"><i class="fa fa-check"></i>Detection of Outliers</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#boxplots"><i class="fa fa-check"></i>Boxplots</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#one-quantitative-and-one-categorical-variable"><i class="fa fa-check"></i>One Quantitative and One Categorical Variable</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="describing-data.html"><a href="describing-data.html#two-quantitative-variables-scatterplot-and-correlation"><i class="fa fa-check"></i><b>2.5</b> Two Quantitative Variables: Scatterplot and Correlation</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#visualizing-a-relationship-between-two-quantitative-variables-scatterplots"><i class="fa fa-check"></i>Visualizing a Relationship between Two Quantitative Variables: Scatterplots</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#summarizing-a-relationship-between-two-quantitative-variables-correlation"><i class="fa fa-check"></i>Summarizing a Relationship between Two Quantitative Variables: Correlation</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="describing-data.html"><a href="describing-data.html#two-quantitative-variables-linear-regression"><i class="fa fa-check"></i><b>2.6</b> Two Quantitative Variables: Linear Regression</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>3</b> Confidence Intervals</a><ul>
+<li class="chapter" data-level="3.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#sampling-distributions"><i class="fa fa-check"></i><b>3.1</b> Sampling Distributions</a><ul>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#variability-of-sample-statistics"><i class="fa fa-check"></i>Variability of Sample Statistics</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#measuring-sampling-variability-the-standard-error"><i class="fa fa-check"></i>Measuring Sampling Variability: The Standard Error</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#the-importance-of-sample-size"><i class="fa fa-check"></i>The Importance of Sample Size</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#understanding-and-interpreting-confidence-intervals"><i class="fa fa-check"></i><b>3.2</b> Understanding and Interpreting Confidence Intervals</a><ul>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#interval-estimates-and-margin-of-error"><i class="fa fa-check"></i>Interval Estimates and Margin of Error</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#confidence-intervals-1"><i class="fa fa-check"></i>Confidence Intervals</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#understanding-confidence-intervals"><i class="fa fa-check"></i>Understanding Confidence Intervals</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#interpreting-confidence-intervals"><i class="fa fa-check"></i>Interpreting Confidence Intervals</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#constructing-bootstrap-confidence-intervals"><i class="fa fa-check"></i><b>3.3</b> Constructing Bootstrap Confidence Intervals</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-samples"><i class="fa fa-check"></i><b>3.3.1</b> Bootstrap Samples</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-distribution"><i class="fa fa-check"></i>Bootstrap Distribution</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#estimating-standard-error-based-on-a-bootstrap-distribution"><i class="fa fa-check"></i>Estimating Standard Error Based on a Bootstrap Distribution</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#confidence-interval-based-on-a-bootstrap-standard-error"><i class="fa fa-check"></i>95% Confidence Interval Based on a Bootstrap Standard Error</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-confidence-intervals-using-percentiles"><i class="fa fa-check"></i><b>3.4</b> Bootstrap Confidence Intervals Using Percentiles</a><ul>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#confidence-intervals-based-on-bootstrap-percentiles"><i class="fa fa-check"></i>Confidence Intervals Based on Bootstrap Percentiles</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#finding-confidence-intervals-for-many-different-parameters"><i class="fa fa-check"></i>Finding Confidence Intervals for Many Different Parameters</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#another-look-at-the-effect-of-sample-size"><i class="fa fa-check"></i>Another Look at the Effect of Sample Size</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#one-caution-on-constructing-bootstrap-confidence-intervals"><i class="fa fa-check"></i>One Caution on Constructing Bootstrap Confidence Intervals</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html"><i class="fa fa-check"></i><b>4</b> Hypothesis Tests</a><ul>
+<li class="chapter" data-level="4.1" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#introducing-hypothesis-tests"><i class="fa fa-check"></i><b>4.1</b> Introducing Hypothesis Tests</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#the-4-step-outline"><i class="fa fa-check"></i>The 4-step outline</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#null-and-alternative-hypotheses"><i class="fa fa-check"></i>Null and Alternative Hypotheses</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#measuring-evidence-with-p-values"><i class="fa fa-check"></i><b>4.2</b> Measuring Evidence with P-values</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#p-values-from-randomization-distributions"><i class="fa fa-check"></i>P-values from Randomization Distributions</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#p-values-and-the-alternative-hypothesis"><i class="fa fa-check"></i>P-values and the Alternative Hypothesis</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#determining-statisical-significance"><i class="fa fa-check"></i><b>4.3</b> Determining Statisical Significance</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#less-formal-statistical-decisions"><i class="fa fa-check"></i>Less Formal Statistical Decisions</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#creating-randomization-distributions"><i class="fa fa-check"></i><b>4.4</b> Creating Randomization Distributions</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-test-for-a-difference-in-proportions-cocaine-addiction"><i class="fa fa-check"></i>Randomization Test for a Difference in Proportions: Cocaine Addiction</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-test-for-a-correlation-malevolent-uniforms-and-penalties"><i class="fa fa-check"></i>Randomization Test for a Correlation: Malevolent Uniforms and Penalties</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-test-for-a-mean-body-temperature"><i class="fa fa-check"></i>Randomization Test for a Mean: Body Temperature</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#confidence-intervals-and-hypothesis-tests"><i class="fa fa-check"></i><b>4.5</b> Confidence Intervals and Hypothesis Tests</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-and-bootstrap-distributions"><i class="fa fa-check"></i>Randomization and Bootstrap Distributions</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html"><i class="fa fa-check"></i><b>5</b> Approximating with a Distribution</a><ul>
+<li class="chapter" data-level="5.1" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#normal-distributions"><i class="fa fa-check"></i><b>5.1</b> Normal Distributions</a><ul>
+<li class="chapter" data-level="" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#density-curves"><i class="fa fa-check"></i>Density Curves</a></li>
+<li class="chapter" data-level="" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#normal-distributions-1"><i class="fa fa-check"></i>Normal Distributions</a></li>
+<li class="chapter" data-level="" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#finding-normal-probabilities-and-percentiles"><i class="fa fa-check"></i>Finding Normal Probabilities and Percentiles</a></li>
+<li class="chapter" data-level="" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#standard-normal-n01"><i class="fa fa-check"></i>Standard Normal N(0,1)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#confidence-intervals-and-p-values-using-normal-distributions"><i class="fa fa-check"></i><b>5.2</b> Confidence Intervals and P-values Using Normal Distributions</a><ul>
+<li class="chapter" data-level="" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#confidence-intervals-based-on-a-normal-distribution"><i class="fa fa-check"></i>Confidence Intervals Based on a Normal Distribution</a></li>
+<li class="chapter" data-level="" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#p-values-based-on-a-normal-distribution"><i class="fa fa-check"></i>P-values Based on a Normal Distribution</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html"><i class="fa fa-check"></i><b>6</b> Inference for Means and Proportions</a><ul>
+<li class="chapter" data-level="6.1" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#distribution-of-a-sample-proportion"><i class="fa fa-check"></i><b>6.1</b> Distribution of a Sample Proportion</a><ul>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#how-large-a-sample-size-is-needed"><i class="fa fa-check"></i>How Large a Sample Size is Needed?</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#confidence-interval-for-a-single-proportion"><i class="fa fa-check"></i><b>6.2</b> Confidence Interval for a Single Proportion</a><ul>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#confidence-interval-for-a-single-proportion-1"><i class="fa fa-check"></i>Confidence Interval for a Single Proportion</a></li>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#determining-sample-size-for-estimating-a-proportion"><i class="fa fa-check"></i>Determining Sample Size for Estimating a Proportion</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#test-for-a-single-proportion"><i class="fa fa-check"></i><b>6.3</b> Test for a Single Proportion</a></li>
+<li class="chapter" data-level="6.4" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#distribution-of-a-sample-mean"><i class="fa fa-check"></i><b>6.4</b> Distribution of a Sample Mean</a><ul>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#computing-the-standard-error"><i class="fa fa-check"></i>Computing the Standard Error</a></li>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#how-large-a-sample-size-is-needed-1"><i class="fa fa-check"></i>How Large a Sample Size is Needed?</a></li>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#the-t-distribution"><i class="fa fa-check"></i>The t-Distribution</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#confidence-interval-for-a-mean-using-the-t-distribution"><i class="fa fa-check"></i><b>6.5</b> Confidence Interval for a Mean Using the t-Distribution</a><ul>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#confidence-interval-for-a-mean-using-the-t-distribution-1"><i class="fa fa-check"></i>Confidence Interval for a Mean Using the t-Distribution</a></li>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#determining-sample-size-for-estimating-a-mean"><i class="fa fa-check"></i>Determining Sample Size for Estimating a Mean</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#test-for-a-single-mean"><i class="fa fa-check"></i><b>6.6</b> Test for a Single Mean</a></li>
+<li class="chapter" data-level="6.7" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#distribution-of-differences-in-proportions"><i class="fa fa-check"></i><b>6.7</b> Distribution of Differences in Proportions</a></li>
+<li class="chapter" data-level="6.8" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#confidence-interval-for-a-difference-in-proportions"><i class="fa fa-check"></i><b>6.8</b> Confidence Interval for a Difference in Proportions</a></li>
+<li class="chapter" data-level="6.9" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#test-for-a-difference-in-proportions"><i class="fa fa-check"></i><b>6.9</b> Test For a Difference in Proportions</a></li>
+<li class="chapter" data-level="6.10" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#distribution-of-differences-in-means"><i class="fa fa-check"></i><b>6.10</b> Distribution of Differences in Means</a><ul>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#the-t-distribution-1"><i class="fa fa-check"></i>The t-Distribution</a></li>
+</ul></li>
+<li class="chapter" data-level="6.11" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#confidence-interval-for-a-difference-in-means"><i class="fa fa-check"></i><b>6.11</b> Confidence Interval for a Difference in Means</a></li>
+<li class="chapter" data-level="6.12" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#test-for-a-difference-in-means"><i class="fa fa-check"></i><b>6.12</b> Test for a Difference in Means</a></li>
+<li class="chapter" data-level="6.13" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#paired-difference-in-means"><i class="fa fa-check"></i><b>6.13</b> Paired Difference in Means</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html"><i class="fa fa-check"></i><b>7</b> Chi-Squared Tests for Categorical Variables</a><ul>
+<li class="chapter" data-level="7.1" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#testing-goodness-of-fit-for-a-single-categorical-variable"><i class="fa fa-check"></i><b>7.1</b> Testing Goodness-of-Fit for a Single Categorical Variable</a><ul>
+<li class="chapter" data-level="" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#chi-square-statistic"><i class="fa fa-check"></i>Chi-square Statistic</a></li>
+<li class="chapter" data-level="" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#chi-square-distribution"><i class="fa fa-check"></i>Chi-square Distribution</a></li>
+<li class="chapter" data-level="" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#goodness-of-fit-for-two-categories"><i class="fa fa-check"></i>Goodness-of-Fit for Two Categories</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#testing-for-an-association-between-two-categorical-variables"><i class="fa fa-check"></i><b>7.2</b> Testing for an Association Between Two Categorical Variables</a><ul>
+<li class="chapter" data-level="" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#chi-square-test-for-association"><i class="fa fa-check"></i>Chi-square Test for Association</a></li>
+<li class="chapter" data-level="" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#special-case-for-a-2-x-2-table"><i class="fa fa-check"></i>Special Case for a 2 x 2 Table</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html"><i class="fa fa-check"></i><b>8</b> ANOVA to Compare Means</a><ul>
+<li class="chapter" data-level="8.1" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#analysis-of-variance"><i class="fa fa-check"></i><b>8.1</b> Analysis of Variance</a><ul>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#null-and-alternative-hypotheses-1"><i class="fa fa-check"></i>Null and Alternative Hypotheses</a></li>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#partitioning-variability"><i class="fa fa-check"></i>Partitioning Variability</a></li>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#the-f-statistic"><i class="fa fa-check"></i>The F-Statistic</a></li>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#the-f-distribution"><i class="fa fa-check"></i>The F-distribution</a></li>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#more-examples-of-anova"><i class="fa fa-check"></i>More Examples of ANOVA</a></li>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#anova-calculations"><i class="fa fa-check"></i>ANOVA Calculations</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#pairwise-comparisons-and-inference-after-anova"><i class="fa fa-check"></i><b>8.2</b> Pairwise Comparisons and Inference After ANOVA</a><ul>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#using-anova-for-inferences-about-group-means"><i class="fa fa-check"></i>Using ANOVA for Inferences about Group Means</a></li>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#lots-of-pairwise-comparisons"><i class="fa fa-check"></i>Lots of Pairwise Comparisons</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Lock5 With R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="inference-for-means-and-proportions" class="section level1">
+<h1><span class="header-section-number">6</span> Inference for Means and Proportions</h1>
+<div id="distribution-of-a-sample-proportion" class="section level2">
+<h2><span class="header-section-number">6.1</span> Distribution of a Sample Proportion</h2>
+<p>When sampling distributions, bootstrap distributions, and randomization distributions are well approximated by normal distributions, and when we have a way of computing the standard error, we can use normal distributions to compute confidence intervals and p-values using the following general templates:</p>
+<p><span class="itemize"></p>
+<ol>
+<li><p>confidence interval:
+<span class="math display">\[ 
+     \mbox{statistic} \pm \mbox{critical value} \cdot  SE 
+     \]</span></p></li>
+<li><p>hypothesis testing:
+<span class="math display">\[ 
+     \mbox{test statistic} = \frac{ \mbox{statistic} - \mbox{null parameter}} { SE } 
+     \]</span>
+</span></p></li>
+</ol>
+<div id="example-6.1" class="section level4 unnumbered">
+<h4>Example 6.1</h4>
+<pre class="sourceCode r"><code class="sourceCode r">SE &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="fl">0.25</span> <span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.25</span>) <span class="op">/</span><span class="st"> </span><span class="dv">50</span>); SE</code></pre>
+<pre><code>## [1] 0.06123724</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">SE &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="fl">0.25</span> <span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.25</span>) <span class="op">/</span><span class="st"> </span><span class="dv">200</span>); SE</code></pre>
+<pre><code>## [1] 0.03061862</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">SE &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="fl">0.4</span> <span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.4</span>) <span class="op">/</span><span class="st"> </span><span class="dv">50</span>); SE</code></pre>
+<pre><code>## [1] 0.06928203</code></pre>
+</div>
+<div id="how-large-a-sample-size-is-needed" class="section level3 unnumbered">
+<h3>How Large a Sample Size is Needed?</h3>
+<div id="figure-6.2" class="section level4 unnumbered">
+<h4>Figure 6.2</h4>
+<pre class="sourceCode r"><code class="sourceCode r">P<span class="fl">.05</span> &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">2000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">rflip</span>(<span class="dv">50</span>, <span class="fl">.05</span>)
+<span class="kw">gf_dotplot</span>(<span class="op">~</span>prop, <span class="dt">binwidth =</span> <span class="fl">.01</span>, <span class="dt">dotsize =</span> <span class="fl">.02</span>, <span class="dt">data =</span> P<span class="fl">.05</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure6.02-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r">P<span class="fl">.10</span> &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">2000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">rflip</span>(<span class="dv">50</span>, <span class="fl">.10</span>)
+<span class="kw">gf_dotplot</span>(<span class="op">~</span>prop, <span class="dt">binwidth =</span> <span class="fl">.01</span>, <span class="dt">dotsize =</span> <span class="fl">.04</span>, <span class="dt">data =</span> P<span class="fl">.10</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure6.02-2.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r">P<span class="fl">.25</span> &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">2000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">rflip</span>(<span class="dv">50</span>, <span class="fl">.25</span>)
+<span class="kw">gf_dotplot</span>(<span class="op">~</span>prop, <span class="dt">binwidth =</span> <span class="fl">.01</span>, <span class="dt">dotsize =</span> <span class="fl">.08</span>, <span class="dt">data =</span> P<span class="fl">.25</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure6.02-3.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r">P<span class="fl">.50</span> &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">2000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">rflip</span>(<span class="dv">50</span>, <span class="fl">.50</span>)
+<span class="kw">gf_dotplot</span>(<span class="op">~</span>prop, <span class="dt">binwidth =</span> <span class="fl">.01</span>, <span class="dt">dotsize =</span> <span class="fl">.1</span>, <span class="dt">data =</span> P<span class="fl">.50</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure6.02-4.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r">P<span class="fl">.90</span> &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">2000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">rflip</span>(<span class="dv">50</span>, <span class="fl">.90</span>)
+<span class="kw">gf_dotplot</span>(<span class="op">~</span>prop, <span class="dt">binwidth =</span> <span class="fl">.01</span>, <span class="dt">dotsize =</span> <span class="fl">.03</span>, <span class="dt">data =</span> P<span class="fl">.90</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure6.02-5.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r">P<span class="fl">.99</span> &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">2000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">rflip</span>(<span class="dv">50</span>, <span class="fl">.99</span>)
+<span class="kw">gf_dotplot</span>(<span class="op">~</span>prop, <span class="dt">binwidth =</span> <span class="fl">.01</span>, <span class="dt">dotsize =</span> <span class="fl">.004</span>, <span class="dt">data =</span> P<span class="fl">.99</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure6.02-6.png" width="65%" /></p>
+<!-- AuthNote --- changed binwidth so may be different than book, count became density -->
+</div>
+<div id="figure-6.3" class="section level4 unnumbered">
+<h4>Figure 6.3</h4>
+<pre class="sourceCode r"><code class="sourceCode r">n10 &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">2000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">rflip</span>(<span class="dv">10</span>, <span class="fl">.10</span>)
+<span class="kw">gf_dotplot</span>(<span class="op">~</span>prop, <span class="dt">binwidth =</span> <span class="fl">.02</span>, <span class="dt">dotsize =</span> <span class="fl">.018</span>, <span class="dt">data =</span> n10)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure6.03-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r">n25 &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">2000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">rflip</span>(<span class="dv">25</span>, <span class="fl">.10</span>)
+<span class="kw">gf_dotplot</span>(<span class="op">~</span>prop, <span class="dt">binwidth =</span> <span class="fl">.03</span>, <span class="dt">dotsize =</span> <span class="fl">.013</span>, <span class="dt">data =</span> n25)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure6.03-2.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r">n200 &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">2000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">rflip</span>(<span class="dv">200</span>, <span class="fl">.10</span>)
+<span class="kw">gf_dotplot</span>(<span class="op">~</span>prop, <span class="dt">binwidth =</span> <span class="fl">.006</span>, <span class="dt">dotsize =</span> <span class="fl">.03</span>, <span class="dt">data =</span> n200)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure6.03-3.png" width="65%" /></p>
+<!-- AuthNote --- changed binwidth, count became density -->
+</div>
+<div id="example-6.2" class="section level4 unnumbered">
+<h4>Example 6.2</h4>
+<pre class="sourceCode r"><code class="sourceCode r">p.hat &lt;-<span class="st"> </span><span class="fl">0.80</span>; p.hat</code></pre>
+<pre><code>## [1] 0.8</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">p.hat <span class="op">*</span><span class="st"> </span><span class="dv">400</span>               <span class="co"># check &gt;= 10</span></code></pre>
+<pre><code>## [1] 320</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>p.hat) <span class="op">*</span><span class="st"> </span><span class="dv">400</span>         <span class="co"># check &gt;= 10</span></code></pre>
+<pre><code>## [1] 80</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">SE &lt;-<span class="st"> </span><span class="kw">sqrt</span>(.<span class="dv">80</span> <span class="op">*</span><span class="st"> </span><span class="fl">.20</span> <span class="op">/</span><span class="st"> </span><span class="dv">400</span>); SE</code></pre>
+<pre><code>## [1] 0.02</code></pre>
+</div>
+<div id="figure-6.4" class="section level4 unnumbered">
+<h4>Figure 6.4</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_fun</span>(<span class="kw">dnorm</span>(x,<span class="fl">0.80</span>,<span class="fl">0.02</span>) <span class="op">~</span><span class="st"> </span>x, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="fl">0.72</span>, <span class="fl">0.88</span>))</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure6.4-1.png" width="65%" /></p>
+</div>
+</div>
+</div>
+<div id="confidence-interval-for-a-single-proportion" class="section level2">
+<h2><span class="header-section-number">6.2</span> Confidence Interval for a Single Proportion</h2>
+<div id="confidence-interval-for-a-single-proportion-1" class="section level3 unnumbered">
+<h3>Confidence Interval for a Single Proportion</h3>
+<div id="example-6.3" class="section level4 unnumbered">
+<h4>Example 6.3</h4>
+<pre class="sourceCode r"><code class="sourceCode r">p.hat &lt;-<span class="st"> </span><span class="dv">52</span><span class="op">/</span><span class="dv">100</span>; p.hat            </code></pre>
+<pre><code>## [1] 0.52</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">SE &lt;-<span class="st"> </span><span class="kw">sqrt</span>(p.hat <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>p.hat) <span class="op">/</span><span class="st"> </span><span class="dv">100</span>); SE    <span class="co"># est. SE</span></code></pre>
+<pre><code>## [1] 0.04995998</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">p.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span> <span class="op">*</span><span class="st"> </span>SE                            <span class="co"># lower end of CI </span></code></pre>
+<pre><code>## [1] 0.4220784</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">p.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span> <span class="op">*</span><span class="st"> </span>SE                            <span class="co"># upper end of CI</span></code></pre>
+<pre><code>## [1] 0.6179216</code></pre>
+<p>R can automate finding the confidence interval. Notice the <span style="color:brown">correct = FALSE</span> in the second line. The default for the proportion test includes a continuity correction for more accurate results. You can perform the test without the correction for answers closer to the ones in the textbook.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(<span class="kw">prop.test</span>(<span class="dv">52</span>, <span class="dv">100</span>))</code></pre>
+<pre><code>##      p     lower     upper level
+## 1 0.52 0.4183183 0.6201278  0.95</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(<span class="kw">prop.test</span>(<span class="dv">52</span>, <span class="dv">100</span>, <span class="dt">correct =</span> <span class="ot">FALSE</span>))</code></pre>
+<pre><code>##      p     lower     upper level
+## 1 0.52 0.4231658 0.6153545  0.95</code></pre>
+</div>
+<div id="example-6.4" class="section level4 unnumbered">
+<h4>Example 6.4</h4>
+<pre class="sourceCode r"><code class="sourceCode r">p.hat &lt;-<span class="st"> </span><span class="fl">0.28</span>; p.hat            </code></pre>
+<pre><code>## [1] 0.28</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">SE &lt;-<span class="st"> </span><span class="kw">sqrt</span>(p.hat <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>p.hat) <span class="op">/</span><span class="st"> </span><span class="dv">800</span>); SE    <span class="co"># est. SE</span></code></pre>
+<pre><code>## [1] 0.01587451</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">p.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span> <span class="op">*</span><span class="st"> </span>SE                            <span class="co"># lower end of CI </span></code></pre>
+<pre><code>## [1] 0.248886</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">p.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span> <span class="op">*</span><span class="st"> </span>SE                            <span class="co"># upper end of CI</span></code></pre>
+<pre><code>## [1] 0.311114</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(<span class="kw">prop.test</span>(<span class="dv">224</span>, <span class="dv">800</span>))                 <span class="co"># 224 = 0.28 * 800</span></code></pre>
+<pre><code>##      p     lower     upper level
+## 1 0.28 0.2493936 0.3127512  0.95</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">p.hat &lt;-<span class="st"> </span><span class="fl">0.82</span>; p.hat            </code></pre>
+<pre><code>## [1] 0.82</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">SE &lt;-<span class="st"> </span><span class="kw">sqrt</span>(p.hat <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>p.hat) <span class="op">/</span><span class="st"> </span><span class="dv">800</span>); SE    <span class="co"># est. SE</span></code></pre>
+<pre><code>## [1] 0.01358308</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">p.hat <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span> <span class="op">*</span><span class="st"> </span>SE                            <span class="co"># lower end of CI </span></code></pre>
+<pre><code>## [1] 0.7933772</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">p.hat <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span> <span class="op">*</span><span class="st"> </span>SE                            <span class="co"># upper end of CI</span></code></pre>
+<pre><code>## [1] 0.8466228</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(<span class="kw">prop.test</span>(<span class="dv">656</span>, <span class="dv">800</span>))                 <span class="co"># 656 = 0.82 * 800</span></code></pre>
+<pre><code>##      p     lower     upper level
+## 1 0.82 0.7912104 0.8456596  0.95</code></pre>
+</div>
+</div>
+<div id="determining-sample-size-for-estimating-a-proportion" class="section level3 unnumbered">
+<h3>Determining Sample Size for Estimating a Proportion</h3>
+<div id="example-6.5" class="section level4 unnumbered">
+<h4>Example 6.5</h4>
+<pre class="sourceCode r"><code class="sourceCode r">z.star &lt;-<span class="st"> </span><span class="kw">qnorm</span>(<span class="fl">0.995</span>); z.star               <span class="co"># critical value for 99&lt;!--  confidence --&gt;</span></code></pre>
+<pre><code>## [1] 2.575829</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">p.hat &lt;-<span class="st"> </span><span class="fl">0.28</span>; p.hat                          </code></pre>
+<pre><code>## [1] 0.28</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">n &lt;-<span class="st"> </span>((z.star <span class="op">/</span><span class="st"> </span><span class="fl">0.01</span>)<span class="op">^</span><span class="dv">2</span>) <span class="op">*</span><span class="st"> </span>p.hat <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>p.hat); n                          </code></pre>
+<pre><code>## [1] 13375.95</code></pre>
+</div>
+<div id="example-6.6" class="section level4 unnumbered">
+<h4>Example 6.6</h4>
+<pre class="sourceCode r"><code class="sourceCode r">z.star &lt;-<span class="st"> </span><span class="kw">qnorm</span>(<span class="fl">0.975</span>); z.star               <span class="co"># critical value for 95&lt;!--  confidence --&gt;</span></code></pre>
+<pre><code>## [1] 1.959964</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">p.hat &lt;-<span class="st"> </span><span class="fl">0.5</span>; p.hat                          </code></pre>
+<pre><code>## [1] 0.5</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">n &lt;-<span class="st"> </span>((z.star <span class="op">/</span><span class="st"> </span><span class="fl">0.03</span>)<span class="op">^</span><span class="dv">2</span>) <span class="op">*</span><span class="st"> </span>p.hat <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>p.hat); n                          </code></pre>
+<pre><code>## [1] 1067.072</code></pre>
+</div>
+</div>
+</div>
+<div id="test-for-a-single-proportion" class="section level2">
+<h2><span class="header-section-number">6.3</span> Test for a Single Proportion</h2>
+<div id="example-6.7" class="section level4 unnumbered">
+<h4>Example 6.7</h4>
+<p><span class="enumerate"></p>
+<ol>
+<li><p><span class="math inline">\(H_0\)</span>: <span class="math inline">\(p = 0.20\)</span></p>
+<p><span class="math inline">\(H_a\)</span>: <span class="math inline">\(p &lt; 0.20\)</span></p></li>
+<li><p>Test statistic: <span class="math inline">\(\hat p = 0.19\)</span> (the sample approval rating)</p></li>
+<li><p>Test for a single proportion:</p></li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r">p.hat &lt;-<span class="st"> </span><span class="fl">0.19</span>; p.hat</code></pre>
+<pre><code>## [1] 0.19</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span><span class="fl">0.20</span>; p</code></pre>
+<pre><code>## [1] 0.2</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">p <span class="op">*</span><span class="st"> </span><span class="dv">1013</span>                   <span class="co"># check &gt;= 10</span></code></pre>
+<pre><code>## [1] 202.6</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>p) <span class="op">*</span><span class="st"> </span><span class="dv">1013</span>             <span class="co"># check &gt;= 10</span></code></pre>
+<pre><code>## [1] 810.4</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">SE &lt;-<span class="st"> </span><span class="kw">sqrt</span>(p <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>p) <span class="op">/</span><span class="st"> </span><span class="dv">1013</span>); SE</code></pre>
+<pre><code>## [1] 0.01256768</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">z &lt;-<span class="st"> </span>(p.hat <span class="op">-</span><span class="st"> </span>p) <span class="op">/</span><span class="st"> </span>SE; z</code></pre>
+<pre><code>## [1] -0.7956915</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pnorm</span>(z)</code></pre>
+<pre><code>## [1] 0.2131057</code></pre>
+<p>Again, R can automate the test for us.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop.test</span>(<span class="dv">192</span>, <span class="dv">1013</span>, <span class="dt">alt =</span> <span class="st">&quot;less&quot;</span>, <span class="dt">p =</span> <span class="fl">0.20</span>) <span class="co"># 192 = 0.19 * 1013</span></code></pre>
+<pre><code>## 
+##  1-sample proportions test with continuity correction
+## 
+## data:  192 out of 1013
+## X-squared = 0.62938, df = 1, p-value = 0.2138
+## alternative hypothesis: true p is less than 0.2
+## 95 percent confidence interval:
+##  0.0000000 0.2111204
+## sample estimates:
+##        p 
+## 0.189536</code></pre>
+<p>Notice the “less” for the alternative hypothesis because this is a lower tail alternative.
+</span></p>
+</div>
+<div id="example-6.8" class="section level4 unnumbered">
+<h4>Example 6.8</h4>
+<pre class="sourceCode r"><code class="sourceCode r">p.hat &lt;-<span class="st"> </span><span class="dv">66</span><span class="op">/</span><span class="dv">119</span>; p.hat</code></pre>
+<pre><code>## [1] 0.5546218</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="dv">3</span>; p</code></pre>
+<pre><code>## [1] 0.3333333</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">p <span class="op">*</span><span class="st"> </span><span class="dv">119</span>                   <span class="co"># check &gt;= 10</span></code></pre>
+<pre><code>## [1] 39.66667</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>p) <span class="op">*</span><span class="st"> </span><span class="dv">119</span>             <span class="co"># check &gt;= 10</span></code></pre>
+<pre><code>## [1] 79.33333</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">SE &lt;-<span class="st"> </span><span class="kw">sqrt</span>(p <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>p) <span class="op">/</span><span class="st"> </span><span class="dv">119</span>); SE</code></pre>
+<pre><code>## [1] 0.04321358</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">z &lt;-<span class="st"> </span>(p.hat <span class="op">-</span><span class="st"> </span>p) <span class="op">/</span><span class="st"> </span>SE; z</code></pre>
+<pre><code>## [1] 5.120809</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pnorm</span>(z)                  <span class="co"># large side (rounded)</span></code></pre>
+<pre><code>## [1] 0.9999998</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pnorm</span>(z)              <span class="co"># small side (less rounding)</span></code></pre>
+<pre><code>## [1] 1.521135e-07</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pnorm</span>(z))        <span class="co"># p-value = 2 * small side</span></code></pre>
+<pre><code>## [1] 3.04227e-07</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop.test</span>(<span class="dv">66</span>, <span class="dv">119</span>, <span class="dt">p =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>)</code></pre>
+<pre><code>## 
+##  1-sample proportions test with continuity correction
+## 
+## data:  66 out of 119
+## X-squared = 25.236, df = 1, p-value = 5.072e-07
+## alternative hypothesis: true p is not equal to 0.3333333
+## 95 percent confidence interval:
+##  0.4608610 0.6448083
+## sample estimates:
+##         p 
+## 0.5546218</code></pre>
+</div>
+<div id="example-6.9" class="section level4 unnumbered">
+<h4>Example 6.9</h4>
+<pre class="sourceCode r"><code class="sourceCode r">p.hat &lt;-<span class="st"> </span><span class="dv">8</span><span class="op">/</span><span class="dv">9</span>; p.hat</code></pre>
+<pre><code>## [1] 0.8888889</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span><span class="fl">0.5</span>; p</code></pre>
+<pre><code>## [1] 0.5</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">p <span class="op">*</span><span class="st"> </span><span class="dv">9</span>                   <span class="co"># check &gt;= 10</span></code></pre>
+<pre><code>## [1] 4.5</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">Randomization &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">1000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">rflip</span>(<span class="dv">9</span>, <span class="fl">0.5</span>)
+<span class="kw">head</span>(Randomization, <span class="dv">3</span>)</code></pre>
+<pre><code>##   n heads tails      prop
+## 1 9     4     5 0.4444444
+## 2 9     5     4 0.5555556
+## 3 9     4     5 0.4444444</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>( <span class="op">~</span><span class="st"> </span>(prop <span class="op">&gt;=</span><span class="st"> </span>p.hat), <span class="dt">data =</span> Randomization)</code></pre>
+<pre><code>## prop_TRUE 
+##     0.024</code></pre>
+</div>
+</div>
+<div id="distribution-of-a-sample-mean" class="section level2">
+<h2><span class="header-section-number">6.4</span> Distribution of a Sample Mean</h2>
+<div id="computing-the-standard-error" class="section level3 unnumbered">
+<h3>Computing the Standard Error</h3>
+<div id="example-6.10" class="section level4 unnumbered">
+<h4>Example 6.10</h4>
+<pre class="sourceCode r"><code class="sourceCode r">SE &lt;-<span class="st"> </span><span class="dv">32000</span> <span class="op">/</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="dv">100</span>); SE</code></pre>
+<pre><code>## [1] 3200</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">SE &lt;-<span class="st"> </span><span class="dv">32000</span> <span class="op">/</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="dv">400</span>); SE</code></pre>
+<pre><code>## [1] 1600</code></pre>
+</div>
+</div>
+<div id="how-large-a-sample-size-is-needed-1" class="section level3 unnumbered">
+<h3>How Large a Sample Size is Needed?</h3>
+<div id="figure-6.6" class="section level4 unnumbered">
+<h4>Figure 6.6</h4>
+<pre class="sourceCode r"><code class="sourceCode r">n1 &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">100</span>) <span class="op">*</span><span class="st"> </span><span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>Time, <span class="dt">data =</span> <span class="kw">resample</span>(CommuteAtlanta, <span class="dv">1</span>))
+<span class="kw">gf_dhistogram</span>( <span class="op">~</span><span class="st"> </span>mean, <span class="dt">bins =</span> <span class="dv">8</span>, <span class="dt">data =</span> n1)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure6.06-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r">n5 &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">100</span>) <span class="op">*</span><span class="st"> </span><span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>Time, <span class="dt">data =</span> <span class="kw">resample</span>(CommuteAtlanta, <span class="dv">5</span>))
+<span class="kw">gf_dhistogram</span>( <span class="op">~</span><span class="st"> </span>mean, <span class="dt">bins =</span> <span class="dv">8</span>, <span class="dt">data =</span> n5)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure6.06-2.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r">n15 &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">100</span>) <span class="op">*</span><span class="st"> </span><span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>Time, <span class="dt">data =</span> <span class="kw">resample</span>(CommuteAtlanta, <span class="dv">15</span>))
+<span class="kw">gf_dhistogram</span>( <span class="op">~</span><span class="st"> </span>mean, <span class="dt">bins =</span> <span class="dv">8</span>, <span class="dt">data =</span> n15)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure6.06-3.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r">n30 &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">100</span>) <span class="op">*</span><span class="st"> </span><span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>Time, <span class="dt">data =</span> <span class="kw">resample</span>(CommuteAtlanta, <span class="dv">30</span>))
+<span class="kw">gf_dhistogram</span>( <span class="op">~</span><span class="st"> </span>mean, <span class="dt">bins =</span> <span class="dv">8</span>, <span class="dt">data =</span> n30)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure6.06-4.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r">n125 &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">100</span>) <span class="op">*</span><span class="st"> </span><span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>Time, <span class="dt">data =</span> <span class="kw">resample</span>(CommuteAtlanta, <span class="dv">125</span>))
+<span class="kw">gf_dhistogram</span>( <span class="op">~</span><span class="st"> </span>mean, <span class="dt">bins =</span> <span class="dv">8</span>, <span class="dt">data =</span> n125)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure6.06-5.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r">n500 &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">100</span>) <span class="op">*</span><span class="st"> </span><span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>Time, <span class="dt">data =</span> <span class="kw">resample</span>(CommuteAtlanta, <span class="dv">500</span>))
+<span class="kw">gf_dhistogram</span>( <span class="op">~</span><span class="st"> </span>mean, <span class="dt">bins =</span> <span class="dv">8</span>, <span class="dt">data =</span> n500)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure6.06-6.png" width="65%" /></p>
+<!-- AuthNote --- histograms in lattice but dotplots in book -->
+</div>
+</div>
+<div id="the-t-distribution" class="section level3 unnumbered">
+<h3>The t-Distribution</h3>
+<p>If we are working with one quantitative variable, we can compute confidence intervals and p-values
+using the following standard error formula:
+<span class="math display">\[
+SE = \frac{\sigma}{ \sqrt{n}} 
+\]</span>
+Once again, there is a small problem: we won’t know <span class="math inline">\(\sigma\)</span>. So we will estimate <span class="math inline">\(\sigma\)</span> using our data:
+<span class="math display">\[
+\displaystyle SE \approx \frac{s}{\sqrt{n}}
+\]</span>
+Unfortunately, the distribution of
+<span class="math display">\[
+\frac{\mean x - \mu}{ s/\sqrt{n}}
+\]</span>
+does not have a normal distribution. Instead the distribution is a bit ``shorter and fatter" than the normal
+distribution. The correct distribution is called the t-distribution with <span class="math inline">\(n-1\)</span> degrees of freedom.
+All t-distributions are symmetric and centered at zero. The smaller the degrees of freedom, the shorter and fatter
+the t-distribution.</p>
+<div id="example-6.11" class="section level4 unnumbered">
+<h4>Example 6.11</h4>
+<pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="dv">50</span> <span class="op">-</span><span class="st"> </span><span class="dv">1</span>; df</code></pre>
+<pre><code>## [1] 49</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">SE &lt;-<span class="st"> </span><span class="fl">10.5</span> <span class="op">/</span><span class="st"> </span><span class="kw">sqrt</span> (<span class="dv">50</span>); SE</code></pre>
+<pre><code>## [1] 1.484924</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="dv">8</span> <span class="op">-</span><span class="st"> </span><span class="dv">1</span>; df</code></pre>
+<pre><code>## [1] 7</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">SE &lt;-<span class="st"> </span><span class="fl">1.25</span> <span class="op">/</span><span class="st"> </span><span class="kw">sqrt</span> (<span class="dv">8</span>); SE</code></pre>
+<pre><code>## [1] 0.4419417</code></pre>
+</div>
+<div id="figure-6.8" class="section level4 unnumbered">
+<h4>Figure 6.8</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_fun</span>(<span class="kw">dnorm</span>(x, <span class="dv">0</span>, <span class="dv">1</span>) <span class="op">~</span>x, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>), <span class="dt">colour =</span> <span class="st">&quot;black&quot;</span>) <span class="op">%&gt;%</span>
+<span class="kw">gf_fun</span>(<span class="kw">dt</span>(x, <span class="dt">df =</span> <span class="dv">15</span>) <span class="op">~</span>x, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>), <span class="dt">colour =</span> <span class="st">&#39;green&#39;</span>) <span class="op">%&gt;%</span>
+<span class="kw">gf_fun</span>(<span class="kw">dt</span>(x, <span class="dt">df =</span> <span class="dv">5</span>) <span class="op">~</span>x, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>), <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure6.08-1.png" width="65%" /></p>
+</div>
+<div id="example-6.12" class="section level4 unnumbered">
+<h4>Example 6.12</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dt">df =</span> <span class="dv">15</span>)</code></pre>
+<pre><code>## [1] 2.13145</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pt</span>(<span class="fl">1.5</span>, <span class="dt">df =</span> <span class="dv">15</span>, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>)</code></pre>
+<pre><code>## [1] 0.07718333</code></pre>
+<p>Similar to the normal distribution, the function for t-distribution is set to find probability of the lower tail.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qnorm</span>(.<span class="dv">975</span>)</code></pre>
+<pre><code>## [1] 1.959964</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pnorm</span>(<span class="fl">1.5</span>, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>)</code></pre>
+<pre><code>## [1] 0.0668072</code></pre>
+</div>
+<div id="figure-6.9" class="section level4 unnumbered">
+<h4>Figure 6.9</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_fun</span>(<span class="kw">dt</span>(x, <span class="dt">df =</span> <span class="dv">15</span>) <span class="op">~</span>x, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_vline</span>(<span class="dt">xintercept =</span> <span class="op">~</span><span class="kw">c</span>(<span class="fl">2.131</span>,<span class="op">-</span><span class="fl">2.131</span>))</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure6.09-1.png" width="65%" /></p>
+<!-- AuthNote --- add label for vline on 2.131 -->
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_fun</span>(<span class="kw">dt</span>(x, <span class="dt">df =</span> <span class="dv">15</span>) <span class="op">~</span>x, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_vline</span>(<span class="dt">xintercept =</span> <span class="fl">1.5</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure6.09b-1.png" width="65%" /></p>
+<!-- AuthNote --- add label for vline on 1.5 -->
+</div>
+</div>
+</div>
+<div id="confidence-interval-for-a-mean-using-the-t-distribution" class="section level2">
+<h2><span class="header-section-number">6.5</span> Confidence Interval for a Mean Using the t-Distribution</h2>
+<div id="confidence-interval-for-a-mean-using-the-t-distribution-1" class="section level3 unnumbered">
+<h3>Confidence Interval for a Mean Using the t-Distribution</h3>
+<div id="example-6.13" class="section level4 unnumbered">
+<h4>Example 6.13</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(Flight179, <span class="dv">3</span>)</code></pre>
+<pre><code>##         Date Flight179 Flight180        MDY
+## 1 01/05/2010       368       308 2010-01-05
+## 2 01/15/2010       370       292 2010-01-15
+## 3 01/25/2010       354       290 2010-01-25</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dotplot</span>(<span class="op">~</span>Flight179, <span class="dt">binwidth =</span> <span class="dv">12</span>, <span class="dt">dotsize =</span> <span class="fl">0.3</span>, <span class="dt">data =</span> Flight179) <span class="co">#to check for normality</span></code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example6.13-1.png" width="65%" /></p>
+<!-- AuthNote --- irregular binwidth -->
+<p>RStudio can do all of the calculations for you if you give it the raw data:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">favstats</span>(<span class="op">~</span>Flight179, <span class="dt">data =</span> Flight179)</code></pre>
+<pre><code>##  min    Q1 median     Q3 max     mean     sd  n missing
+##  330 341.5  358.5 370.25 407 357.8611 20.178 36       0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t.test</span>(<span class="op">~</span>Flight179, <span class="dt">data =</span> Flight179)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  Flight179
+## t = 106.41, df = 35, p-value &lt; 2.2e-16
+## alternative hypothesis: true mean is not equal to 0
+## 95 percent confidence interval:
+##  351.0339 364.6884
+## sample estimates:
+## mean of x 
+##  357.8611</code></pre>
+<p>You can also zoom in just the information you want:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(<span class="kw">t.test</span>(<span class="op">~</span>Flight179, <span class="dt">data =</span> Flight179))</code></pre>
+<pre><code>##   mean of x    lower    upper level
+## 1  357.8611 351.0339 364.6884  0.95</code></pre>
+</div>
+<div id="example-6.14" class="section level4 unnumbered">
+<h4>Example 6.14</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(CommuteAtlanta, <span class="dv">3</span>)</code></pre>
+<pre><code>##      City Age Distance Time Sex
+## 1 Atlanta  19       10   15   M
+## 2 Atlanta  55       45   60   M
+## 3 Atlanta  48       12   45   M</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dens</span>(<span class="op">~</span>Time, <span class="dt">data =</span> CommuteAtlanta) <span class="co"># to check for normality</span></code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example6.14-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">favstats</span>(<span class="op">~</span>Time, <span class="dt">data =</span> CommuteAtlanta)</code></pre>
+<pre><code>##  min Q1 median Q3 max  mean       sd   n missing
+##    1 15     25 40 181 29.11 20.71831 500       0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(<span class="kw">t.test</span>(<span class="op">~</span>Time, <span class="dt">conf.level =</span> <span class="fl">0.99</span>, <span class="dt">data =</span> CommuteAtlanta))</code></pre>
+<pre><code>##   mean of x   lower   upper level
+## 1     29.11 26.7142 31.5058  0.99</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(<span class="kw">t.test</span>(<span class="op">~</span>Time, <span class="dt">conf.level =</span> <span class="fl">0.95</span>, <span class="dt">data =</span> CommuteAtlanta))</code></pre>
+<pre><code>##   mean of x    lower    upper level
+## 1     29.11 27.28958 30.93042  0.95</code></pre>
+
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(ManhattanApartments, <span class="dv">3</span>)</code></pre>
+<pre><code>##   Rent
+## 1 2275
+## 2 5495
+## 3 2250</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dotplot</span>(<span class="op">~</span>Rent, <span class="dt">binwidth =</span> <span class="dv">200</span>, <span class="dt">dotsize =</span> <span class="dv">1</span>, <span class="dt">data =</span> ManhattanApartments) <span class="co"># to check for normality</span></code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example6.15-1.png" width="65%" /></p>
+<!-- AuthNote --- irregular bins -->
+<pre class="sourceCode r"><code class="sourceCode r">Boot.Rent &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">1000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>Rent, <span class="dt">data =</span> <span class="kw">resample</span>(ManhattanApartments)) 
+<span class="kw">head</span>(Boot.Rent, <span class="dv">3</span>)</code></pre>
+<pre><code>##      mean
+## 1 2805.65
+## 2 3203.75
+## 3 3054.70</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">favstats</span>( <span class="op">~</span><span class="st"> </span>mean, <span class="dt">data =</span> Boot.Rent)</code></pre>
+<pre><code>##      min       Q1 median      Q3  max     mean       sd    n missing
+##  2480.95 2925.438 3130.7 3356.75 4407 3155.592 307.5631 1000       0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cdata</span>( <span class="op">~</span><span class="st"> </span>mean, <span class="fl">0.95</span>, <span class="dt">data =</span> Boot.Rent)</code></pre>
+<pre><code>##       low        hi central.p 
+##  2637.925  3807.081     0.950</code></pre>
+</div>
+</div>
+<div id="determining-sample-size-for-estimating-a-mean" class="section level3 unnumbered">
+<h3>Determining Sample Size for Estimating a Mean</h3>
+<div id="example-6.16" class="section level4 unnumbered">
+<h4>Example 6.16</h4>
+<pre class="sourceCode r"><code class="sourceCode r">n &lt;-<span class="st"> </span>(<span class="fl">1.96</span> <span class="op">*</span><span class="st"> </span><span class="fl">20.18</span> <span class="op">/</span><span class="st"> </span><span class="dv">2</span>) <span class="op">^</span><span class="st"> </span><span class="dv">2</span>; n</code></pre>
+<pre><code>## [1] 391.106</code></pre>
+</div>
+</div>
+</div>
+<div id="test-for-a-single-mean" class="section level2">
+<h2><span class="header-section-number">6.6</span> Test for a Single Mean</h2>
+<div id="example-6.17" class="section level4 unnumbered">
+<h4>Example 6.17</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(BodyTemp50)</code></pre>
+<pre><code>##   BodyTemp Pulse Gender    Sex
+## 1     97.6    69      0 Female
+## 2     99.4    77      1   Male
+## 3     99.0    75      0 Female
+## 4     98.8    84      1   Male
+## 5     98.0    71      0 Female
+## 6     98.9    76      1   Male</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dotplot</span>(<span class="op">~</span>BodyTemp, <span class="dt">dotsize =</span> <span class="dv">1</span>, <span class="dt">binwidth =</span> <span class="fl">.1</span>, <span class="dt">stackratio =</span> <span class="dv">2</span>, <span class="dt">data =</span> BodyTemp50) <span class="co"># to check for normality</span></code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example6.17-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">favstats</span>(<span class="op">~</span>BodyTemp, <span class="dt">data =</span> BodyTemp50)</code></pre>
+<pre><code>##   min   Q1 median   Q3   max  mean        sd  n missing
+##  96.4 97.8   98.2 98.8 100.8 98.26 0.7653197 50       0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t.test</span>(<span class="op">~</span>BodyTemp, <span class="dt">mu =</span> <span class="fl">98.6</span>, <span class="dt">data =</span> BodyTemp50)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  BodyTemp
+## t = -3.1414, df = 49, p-value = 0.002851
+## alternative hypothesis: true mean is not equal to 98.6
+## 95 percent confidence interval:
+##  98.0425 98.4775
+## sample estimates:
+## mean of x 
+##     98.26</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pval</span>(<span class="kw">t.test</span>(<span class="op">~</span>BodyTemp, <span class="dt">mu =</span> <span class="fl">98.6</span>, <span class="dt">data =</span> BodyTemp50)) <span class="co"># to find the p-value directly</span></code></pre>
+<pre><code>##     p.value 
+## 0.002850509</code></pre>
+</div>
+<div id="figure-6.17" class="section level4 unnumbered">
+<h4>Figure 6.17</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotFun</span>(<span class="kw">dt</span>(x, <span class="dt">df =</span> <span class="dv">49</span>) <span class="op">~</span>x, <span class="dt">x.lim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>))
+<span class="kw">plotDist</span>(<span class="st">&quot;t&quot;</span>, <span class="dt">params =</span> <span class="kw">list</span>(<span class="dt">df=</span><span class="dv">49</span>), <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">&quot;h&quot;</span>,<span class="st">&quot;l&quot;</span>), <span class="dt">groups =</span> (<span class="op">-</span><span class="fl">3.14</span> <span class="op">&lt;</span><span class="st"> </span>x <span class="op">&amp;</span><span class="st"> </span>x <span class="op">&lt;</span><span class="st"> </span><span class="fl">3.14</span>), <span class="dt">lty =</span> <span class="dv">1</span>)
+<span class="kw">ladd</span>(<span class="kw">grid.text</span>(<span class="st">&quot;3.14&quot;</span>,<span class="dv">3</span>,.<span class="dv">05</span>, <span class="dt">default.units =</span> <span class="st">&quot;native&quot;</span>, <span class="dt">hjust =</span> <span class="dv">0</span>))
+
+<span class="kw">gf_fun</span>(<span class="kw">dt</span>(x, <span class="dt">df =</span> <span class="dv">49</span>) <span class="op">~</span>x, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_vline</span>(<span class="dt">xintercept =</span> <span class="op">~</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">3.14</span>, <span class="fl">3.14</span>))</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure6.17-1.png" width="65%" /></p>
+<!-- AuthNote --- label vline at 3.14 -->
+</div>
+<div id="example-6.18" class="section level4 unnumbered">
+<h4>Example 6.18</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(FloridaLakes, <span class="dv">3</span>)</code></pre>
+<pre><code>##   ID      Lake Alkalinity  pH Calcium Chlorophyll AvgMercury NumSamples
+## 1  1 Alligator        5.9 6.1     3.0         0.7       1.23          5
+## 2  2     Annie        3.5 5.1     1.9         3.2       1.33          7
+## 3  3    Apopka      116.0 9.1    44.1       128.3       0.04          6
+##   MinMercury MaxMercury ThreeYrStdMercury AgeData
+## 1       0.85       1.43              1.53       1
+## 2       0.92       1.90              1.33       0
+## 3       0.04       0.06              0.04       0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dens</span>(<span class="op">~</span>Alkalinity, <span class="dt">data =</span> FloridaLakes) <span class="co"># to check for normality</span></code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example6.18-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">favstats</span>(<span class="op">~</span>Alkalinity, <span class="dt">data =</span> FloridaLakes)</code></pre>
+<pre><code>##  min  Q1 median   Q3 max     mean       sd  n missing
+##  1.2 6.6   19.6 66.5 128 37.53019 38.20353 53       0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t.test</span>(<span class="op">~</span>Alkalinity, <span class="dt">alt =</span> <span class="st">&quot;greater&quot;</span>, <span class="dt">mu =</span> <span class="dv">35</span>, <span class="dt">data =</span> FloridaLakes)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  Alkalinity
+## t = 0.48216, df = 52, p-value = 0.3159
+## alternative hypothesis: true mean is greater than 35
+## 95 percent confidence interval:
+##  28.74199      Inf
+## sample estimates:
+## mean of x 
+##  37.53019</code></pre>
+<p>Notice the “greater” for the alternative hypothesis.</p>
+</div>
+</div>
+<div id="distribution-of-differences-in-proportions" class="section level2">
+<h2><span class="header-section-number">6.7</span> Distribution of Differences in Proportions</h2>
+<div id="example-6.19" class="section level4 unnumbered">
+<h4>Example 6.19</h4>
+<pre class="sourceCode r"><code class="sourceCode r">OneTrueLove &lt;-<span class="st"> </span><span class="kw">read.file</span>(<span class="st">&quot;OneTrueLove.csv&quot;</span>)</code></pre>
+<pre><code>## Reading data with read.csv()</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(OneTrueLove)</code></pre>
+<pre><code>##   Gender Response
+## 1   Male    Agree
+## 2   Male    Agree
+## 3   Male    Agree
+## 4   Male    Agree
+## 5   Male    Agree
+## 6   Male    Agree</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tally</span>(Response<span class="op">~</span>Gender, <span class="dt">format =</span> <span class="st">&quot;count&quot;</span>, <span class="dt">margins =</span> <span class="ot">TRUE</span>, <span class="dt">data =</span> OneTrueLove)</code></pre>
+<pre><code>##             Gender
+## Response     Female Male
+##   Agree         363  372
+##   Disagree     1005  807
+##   Don&#39;t know     44   34
+##   Total        1412 1213</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>(Response<span class="op">~</span>Gender, <span class="dt">data =</span> OneTrueLove)</code></pre>
+<pre><code>## prop_Agree.Female   prop_Agree.Male 
+##         0.2570822         0.3066777</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">diff</span>(<span class="kw">prop</span>(Response<span class="op">~</span>Gender, <span class="dt">data =</span> OneTrueLove))</code></pre>
+<pre><code>## prop_Agree.Male 
+##      0.04959551</code></pre>
+</div>
+<div id="figure-6.20" class="section level4 unnumbered">
+<h4>Figure 6.20</h4>
+<pre class="sourceCode r"><code class="sourceCode r">Boot.Love &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">5000</span>)<span class="op">*</span><span class="kw">diff</span>(<span class="kw">prop</span>(Response<span class="op">~</span>Gender, <span class="dt">data =</span> <span class="kw">resample</span>(OneTrueLove)))
+<span class="kw">head</span>(Boot.Love, <span class="dv">3</span>)</code></pre>
+<pre><code>##   prop_Agree.Male
+## 1      0.04828110
+## 2      0.04628336
+## 3      0.05902359</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dhistogram</span>(<span class="op">~</span><span class="st"> </span>prop_Agree.Male, <span class="dt">data =</span> Boot.Love) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_fitdistr</span>()</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure6.20-1.png" width="65%" /></p>
+</div>
+<div id="example-6.20" class="section level4 unnumbered">
+<h4>Example 6.20</h4>
+<pre class="sourceCode r"><code class="sourceCode r">SE &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="fl">0.257</span><span class="op">*</span>(<span class="dv">1</span><span class="fl">-0.257</span>)<span class="op">/</span><span class="dv">1412</span> <span class="op">+</span><span class="st"> </span><span class="fl">0.307</span><span class="op">*</span>(<span class="dv">1</span><span class="fl">-0.307</span>)<span class="op">/</span><span class="dv">1213</span>); SE</code></pre>
+<pre><code>## [1] 0.01762461</code></pre>
+</div>
+</div>
+<div id="confidence-interval-for-a-difference-in-proportions" class="section level2">
+<h2><span class="header-section-number">6.8</span> Confidence Interval for a Difference in Proportions</h2>
+<div id="data-6.3" class="section level4 unnumbered">
+<h4>Data 6.3</h4>
+<pre class="sourceCode r"><code class="sourceCode r">success &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">158</span>, <span class="dv">109</span>)
+n &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">444</span>,<span class="dv">922</span>)</code></pre>
+</div>
+<div id="example-6.21" class="section level4 unnumbered">
+<h4>Example 6.21</h4>
+<pre class="sourceCode r"><code class="sourceCode r">success &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">158</span>, <span class="dv">109</span>)
+n &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">444</span>,<span class="dv">922</span>)
+<span class="kw">prop.test</span>(success, n, <span class="dt">conf.level =</span> <span class="fl">0.90</span>)</code></pre>
+<pre><code>## 
+##  2-sample test for equality of proportions with continuity
+##  correction
+## 
+## data:  success out of n
+## X-squared = 106.11, df = 1, p-value &lt; 2.2e-16
+## alternative hypothesis: two.sided
+## 90 percent confidence interval:
+##  0.1947026 0.2805666
+## sample estimates:
+##    prop 1    prop 2 
+## 0.3558559 0.1182213</code></pre>
+</div>
+</div>
+<div id="test-for-a-difference-in-proportions" class="section level2">
+<h2><span class="header-section-number">6.9</span> Test For a Difference in Proportions</h2>
+<div id="data-6.4" class="section level4 unnumbered">
+<h4>Data 6.4</h4>
+<pre class="sourceCode r"><code class="sourceCode r">SplitSteal &lt;-<span class="st"> </span><span class="kw">rbind</span>( 
+  <span class="kw">do</span>(<span class="dv">187</span>) <span class="op">*</span><span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">agegroup =</span> <span class="st">&quot;Under40&quot;</span>, <span class="dt">decision =</span> <span class="st">&quot;Split&quot;</span>),
+  <span class="kw">do</span>(<span class="dv">195</span>) <span class="op">*</span><span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">agegroup =</span> <span class="st">&quot;Under40&quot;</span>, <span class="dt">decision =</span> <span class="st">&quot;Steal&quot;</span>),
+  <span class="kw">do</span>(<span class="dv">116</span>) <span class="op">*</span><span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">agegroup =</span> <span class="st">&quot;Over40&quot;</span>,  <span class="dt">decision =</span> <span class="st">&quot;Split&quot;</span>),
+  <span class="kw">do</span>(<span class="dv">76</span>)  <span class="op">*</span><span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">agegroup =</span> <span class="st">&quot;Over40&quot;</span>,  <span class="dt">decision =</span> <span class="st">&quot;Steal&quot;</span>)
+  )</code></pre>
+</div>
+<div id="example-6.22" class="section level4 unnumbered">
+<h4>Example 6.22</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>(decision<span class="op">~</span>agegroup, <span class="dt">data =</span> SplitSteal) <span class="co"># sample prop within each group</span></code></pre>
+<pre><code>## prop_Split.Under40  prop_Split.Over40 
+##          0.4895288          0.6041667</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>(<span class="op">~</span>decision, <span class="dt">data =</span> SplitSteal) <span class="co"># pooled proportion</span></code></pre>
+<pre><code>## prop_Split 
+##  0.5278746</code></pre>
+</div>
+<div id="example-6.23" class="section level4 unnumbered">
+<h4>Example 6.23</h4>
+<pre class="sourceCode r"><code class="sourceCode r">diff &lt;-<span class="st"> </span><span class="kw">diff</span>(<span class="kw">prop</span>(decision<span class="op">~</span>agegroup, <span class="dt">data =</span> SplitSteal)); diff</code></pre>
+<pre><code>## prop_Split.Over40 
+##         0.1146379</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop.test</span>(decision<span class="op">~</span>agegroup, <span class="dt">data =</span> SplitSteal)</code></pre>
+<pre><code>## 
+##  2-sample test for equality of proportions with continuity
+##  correction
+## 
+## data:  tally(decision ~ agegroup)
+## X-squared = 6.2857, df = 1, p-value = 0.01217
+## alternative hypothesis: two.sided
+## 95 percent confidence interval:
+##  -0.20397777 -0.02529797
+## sample estimates:
+##    prop 1    prop 2 
+## 0.4895288 0.6041667</code></pre>
+</div>
+</div>
+<div id="distribution-of-differences-in-means" class="section level2">
+<h2><span class="header-section-number">6.10</span> Distribution of Differences in Means</h2>
+<div id="figure-6.21" class="section level4 unnumbered">
+<h4>Figure 6.21</h4>
+<pre class="sourceCode r"><code class="sourceCode r">BootE &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">2000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">diff</span>(<span class="kw">mean</span>(Exercise<span class="op">~</span>Gender, <span class="dt">data =</span> <span class="kw">resample</span>(ExerciseHours)))
+<span class="kw">head</span>(BootE, <span class="dv">3</span>)</code></pre>
+<pre><code>##          M
+## 1 4.681818
+## 2 3.493056
+## 3 5.560000</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dhistogram</span>(<span class="op">~</span>M, <span class="dt">binwidth =</span> <span class="fl">.5</span>, <span class="dt">data =</span> BootE) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_fitdistr</span>()</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure6.21-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r">Random.Smiles &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">2000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">diff</span>(<span class="kw">mean</span>(Leniency <span class="op">~</span><span class="st"> </span><span class="kw">shuffle</span>(Group), <span class="dt">data =</span> Smiles))
+<span class="kw">head</span>(Random.Smiles, <span class="dv">3</span>)</code></pre>
+<pre><code>##         smile
+## 1 -0.08823529
+## 2  0.20588235
+## 3 -0.11764706</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dhistogram</span>(<span class="op">~</span>smile, <span class="dt">bins =</span> <span class="dv">24</span>, <span class="dt">data =</span> Random.Smiles) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_fitdistr</span>()</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure6.21b-1.png" width="65%" /></p>
+</div>
+<div id="the-t-distribution-1" class="section level3 unnumbered">
+<h3>The t-Distribution</h3>
+<div id="example-6.24" class="section level4 unnumbered">
+<h4>Example 6.24</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">favstats</span>(Exercise<span class="op">~</span>Gender, <span class="dt">data =</span> ExerciseHours)</code></pre>
+<pre><code>##   Gender min Q1 median    Q3 max mean       sd  n missing
+## 1      F   0  3     10 12.00  34  9.4 7.407359 30       0
+## 2      M   2  3     12 19.25  30 12.4 8.798325 20       0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">SE &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="fl">8.80</span><span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">20</span> <span class="op">+</span><span class="st"> </span><span class="fl">7.41</span><span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">30</span>); SE</code></pre>
+<pre><code>## [1] 2.387943</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">favstats</span>(Leniency<span class="op">~</span>Group, <span class="dt">data =</span> Smiles)</code></pre>
+<pre><code>##     Group min  Q1 median    Q3 max     mean       sd  n missing
+## 1 neutral 2.0 3.0   4.00 4.875   8 4.117647 1.522850 34       0
+## 2   smile 2.5 3.5   4.75 5.875   9 4.911765 1.680866 34       0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">SE &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="fl">1.68</span><span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">34</span> <span class="op">+</span><span class="st"> </span><span class="fl">1.52</span><span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">34</span>); SE</code></pre>
+<pre><code>## [1] 0.3885418</code></pre>
+<!-- Example 6.25 -->
+</div>
+</div>
+</div>
+<div id="confidence-interval-for-a-difference-in-means" class="section level2">
+<h2><span class="header-section-number">6.11</span> Confidence Interval for a Difference in Means</h2>
+<div id="example-6.26" class="section level4 unnumbered">
+<h4>Example 6.26</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(CommuteStLouis)</code></pre>
+<pre><code>##        City Age Distance Time Sex
+## 1 St. Louis  52       10   20   M
+## 2 St. Louis  21       35   40   F
+## 3 St. Louis  23       40   45   F
+## 4 St. Louis  38        0    2   M
+## 5 St. Louis  26       15   25   M
+## 6 St. Louis  46        7   12   M</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">favstats</span>(<span class="op">~</span>Time, <span class="dt">data =</span> CommuteStLouis)</code></pre>
+<pre><code>##  min   Q1 median Q3 max  mean       sd   n missing
+##    1 11.5     20 30 130 21.97 14.23244 500       0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">favstats</span>(<span class="op">~</span>Time, <span class="dt">data =</span> CommuteAtlanta)</code></pre>
+<pre><code>##  min Q1 median Q3 max  mean       sd   n missing
+##    1 15     25 40 181 29.11 20.71831 500       0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_boxplot</span>(Time <span class="op">~</span><span class="st"> &quot;, x = &quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">200</span>), <span class="dt">data =</span> CommuteAtlanta) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_refine</span>(<span class="kw">coord_flip</span>()) <span class="co"># to check for normality</span></code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example6.26-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_boxplot</span>(Time <span class="op">~</span><span class="st"> &quot;, x = &quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">200</span>), <span class="dt">data =</span> CommuteStLouis) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_refine</span>(<span class="kw">coord_flip</span>()) <span class="co"># to check for normality</span></code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example6.26-2.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(<span class="kw">t.test</span>(CommuteAtlanta<span class="op">$</span>Time, CommuteStLouis<span class="op">$</span>Time, <span class="dt">conf.level =</span> <span class="fl">0.90</span>))</code></pre>
+<pre><code>##   mean of x mean of y    lower    upper level
+## 1     29.11     21.97 5.289066 8.990934   0.9</code></pre>
+</div>
+</div>
+<div id="test-for-a-difference-in-means" class="section level2">
+<h2><span class="header-section-number">6.12</span> Test for a Difference in Means</h2>
+<div id="example-6.27" class="section level4 unnumbered">
+<h4>Example 6.27</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(Smiles, <span class="dv">3</span>)</code></pre>
+<pre><code>##   Leniency Group
+## 1        7 smile
+## 2        3 smile
+## 3        6 smile</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_boxplot</span>(Leniency<span class="op">~</span>Group, <span class="dt">data =</span> Smiles) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_refine</span>(<span class="kw">coord_flip</span>()) <span class="co"># to check for normality</span></code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example6.27-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t.test</span>(Leniency<span class="op">~</span>Group, <span class="dt">alt =</span> <span class="st">&quot;less&quot;</span>, <span class="dt">data =</span> Smiles)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  Leniency by Group
+## t = -2.0415, df = 65.367, p-value = 0.02262
+## alternative hypothesis: true difference in means is less than 0
+## 95 percent confidence interval:
+##        -Inf -0.1451043
+## sample estimates:
+## mean in group neutral   mean in group smile 
+##              4.117647              4.911765</code></pre>
+</div>
+</div>
+<div id="paired-difference-in-means" class="section level2">
+<h2><span class="header-section-number">6.13</span> Paired Difference in Means</h2>
+<div id="example-6.28" class="section level4 unnumbered">
+<h4>Example 6.28</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(Wetsuits, <span class="dv">3</span>)</code></pre>
+<pre><code>##   Wetsuit NoWetsuit Gender       Type    Sex
+## 1    1.57      1.49      F    swimmer Female
+## 2    1.47      1.37      F triathlete Female
+## 3    1.42      1.35      F    swimmer Female</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dotplot</span>(<span class="op">~</span><span class="st"> </span>Wetsuit, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="fl">1.1</span>, <span class="fl">1.8</span>), <span class="dt">binwidth =</span> <span class="fl">.04</span>, <span class="dt">dotsize =</span> <span class="fl">.8</span>, <span class="dt">data =</span> Wetsuits) <span class="co"># to check for normality</span></code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example6.28-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dotplot</span>(<span class="op">~</span><span class="st"> </span>NoWetsuit, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="fl">1.1</span>, <span class="fl">1.8</span>), <span class="dt">binwidth =</span> <span class="fl">.04</span>, <span class="dt">dotsize =</span> <span class="fl">.8</span>, <span class="dt">data =</span> Wetsuits) <span class="co"># to check for normality</span></code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example6.28-2.png" width="65%" /></p>
+<!-- AuthNote --- irregular bin -->
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t.test</span>(Wetsuits<span class="op">$</span>Wetsuit, Wetsuits<span class="op">$</span>NoWetsuit)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  Wetsuits$Wetsuit and Wetsuits$NoWetsuit
+## t = 1.3688, df = 21.974, p-value = 0.1849
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -0.03992937  0.19492937
+## sample estimates:
+## mean of x mean of y 
+##  1.506667  1.429167</code></pre>
+</div>
+<div id="example-6.29" class="section level4 unnumbered">
+<h4>Example 6.29</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(Wetsuits, <span class="dv">3</span>)</code></pre>
+<pre><code>##   Wetsuit NoWetsuit Gender       Type    Sex
+## 1    1.57      1.49      F    swimmer Female
+## 2    1.47      1.37      F triathlete Female
+## 3    1.42      1.35      F    swimmer Female</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t.test</span>(Wetsuits<span class="op">$</span>Wetsuit, Wetsuits<span class="op">$</span>NoWetsuit, <span class="dt">paired =</span> <span class="ot">TRUE</span>)</code></pre>
+<pre><code>## 
+##  Paired t-test
+## 
+## data:  Wetsuits$Wetsuit and Wetsuits$NoWetsuit
+## t = 12.318, df = 11, p-value = 8.885e-08
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  0.06365244 0.09134756
+## sample estimates:
+## mean of the differences 
+##                  0.0775</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dotplot</span>(<span class="op">~</span>(Wetsuit <span class="op">-</span><span class="st"> </span>NoWetsuit), <span class="dt">binwidth =</span> <span class="fl">.01</span>, <span class="dt">dotsize =</span> <span class="fl">.4</span>, <span class="dt">data =</span> Wetsuits)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example6.29-1.png" width="65%" /></p>
+</div>
+<div id="example-6.30" class="section level4 unnumbered">
+<h4>Example 6.30</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(<span class="kw">t.test</span>(Wetsuits<span class="op">$</span>Wetsuit, Wetsuits<span class="op">$</span>NoWetsuit, <span class="dt">paired =</span> <span class="ot">TRUE</span>))</code></pre>
+<pre><code>##   mean of the differences      lower      upper level
+## 1                  0.0775 0.06365244 0.09134756  0.95</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(<span class="kw">t.test</span>( <span class="op">~</span><span class="st"> </span>(Wetsuit <span class="op">-</span><span class="st"> </span>NoWetsuit), <span class="dt">data =</span> Wetsuits))</code></pre>
+<pre><code>##   mean of x      lower      upper level
+## 1    0.0775 0.06365244 0.09134756  0.95</code></pre>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="approximating-with-a-distribution.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="chi-squared-tests-for-categorical-variables.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["Lock5WithR.pdf"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

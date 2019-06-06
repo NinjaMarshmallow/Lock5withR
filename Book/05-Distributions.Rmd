@@ -1,0 +1,245 @@
+`r chapter <- 4`
+```{r include=FALSE}
+require(Lock5withR)
+require(mosaic)
+require("fastR")
+```
+# Approximating with a Distribution
+
+## Normal Distributions
+
+### Density Curves {-}
+
+#### Example 5.1 {-}
+
+```{r Example5.1, cache = TRUE, seed = 1234}
+Bootstrap <- do(1000) * mean( ~ Time, data = resample(CommuteAtlanta))
+head(Bootstrap, 3)
+gf_dhistogram( ~ mean, data = Bootstrap)
+gf_dens( ~ mean, data = Bootstrap)
+```
+
+
+```{r Figure5.2, include = FALSE, ref.label = "Example5.1" }
+
+```
+
+
+
+```{r Example5.1b}
+prop( ~ (mean <= 30), data = Bootstrap)                # proportion less than 30 min
+prop( ~ (mean >= 31), data = Bootstrap)                # proportion greater than 31 min
+prop( ~ (mean >= 30 & mean <= 31), data = Bootstrap)   # proportion between 30 and 31 min
+```
+
+
+
+### Normal Distributions {-}
+
+Normal distributions
+<!-- begin itemize -->
+
+#.  are symmetric, unimodel, and bell-shaped
+#. can have any combination of mean and standard deviation (as long as the standard deviation is positive)
+#. satisfy the 68--95--99.7 rule:
+
+Approximately 68\% of any normal distribution lies within 1 standard deviation of the mean.
+
+Approximately 95\% of any normal distribution lies within 2 standard deviations of the mean.
+
+Approximately 99.7\% of any normal distribution lies within 3 standard deviations of the mean.
+<!-- end itemize -->
+
+Many naturally occurring distributions are approximately normally distributed. Normal distributions are also an important part of statistical inference.
+The `gf_dist()` function can be used to plot many common distributions.
+
+#### Figure 5.5 {-}
+
+```{r Figure5.5}
+gf_dist("norm", mean = 0, sd = 1, xlim = c(-5, 6)) %>%
+  gf_dist("norm", mean = 2, sd = 1, colour = "red")
+```
+
+
+```{r Figure5.5b, opts.label = "fig3"}
+gf_dist("norm", mean = 0, sd = 1, xlim = c(-5, 5)) %>%
+  gf_dist("norm", mean = 0, sd = 2, colour = "red") %>%
+  gf_dist("norm", mean = 0, sd = 3, colour = "green")
+```
+
+<!-- AuthNote --- the sd argument doesn't seem to be able to handle values between 0 and 1 when the xlim isn't between 0 and 1, originally this was sd = .5, 1, 2 -->
+#### Example 5.2 {-}
+
+```{r Example5.2, opts.label = "fig3", fig.keep = 'all', fig.show = 'hold'}
+gf_dist("norm", mean = 75, sd = 10, xlim = c(40, 110))
+gf_dist("norm", mean = 7.1, sd = 1.1, xlim = c(2.7, 11.5))
+gf_dist("norm", mean = 0, sd = 0.02, xlim = c(-.07, .07))
+```
+
+
+```{r Figure5.6, include = FALSE, ref.label = "Example5.2" }
+
+```
+
+
+
+### Finding Normal Probabilities and Percentiles {-}
+
+The two main functions we need for working with normal distributions are `pnorm()` and `qnorm()`.
+`pnorm()` computes the proportion of a normal distribution below a specified value:
+
+\[
+\mbox{\texttt{pnorm(x, mean = $\mu$, sd = $\sigma$)}} = \Prob(X \le x)
+\]
+when $X \sim \Norm(\mu, \sigma)$.
+
+We can obtain arbitrary probabilities using pnorm()
+
+#### Example 5.3 {-}
+
+```{r Example5.3, opts.label = "fig4"}
+pnorm(90, 75, 10, lower.tail = FALSE) # proportion of scores above 90
+xpnorm(90, 75, 10, lower.tail = FALSE)
+```
+
+
+The `xpnorm()` function gives a bit more verbose output and also gives you a picture. Notice the <span style="color:brown">lower.tail = FALSE</span>. This is added because the default for `pnorm()` and `xpnorm()` finds the lower tail, not the upper tail. However, we can also subtract the proportion of the lower tail from 1 to find the the proportion of the upper tail.
+
+```{r Figure5.7, include = FALSE, ref.label = "Example5.3" }
+
+```
+
+
+#### Example 5.4 {-}
+
+`qnorm()` goes the other direction:  You provide the quantile (percentile expressed as a decimal) and R  gives you the value.
+```{r Example5.4, opts.label = "fig4"}
+qnorm(0.2, 75, 10) # 20th percentile in Norm(75, 10)
+xqnorm(0.2, 75, 10)  
+```
+
+
+```{r Figure5.8, include = FALSE, ref.label = "Example5.4" }
+
+```
+
+
+### Standard Normal N(0,1) {-}
+
+Because probabilities in a normal distribution depend only on the number of standard deviations above and below the mean, it is useful to define $Z$-scores (also called standardized scores) as follows:
+
+\[
+\mbox{$Z$-score} = \frac{ \mbox{value} - \mbox{mean} } { \mbox{standard deviation} }
+\]
+
+If we know the population mean and standard deviation, we can plug those in.  When we do not, we will use the mean and standard deviation of a random sample as an estimate.
+
+Z-scores provide a second way to compute normal probabilities.
+
+#### Example 5.5 {-}
+
+```{r Example5.5, tidy = FALSE, opts.label = "fig4"}
+z30 <- (30 - 29.11) / 0.93; z30  # z-score for 30 min
+z31 <- (31 - 29.11) / 0.93; z31  # z-score for 31 min
+xpnorm(c(30, 31), 29.11, 0.93)   # original normal distribution proportion between 30 and 31 min
+xpnorm(c(z30, z31))              # standardized distribution proportion between 30 and 31 min
+pnorm(z31) - pnorm(z30)
+```
+
+
+```{r Figure5.9, include = FALSE, ref.label = "Example5.5" }
+
+```
+
+
+```{r Example5.5b, tidy = FALSE, opts.label = "fig4"}
+xpnorm(0.957)                      # proportion with z-score below 0.957
+xpnorm(2.032, lower.tail = FALSE)  # proportion with z-score above 2.032
+pnorm(30, 29.11, 0.93)          
+pnorm(31, 29.11, 0.93, lower.tail = FALSE)
+```
+
+
+```{r Figure5.10, include = FALSE, ref.label = "Example5.5b" }
+
+```
+
+
+#### Example 5.6 {-}
+
+```{r Example5.6}
+z <- qnorm(0.2); z
+75 + z * 10
+```
+
+
+
+## Confidence Intervals and P-values Using Normal Distributions
+
+### Confidence Intervals Based on a Normal Distribution {-}
+
+#### Example 5.7 {-}
+```{r Example5.7, cache = TRUE, seed = 1234}
+Bootstrap <- do(1000) * mean( ~ Time, data = resample(CommuteAtlanta)) 
+gf_dotplot( ~ mean, binwidth = 0.1, dotsize = .6, data = Bootstrap)
+```
+
+
+```{r Figure5.15, include = FALSE, ref.label = "Example5.7" }
+
+```
+
+
+```{r Example5.7b}
+xqnorm(c(0.025, 0.975), 29.11, 0.915)   # 95<!--  confidence interval for the normal distribution -->
+```
+
+
+```{r Figure5.16, include = FALSE, ref.label = "Example5.7b" }
+
+```
+
+
+```{r Example5.7c}
+qnorm(0.005, 29.11, 0.915) # lower endpoint for 99<!--  confidence interval -->
+qnorm(0.995, 29.11, 0.915) # upper endpoint for 99<!--  confidence interval -->
+
+qnorm(0.05, 29.11, 0.915) # lower endpoint for 90<!--  confidence interval -->
+qnorm(0.95, 29.11, 0.915) # upper endpoint for 90<!--  confidence interval -->
+```
+
+
+#### Example 5.8 {-}
+```{r Example5.8}
+qnorm(0.005, 13.10, 0.20) # lower endpoint for 99<!--  confidence interval -->
+qnorm(0.995, 13.10, 0.20) # upper endpoint for 99<!--  confidence interval -->
+```
+
+
+### P-values Based on a Normal Distribution {-}
+
+#### Example 5.9 {-}
+```{r Example5.9, cache = TRUE, seed = 1234, opt.label = "fig1"}
+Randomization.Temp <- do(10000) * (mean( ~ BodyTemp, data = resample(BodyTemp50)) + 0.34)
+gf_dhistogram( ~ result, binwidth = .025, data = Randomization.Temp) %>%
+  gf_fitdistr()
+```
+
+^[`gf_fitdistr()` has default arguments that will add a normal distribution, these defaults can be changed]
+<!-- AuthNote --- the original graph used 'mean' as the variable but Randomization.Temp only contains 'result' so I switched it to that  -->
+```{r Example5.9b}
+pnorm(98.26, 98.6, 0.1066)
+2 * pnorm(98.26, 98.6, 0.1066)
+```
+
+```{r Example5.9c}
+z <- (98.26 - 98.6) / 0.1066; z
+pnorm(z)
+2 * pnorm(z)
+```
+
+
+#### Example 5.10 {-}
+```{r Example5.10}
+pnorm(0.66, 0.65, 0.013, lower.tail = FALSE)
+```

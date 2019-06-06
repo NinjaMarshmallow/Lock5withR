@@ -50,7 +50,7 @@ OneTrueLove2 <-
 
 ### One Categorical Variable {-}
 
-From the dataset we named as <span style="color:blue">OneTrueLove</span>, we can use the `prop()()` function to quickly find **proportions**.
+From the dataset we named as <span style="color:blue">OneTrueLove</span>, we can use the `prop()` function to quickly find **proportions**.
 ```{r proportion}
 prop( ~ Response, data = OneTrueLove)
 ```
@@ -58,7 +58,7 @@ prop( ~ Response, data = OneTrueLove)
 
 #### Table 2.1 {-}
 
-We can also tabulate the categorical variable to display the _frequency_ by using the `tally()()` function. The default in tallying is to not include the row totals, or column totals when there are two variables. These are called marginal totals and if you want them, you can change the default.
+We can also tabulate the categorical variable to display the _frequency_ by using the `tally()` function. The default in tallying is to not include the row totals, or column totals when there are two variables. These are called marginal totals and if you want them, you can change the default.
 ```{r Table2.1}
 tally( ~ Response, margin = TRUE, data = OneTrueLove)
 ```
@@ -101,7 +101,7 @@ gf_bar( ~ Response, data = OneTrueLove)
 
 ### Two Categorical Variables: Two-Way Tables {-}
 
-Often, it is useful to compute cross tables for two (or more) variables. We can again use `tally()()` for several ways to investigate a two-way table.
+Often, it is useful to compute cross tables for two (or more) variables. We can again use `tally()` for several ways to investigate a two-way table.
 
 #### Table 2.3 {-}
 
@@ -119,7 +119,7 @@ tally( ~ Response + Gender, margins = TRUE, data = OneTrueLove)
 
 #### Example 2.5 {-}
 
-Similar to one categorical variable, we can use the `prop()()` function to find the proportion of two variables. The first line results in the proportion of females who agree and the proportion of males who agree. The second line shows the proportion who agree that are female and the proportion who disagree  that are female. The third results in the proportion of all the survey responders that are female.
+Similar to one categorical variable, we can use the `prop()` function to find the proportion of two variables. The first line results in the proportion of females who agree and the proportion of males who agree. The second line shows the proportion who agree that are female and the proportion who disagree  that are female. The third results in the proportion of all the survey responders that are female.
 ```{r Example2.5}
 prop(Response~Gender, data = OneTrueLove)
 prop(Gender~Response, data = OneTrueLove)
@@ -162,7 +162,7 @@ prop( ~ Award, success = "Olympic", data = StudentSurvey)
 
 #### Example 2.7 {-}
 
-To calculate the difference of certain statistics, we can use the `diff()()` function. Here we use it to find the difference in proportions, but it can be used for means, medians, and etc.
+To calculate the difference of certain statistics, we can use the `diff()` function. Here we use it to find the difference in proportions, but it can be used for means, medians, and etc.
 ```{r Example2.7}
 diff(prop(Award~Gender, success = "Olympic", data = StudentSurvey))
 ```
@@ -233,8 +233,8 @@ In other words, there are three pieces of information we must provide to
 R  in order to get the plot we want:
 <!-- begin itemize -->
 
-  #. 		The kind of plot (`gf_histogram()()`, `gf_bar()()`, 
-		`gf_dens()()`, etc.)
+  #. 		The kind of plot (`gf_histogram()`, `gf_bar()`, 
+		`gf_dens()`, etc.)
 	#. 		The name of the variable 
 	#. 		The name of the data frame this variable is a part of.
 <!-- end itemize -->
@@ -251,7 +251,7 @@ gf_dotplot(~ Longevity, binwidth = 1, dotsize = .75, data = MammalLongevity)
 <!-- AuthNote --- should be count not density -->
 #### Table 2.15 {-}
 
-Although `tally()()` works with quantitative variables as well as categorical variables, this is only useful when there are not too many different values for the variable.
+Although `tally()` works with quantitative variables as well as categorical variables, this is only useful when there are not too many different values for the variable.
 ```{r Table2.15}
 tally( ~ Longevity, margin = TRUE, data = MammalLongevity)
 ```
@@ -303,7 +303,7 @@ gf_histogram( ~ Longevity, data = MammalLongevity, binwidth = 2)
 
 #### Figure 2.8 {-}
 
-The various options available for the `gf_histogram()()` function enable us to replicate Figure 2.8, some including closing, adding counts, labels, and limit to the y-axis (similar for x-axis). Using `gf_dhistogram()()` measures the y-axis by density rather than count. This is useful for determing relative amounts.
+The various options available for the `gf_histogram()` function enable us to replicate Figure 2.8, some including closing, adding counts, labels, and limit to the y-axis (similar for x-axis). Using `gf_dhistogram()` measures the y-axis by density rather than count. This is useful for determing relative amounts.
 ```{r Figure2.8, opts.label = "fig3", tidy = FALSE, message = FALSE, warning = FALSE}
 gf_histogram( ~ Pulse, binwidth = 5, data = StudentSurvey)
 gf_histogram( ~ Exercise, binwidth = 2, closed = 'left',
@@ -313,7 +313,7 @@ gf_dhistogram( ~Piercings, binwidth = 1, data = StudentSurvey)
 
 
 Sometimes a **frequency polygon** provides a more useful view.
-The only thing that changes is `gf_histogram()()` becomes `gf_freqpoly()()`.
+The only thing that changes is `gf_histogram()` becomes `gf_freqpoly()`.
 
 ```{r freqpolygon, message = FALSE, warning = FALSE}
 gf_freqpoly(..density.. ~ Exercise, bins = 10, data = StudentSurvey)
@@ -327,7 +327,7 @@ gf_dhistogram( ~ Exercise, bins = 10, data = StudentSurvey) %>%
 ```
 
 
-R  also provides a "smooth" version called a density plot; just change the function name from `gf_histogram()()` to `gf_density()()`, also `gf_dens()()` is a modified version of `gf_density()` that isn't shaded in and may be useful for layering plots.
+R  also provides a "smooth" version called a density plot; just change the function name from `gf_histogram()` to `gf_density()`, also `gf_dens()` is a modified version of `gf_density()` that isn't shaded in and may be useful for layering plots.
 ```{r densityplot, message = FALSE, warning = FALSE}
 gf_density( ~ Longevity, data = MammalLongevity)
 gf_dens( ~ BirthRate, data = AllCountries )
@@ -383,7 +383,7 @@ ICUOld <- subset(ICUAdmissions, Age > 50)
 <!-- @ -->
 
 <!-- end enumerate -->
-The `subset()()` function can use any condition that evaluates to TRUE or FALSE for each row (case) in the data set.
+The `subset()` function can use any condition that evaluates to TRUE or FALSE for each row (case) in the data set.
 
 #### Example 2.11 {-}
 
@@ -446,7 +446,7 @@ gf_dotplot( ~ SanFrancisco, binwidth = 1, dotsize = .5, stackratio = 2,
 <!-- AuthNote --- added explanation for arguments and chaining gf_lims() -->
 #### Example 2.16 {-}
 
-Although both `summary()()` and `favstats()()` calculate the **standard deviation** of a variable, we can also use `sd()()` to find just the standard deviation. 
+Although both `summary()` and `favstats()` calculate the **standard deviation** of a variable, we can also use `sd()` to find just the standard deviation. 
 ```{r standard-deviation}
 sd( ~ DesMoines, data = April14Temps)        
 sd( ~ SanFrancisco, data = April14Temps)
@@ -456,7 +456,7 @@ var( ~ DesMoines, data = April14Temps)        # variance = sd^2
 
 #### Example 2.17 {-}
 
-To see that the distribution is indeed symmetric and approximately bell-shaped, you can chain the function `gf_dens()()`. It can be helpful to set alpha (the transparency argument) lower than 1 to make the plot easier to read.
+To see that the distribution is indeed symmetric and approximately bell-shaped, you can chain the function `gf_dens()`. It can be helpful to set alpha (the transparency argument) lower than 1 to make the plot easier to read.
 ```{r Example2.17}
 gf_dhistogram( ~ Pulse, data = StudentSurvey, alpha = .5) %>% gf_dens( ~ Pulse)
 mean <- mean( ~ Pulse, data = StudentSurvey); mean
@@ -504,7 +504,7 @@ gf_histogram( ~ Close, binwidth = 25, data = SandP500)
 #### Example 2.20 {-}
 
 The text uses a histogram to estimate the **percentile** of the daily closing price for the 
-S\&P 500 but we can also find the exact percentiles using the `quantile()()` function. 
+S\&P 500 but we can also find the exact percentiles using the `quantile()` function. 
 ```{r Example2.20}
 quantile(SandP500$Close, probs = seq(0, 1, 0.25))
 quantile(SandP500$Close, probs = seq(0, 1, 0.90))
@@ -513,7 +513,7 @@ quantile(SandP500$Close, probs = seq(0, 1, 0.90))
 
 ### Five Number Summary {-}
 
-We have already covered many different functions which results in the **five number summary** but `fivenum()()` is most direct way to obtain in the five number summary. 
+We have already covered many different functions which results in the **five number summary** but `fivenum()` is most direct way to obtain in the five number summary. 
 
 #### Example 2.21 {-}
 
@@ -609,7 +609,7 @@ fivenum( ~ Smokers, data = USStates)
 ```
 
 
-The boxplot reveals two outliers. To identify them, we can again use `subset()()` for smokers greater or less than the _whiskers_ of the boxplot.
+The boxplot reveals two outliers. To identify them, we can again use `subset()` for smokers greater or less than the _whiskers_ of the boxplot.
 ```{r Example2.27b}
 subset(USStates, Smokers<15)
 subset(USStates, Smokers>28)
@@ -690,7 +690,7 @@ ElectionMargin
 
 ### Visualizing a Relationship between Two Quantitative Variables: Scatterplots {-}
 
-The most common way to look at two quantitative variables is with a scatterplot.  The **`ggformula`** function for this is `gf_point()()`, and the basic syntax is
+The most common way to look at two quantitative variables is with a scatterplot.  The **`ggformula`** function for this is `gf_point()`, and the basic syntax is
 ```{r eval = FALSE}
 gf_point(yvar ~ xvar, data = dataName)
 ```
@@ -772,7 +772,7 @@ cor(Temperature ~ Chirps, data = CricketChirps)
 
 #### Example 2.38 {-}
 
-Further, using the `subset()()` function again, we can investigate the correlation between variables with some restrictions.
+Further, using the `subset()` function again, we can investigate the correlation between variables with some restrictions.
 ```{r Example2.38}
 gf_point(Alcohol ~ Calories, data = subset(NutritionStudy, Age>59))
 cor(Alcohol ~ Calories, data = subset(NutritionStudy, Age>59))
@@ -804,7 +804,7 @@ gf_point(Tip ~ Bill, size = .5, data = RestaurantTips)
 
 #### Example 2.39 {-}
 
-When the relationship between variables is sufficiently _linear_, you may be able to predict the value of a variable using the other variable. This is possible by fitting a _regression line_. To plot this in R  all we need to do is chain `gf_lim()()` to the scatter plot and give it the corresponding arguments.
+When the relationship between variables is sufficiently _linear_, you may be able to predict the value of a variable using the other variable. This is possible by fitting a _regression line_. To plot this in R  all we need to do is chain `gf_lim()` to the scatter plot and give it the corresponding arguments.
 ```{r Example2.39}
 gf_point(Tip ~ Bill, cex = 0.5, data = RestaurantTips) %>% gf_lm(Tip ~ Bill, data = RestaurantTips)
 cor(Tip ~ Bill, data = RestaurantTips)
@@ -935,7 +935,7 @@ gf_point(Calcium ~ pH, data = FloridaLakes) %>% gf_lm(Calcium ~ pH, data = Flori
 <!-- ### Different Plots for Different Kinds of Variables -->
 <!-- Graphical summaries can help us see the _distribution_ of a variable  -->
 <!-- or the _relationships_ between two (or more) variables.  The type of plot -->
-<!-- used will depend on the kinds of variables involved. You can use `demo()()` to see how -->
+<!-- used will depend on the kinds of variables involved. You can use `demo()` to see how -->
 <!-- to get R  to make the plots in this section. -->
 
 <!-- When we do statistical analysis, we will see that the analysis we use will  -->
@@ -967,7 +967,7 @@ gf_point(Calcium ~ pH, data = FloridaLakes) %>% gf_lm(Calcium ~ pH, data = Flori
 <!-- that area (_NOT height_) is proportional to frequency.   -->
 <!-- Using height instead of area would distort the picture. -->
 
-<!-- When unequal bin sizes are specified, you should use `gf_dhistogram()()` -->
+<!-- When unequal bin sizes are specified, you should use `gf_dhistogram()` -->
 <!-- ```{r hist-unequal-bins, fig.width = 3, fig.height = 2} -->
 <!-- gf_dhistogram( ~ Sepal.Length, data = iris, breaks = c(4,5,5.5,5.75,6,6.5,7,8,9)) -->
 <!-- ``` -->
@@ -979,7 +979,7 @@ gf_point(Calcium ~ pH, data = FloridaLakes) %>% gf_lm(Calcium ~ pH, data = Flori
 <!-- the area is $0.18$, which means approximately 18\% of the sepal lengths are  -->
 <!-- between 5.0 and 5.5. -->
 
-<!-- It would be incorrect to choose `gf_histogram()()` since -->
+<!-- It would be incorrect to choose `gf_histogram()` since -->
 <!-- this distorts the picture of the data. -->
 <!-- ```{r hist-unequal-bins-bad-echo, fig.width = 3, fig.height = 2, eval = FALSE} -->
 <!-- gf_histogram( ~ Sepal.Length, data = iris, breaks = c(4,5,5.5,5.75,6,6.5,7,8,9)) -->
@@ -1021,7 +1021,7 @@ gf_point(Calcium ~ pH, data = FloridaLakes) %>% gf_lm(Calcium ~ pH, data = Flori
 <!-- such elements overlap, they get darker, showing us where data are "piling up." -->
 <!-- Setting the <span style="color:brown">alpha</span> argument to a value between 0 and 1 controls the -->
 <!-- degree of transparency: 1 is completely opaque, 0 is invisible.  The -->
-<!-- <span style="color:brown">dotsize</span> for `gf_dotplot()()` and <span style="color:brown">size</span> for `gf_point()()` arguments control "character expansion" and can be used to make -->
+<!-- <span style="color:brown">dotsize</span> for `gf_dotplot()` and <span style="color:brown">size</span> for `gf_point()` arguments control "character expansion" and can be used to make -->
 <!-- the plotting "characters" larger or smaller by specifying the scaling ratio. -->
 
 <!-- Here is another example using data on 150 iris plants of three species. -->
@@ -1039,7 +1039,7 @@ gf_point(Calcium ~ pH, data = FloridaLakes) %>% gf_lm(Calcium ~ pH, data = Flori
 <!-- <!-- AuthNote --- couldn't figure out how to format the legend --> 
 <!-- ### gf_labs(), xlab, ylab, title, subtitle -->
 
-<!-- You can add a title or subtitle, or change the default labels of the axes in one of two ways. `gf_labs()()` allows the chaining syntax to be used. -->
+<!-- You can add a title or subtitle, or change the default labels of the axes in one of two ways. `gf_labs()` allows the chaining syntax to be used. -->
 <!-- ```{r iris-xyplot-text, cache = TRUE, fig.width = 3, fig.height = 2.5} -->
 <!-- gf_point(Sepal.Length ~ Sepal.Width, colour = ~Species, data = iris, alpha = .5)  %>% gf_labs( -->
 <!--   x = "sepal width (cm)",  -->
@@ -1089,7 +1089,7 @@ gf_point(Calcium ~ pH, data = FloridaLakes) %>% gf_lm(Calcium ~ pH, data = Flori
 
 <!-- ### trellis.par.set() -->
 <!-- Default settings for lattice graphics are set using  -->
-<!-- `trellis.par.set()()`. -->
+<!-- `trellis.par.set()`. -->
 <!-- Don't like the default font sizes?  You can change to a 7 point (base) font using -->
 
 <!-- ```{r fontsize, eval = TRUE} -->
@@ -1101,7 +1101,7 @@ gf_point(Calcium ~ pH, data = FloridaLakes) %>% gf_lm(Calcium ~ pH, data = Flori
 <!-- symbols, line thicknesses, colors, etc.  Rather than describe them all here, -->
 <!-- we'll mention only that groups of these settings  -->
 <!-- can be collected into a theme.   -->
-<!-- `show.settings()()` will show you what the theme looks like. -->
+<!-- `show.settings()` will show you what the theme looks like. -->
 
 <!-- ```{r themes-whitbg, cache = TRUE, fig.height = 5, fig.width = 6} -->
 <!-- trellis.par.set(theme = col.whitebg())      # a theme in the lattice package -->
@@ -1138,11 +1138,11 @@ gf_point(Calcium ~ pH, data = FloridaLakes) %>% gf_lm(Calcium ~ pH, data = Flori
 
 <!-- <!-- ### Working with Pre-Tabulated Data --> 
 <!-- <!--  --> 
-<!-- <!-- Sometimes data arrive pre-calculated.  We can use `barchart()()` instead of `bargraph()()` --> 
+<!-- <!-- Sometimes data arrive pre-calculated.  We can use `barchart()` instead of `bargraph()` --> 
 
 <!-- <!-- to graph pre-tabulated data. --> 
-<!-- <!-- ^[`bargraph()()` converts raw data into a summary table and then --> 
-<!-- <!-- calls `barchart()()` to do the plotting.] --> 
+<!-- <!-- ^[`bargraph()` converts raw data into a summary table and then --> 
+<!-- <!-- calls `barchart()` to do the plotting.] --> 
 <!-- <!-- <<teen-deaths>>= --> 
 <!-- <!-- TeenDeaths --> 
 <!-- <!-- barchart(deaths ~ cause, data = TeenDeaths) --> 
@@ -1270,7 +1270,7 @@ gf_point(Calcium ~ pH, data = FloridaLakes) %>% gf_lm(Calcium ~ pH, data = Flori
 <!-- head(fusion2, 2) -->
 <!-- ``` -->
 
-<!-- You may want to use the <span style="color:brown">suffixes</span> argument to `merge()()` or rename the variables -->
+<!-- You may want to use the <span style="color:brown">suffixes</span> argument to `merge()` or rename the variables -->
 <!-- after you are done merging to make the resulting data frame easier to navigate. -->
 
 <!-- Tidy up your data frame by dropping any columns that are redundant or that you just don't want to -->

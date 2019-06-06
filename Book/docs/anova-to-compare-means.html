@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>8 ANOVA to Compare Means | Lock5 With R</title>
+  <meta name="description" content="Code, exercises and discussion to accompany a course taught from ‘Statistics: Unlocking the Power of Data’" />
+  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="8 ANOVA to Compare Means | Lock5 With R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Code, exercises and discussion to accompany a course taught from ‘Statistics: Unlocking the Power of Data’" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="8 ANOVA to Compare Means | Lock5 With R" />
+  
+  <meta name="twitter:description" content="Code, exercises and discussion to accompany a course taught from ‘Statistics: Unlocking the Power of Data’" />
+  
+
+<meta name="author" content="R Pruim" />
+
+
+<meta name="date" content="2019-06-06" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="chi-squared-tests-for-categorical-variables.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Lock5 With R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Lock 5 With R</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html"><i class="fa fa-check"></i>Introduction to R and Statistics</a><ul>
+<li class="chapter" data-level="0.1" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#getting-started-with-rstudio"><i class="fa fa-check"></i><b>0.1</b> Getting Started With RStudio</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#rstudio"><i class="fa fa-check"></i>RStudio</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#loading-packages"><i class="fa fa-check"></i>Loading packages</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#using-r-as-a-calculator"><i class="fa fa-check"></i>Using R as a calculator</a></li>
+</ul></li>
+<li class="chapter" data-level="0.2" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#getting-help-in-rstudio"><i class="fa fa-check"></i><b>0.2</b> Getting Help in RStudio</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#the-rstudio-help-system"><i class="fa fa-check"></i>The RStudio help system</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#history"><i class="fa fa-check"></i>History</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#error-messages"><i class="fa fa-check"></i>Error messages</a></li>
+</ul></li>
+<li class="chapter" data-level="0.3" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#four-things-to-know-about-r"><i class="fa fa-check"></i><b>0.3</b> Four Things to Know About R</a></li>
+<li class="chapter" data-level="0.4" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#data-in-r"><i class="fa fa-check"></i><b>0.4</b> Data in R</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#data-in-packages"><i class="fa fa-check"></i>Data in Packages</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#the-helprct-data-set"><i class="fa fa-check"></i>The HELPrct data set</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#using-your-own-data"><i class="fa fa-check"></i>Using your own data</a></li>
+</ul></li>
+<li class="chapter" data-level="0.5" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#the-most-important-template"><i class="fa fa-check"></i><b>0.5</b> The Most Important Template</a></li>
+<li class="chapter" data-level="0.6" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#manipulating-your-data"><i class="fa fa-check"></i><b>0.6</b> Manipulating your data</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#creating-a-subset"><i class="fa fa-check"></i>Creating a subset</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#choosing-specific-columns"><i class="fa fa-check"></i>Choosing specific columns</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#dropping-variables"><i class="fa fa-check"></i>Dropping Variables</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#creating-new-variables"><i class="fa fa-check"></i>Creating new variables</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#saving-data"><i class="fa fa-check"></i>Saving Data</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#merging-datasets"><i class="fa fa-check"></i>Merging datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="0.7" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#using-r-markdown"><i class="fa fa-check"></i><b>0.7</b> Using R Markdown</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#r-markdown-files-must-be-self-contained"><i class="fa fa-check"></i>R Markdown files must be self-contained</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#output-formats"><i class="fa fa-check"></i>Output formats</a></li>
+</ul></li>
+<li class="chapter" data-level="0.8" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#statistics-answering-questions-with-data"><i class="fa fa-check"></i><b>0.8</b> Statistics: Answering Questions With Data</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#data-the-raw-material"><i class="fa fa-check"></i>Data – the raw material</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#information-the-goal"><i class="fa fa-check"></i>Information – the goal</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#uncertainty-the-context"><i class="fa fa-check"></i>Uncertainty – the context</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#probability-the-tool"><i class="fa fa-check"></i>Probability – the tool</a></li>
+</ul></li>
+<li class="chapter" data-level="0.9" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#a-first-example-the-lady-tasting-tea"><i class="fa fa-check"></i><b>0.9</b> A First Example: The Lady Tasting Tea</a></li>
+<li class="chapter" data-level="0.10" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#coins-and-cups"><i class="fa fa-check"></i><b>0.10</b> Coins and Cups</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="collecting-data.html"><a href="collecting-data.html"><i class="fa fa-check"></i><b>1</b> Collecting Data</a><ul>
+<li class="chapter" data-level="1.1" data-path="collecting-data.html"><a href="collecting-data.html#the-structure-of-data"><i class="fa fa-check"></i><b>1.1</b> The Structure of Data</a><ul>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#cases-and-variables"><i class="fa fa-check"></i>Cases and Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#categorical-and-quantitative-variables"><i class="fa fa-check"></i>Categorical and Quantitative Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#investigating-variables-and-relationships-between-variables"><i class="fa fa-check"></i>Investigating Variables and Relationships between Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#using-data-to-answer-a-question"><i class="fa fa-check"></i>Using Data to Answer a Question</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="collecting-data.html"><a href="collecting-data.html#sampling-from-a-population"><i class="fa fa-check"></i><b>1.2</b> Sampling from a Population</a><ul>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#samples-from-populations"><i class="fa fa-check"></i>Samples from Populations</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#sampling-bias"><i class="fa fa-check"></i>Sampling Bias</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#simple-random-sample"><i class="fa fa-check"></i>Simple Random Sample</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="collecting-data.html"><a href="collecting-data.html#experiments-and-observational-studies"><i class="fa fa-check"></i><b>1.3</b> Experiments and Observational Studies</a><ul>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#confounding-variables"><i class="fa fa-check"></i>Confounding Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#observational-studies-vs.-experiments"><i class="fa fa-check"></i>Observational Studies vs. Experiments</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="describing-data.html"><a href="describing-data.html"><i class="fa fa-check"></i><b>2</b> Describing Data</a><ul>
+<li class="chapter" data-level="2.1" data-path="describing-data.html"><a href="describing-data.html#categorical-variables"><i class="fa fa-check"></i><b>2.1</b> Categorical Variables</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#one-categorical-variable"><i class="fa fa-check"></i>One Categorical Variable</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#two-categorical-variables-two-way-tables"><i class="fa fa-check"></i>Two Categorical Variables: Two-Way Tables</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="describing-data.html"><a href="describing-data.html#one-quantitative-variable-shape-and-center"><i class="fa fa-check"></i><b>2.2</b> One Quantitative Variable: Shape and Center</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#the-shape-of-a-distribution"><i class="fa fa-check"></i>The Shape of a Distribution</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#the-center-of-a-distribution"><i class="fa fa-check"></i>The Center of a Distribution</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#resistance"><i class="fa fa-check"></i>Resistance</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="describing-data.html"><a href="describing-data.html#one-quantitative-variable-measures-of-spread"><i class="fa fa-check"></i><b>2.3</b> One Quantitative Variable: Measures of Spread</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#standard-deviation"><i class="fa fa-check"></i>Standard Deviation</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#percentiles"><i class="fa fa-check"></i>Percentiles</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#five-number-summary"><i class="fa fa-check"></i>Five Number Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="describing-data.html"><a href="describing-data.html#outliers-boxplots-and-quantitativecategorical-relationships"><i class="fa fa-check"></i><b>2.4</b> Outliers, Boxplots, and Quantitative/Categorical Relationships</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#detection-of-outliers"><i class="fa fa-check"></i>Detection of Outliers</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#boxplots"><i class="fa fa-check"></i>Boxplots</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#one-quantitative-and-one-categorical-variable"><i class="fa fa-check"></i>One Quantitative and One Categorical Variable</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="describing-data.html"><a href="describing-data.html#two-quantitative-variables-scatterplot-and-correlation"><i class="fa fa-check"></i><b>2.5</b> Two Quantitative Variables: Scatterplot and Correlation</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#visualizing-a-relationship-between-two-quantitative-variables-scatterplots"><i class="fa fa-check"></i>Visualizing a Relationship between Two Quantitative Variables: Scatterplots</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#summarizing-a-relationship-between-two-quantitative-variables-correlation"><i class="fa fa-check"></i>Summarizing a Relationship between Two Quantitative Variables: Correlation</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="describing-data.html"><a href="describing-data.html#two-quantitative-variables-linear-regression"><i class="fa fa-check"></i><b>2.6</b> Two Quantitative Variables: Linear Regression</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>3</b> Confidence Intervals</a><ul>
+<li class="chapter" data-level="3.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#sampling-distributions"><i class="fa fa-check"></i><b>3.1</b> Sampling Distributions</a><ul>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#variability-of-sample-statistics"><i class="fa fa-check"></i>Variability of Sample Statistics</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#measuring-sampling-variability-the-standard-error"><i class="fa fa-check"></i>Measuring Sampling Variability: The Standard Error</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#the-importance-of-sample-size"><i class="fa fa-check"></i>The Importance of Sample Size</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#understanding-and-interpreting-confidence-intervals"><i class="fa fa-check"></i><b>3.2</b> Understanding and Interpreting Confidence Intervals</a><ul>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#interval-estimates-and-margin-of-error"><i class="fa fa-check"></i>Interval Estimates and Margin of Error</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#confidence-intervals-1"><i class="fa fa-check"></i>Confidence Intervals</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#understanding-confidence-intervals"><i class="fa fa-check"></i>Understanding Confidence Intervals</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#interpreting-confidence-intervals"><i class="fa fa-check"></i>Interpreting Confidence Intervals</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#constructing-bootstrap-confidence-intervals"><i class="fa fa-check"></i><b>3.3</b> Constructing Bootstrap Confidence Intervals</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-samples"><i class="fa fa-check"></i><b>3.3.1</b> Bootstrap Samples</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-distribution"><i class="fa fa-check"></i>Bootstrap Distribution</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#estimating-standard-error-based-on-a-bootstrap-distribution"><i class="fa fa-check"></i>Estimating Standard Error Based on a Bootstrap Distribution</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#confidence-interval-based-on-a-bootstrap-standard-error"><i class="fa fa-check"></i>95% Confidence Interval Based on a Bootstrap Standard Error</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-confidence-intervals-using-percentiles"><i class="fa fa-check"></i><b>3.4</b> Bootstrap Confidence Intervals Using Percentiles</a><ul>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#confidence-intervals-based-on-bootstrap-percentiles"><i class="fa fa-check"></i>Confidence Intervals Based on Bootstrap Percentiles</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#finding-confidence-intervals-for-many-different-parameters"><i class="fa fa-check"></i>Finding Confidence Intervals for Many Different Parameters</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#another-look-at-the-effect-of-sample-size"><i class="fa fa-check"></i>Another Look at the Effect of Sample Size</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#one-caution-on-constructing-bootstrap-confidence-intervals"><i class="fa fa-check"></i>One Caution on Constructing Bootstrap Confidence Intervals</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html"><i class="fa fa-check"></i><b>4</b> Hypothesis Tests</a><ul>
+<li class="chapter" data-level="4.1" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#introducing-hypothesis-tests"><i class="fa fa-check"></i><b>4.1</b> Introducing Hypothesis Tests</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#the-4-step-outline"><i class="fa fa-check"></i>The 4-step outline</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#null-and-alternative-hypotheses"><i class="fa fa-check"></i>Null and Alternative Hypotheses</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#measuring-evidence-with-p-values"><i class="fa fa-check"></i><b>4.2</b> Measuring Evidence with P-values</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#p-values-from-randomization-distributions"><i class="fa fa-check"></i>P-values from Randomization Distributions</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#p-values-and-the-alternative-hypothesis"><i class="fa fa-check"></i>P-values and the Alternative Hypothesis</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#determining-statisical-significance"><i class="fa fa-check"></i><b>4.3</b> Determining Statisical Significance</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#less-formal-statistical-decisions"><i class="fa fa-check"></i>Less Formal Statistical Decisions</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#creating-randomization-distributions"><i class="fa fa-check"></i><b>4.4</b> Creating Randomization Distributions</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-test-for-a-difference-in-proportions-cocaine-addiction"><i class="fa fa-check"></i>Randomization Test for a Difference in Proportions: Cocaine Addiction</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-test-for-a-correlation-malevolent-uniforms-and-penalties"><i class="fa fa-check"></i>Randomization Test for a Correlation: Malevolent Uniforms and Penalties</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-test-for-a-mean-body-temperature"><i class="fa fa-check"></i>Randomization Test for a Mean: Body Temperature</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#confidence-intervals-and-hypothesis-tests"><i class="fa fa-check"></i><b>4.5</b> Confidence Intervals and Hypothesis Tests</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-and-bootstrap-distributions"><i class="fa fa-check"></i>Randomization and Bootstrap Distributions</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html"><i class="fa fa-check"></i><b>5</b> Approximating with a Distribution</a><ul>
+<li class="chapter" data-level="5.1" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#normal-distributions"><i class="fa fa-check"></i><b>5.1</b> Normal Distributions</a><ul>
+<li class="chapter" data-level="" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#density-curves"><i class="fa fa-check"></i>Density Curves</a></li>
+<li class="chapter" data-level="" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#normal-distributions-1"><i class="fa fa-check"></i>Normal Distributions</a></li>
+<li class="chapter" data-level="" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#finding-normal-probabilities-and-percentiles"><i class="fa fa-check"></i>Finding Normal Probabilities and Percentiles</a></li>
+<li class="chapter" data-level="" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#standard-normal-n01"><i class="fa fa-check"></i>Standard Normal N(0,1)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#confidence-intervals-and-p-values-using-normal-distributions"><i class="fa fa-check"></i><b>5.2</b> Confidence Intervals and P-values Using Normal Distributions</a><ul>
+<li class="chapter" data-level="" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#confidence-intervals-based-on-a-normal-distribution"><i class="fa fa-check"></i>Confidence Intervals Based on a Normal Distribution</a></li>
+<li class="chapter" data-level="" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#p-values-based-on-a-normal-distribution"><i class="fa fa-check"></i>P-values Based on a Normal Distribution</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html"><i class="fa fa-check"></i><b>6</b> Inference for Means and Proportions</a><ul>
+<li class="chapter" data-level="6.1" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#distribution-of-a-sample-proportion"><i class="fa fa-check"></i><b>6.1</b> Distribution of a Sample Proportion</a><ul>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#how-large-a-sample-size-is-needed"><i class="fa fa-check"></i>How Large a Sample Size is Needed?</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#confidence-interval-for-a-single-proportion"><i class="fa fa-check"></i><b>6.2</b> Confidence Interval for a Single Proportion</a><ul>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#confidence-interval-for-a-single-proportion-1"><i class="fa fa-check"></i>Confidence Interval for a Single Proportion</a></li>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#determining-sample-size-for-estimating-a-proportion"><i class="fa fa-check"></i>Determining Sample Size for Estimating a Proportion</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#test-for-a-single-proportion"><i class="fa fa-check"></i><b>6.3</b> Test for a Single Proportion</a></li>
+<li class="chapter" data-level="6.4" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#distribution-of-a-sample-mean"><i class="fa fa-check"></i><b>6.4</b> Distribution of a Sample Mean</a><ul>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#computing-the-standard-error"><i class="fa fa-check"></i>Computing the Standard Error</a></li>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#how-large-a-sample-size-is-needed-1"><i class="fa fa-check"></i>How Large a Sample Size is Needed?</a></li>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#the-t-distribution"><i class="fa fa-check"></i>The t-Distribution</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#confidence-interval-for-a-mean-using-the-t-distribution"><i class="fa fa-check"></i><b>6.5</b> Confidence Interval for a Mean Using the t-Distribution</a><ul>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#confidence-interval-for-a-mean-using-the-t-distribution-1"><i class="fa fa-check"></i>Confidence Interval for a Mean Using the t-Distribution</a></li>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#determining-sample-size-for-estimating-a-mean"><i class="fa fa-check"></i>Determining Sample Size for Estimating a Mean</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#test-for-a-single-mean"><i class="fa fa-check"></i><b>6.6</b> Test for a Single Mean</a></li>
+<li class="chapter" data-level="6.7" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#distribution-of-differences-in-proportions"><i class="fa fa-check"></i><b>6.7</b> Distribution of Differences in Proportions</a></li>
+<li class="chapter" data-level="6.8" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#confidence-interval-for-a-difference-in-proportions"><i class="fa fa-check"></i><b>6.8</b> Confidence Interval for a Difference in Proportions</a></li>
+<li class="chapter" data-level="6.9" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#test-for-a-difference-in-proportions"><i class="fa fa-check"></i><b>6.9</b> Test For a Difference in Proportions</a></li>
+<li class="chapter" data-level="6.10" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#distribution-of-differences-in-means"><i class="fa fa-check"></i><b>6.10</b> Distribution of Differences in Means</a><ul>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#the-t-distribution-1"><i class="fa fa-check"></i>The t-Distribution</a></li>
+</ul></li>
+<li class="chapter" data-level="6.11" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#confidence-interval-for-a-difference-in-means"><i class="fa fa-check"></i><b>6.11</b> Confidence Interval for a Difference in Means</a></li>
+<li class="chapter" data-level="6.12" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#test-for-a-difference-in-means"><i class="fa fa-check"></i><b>6.12</b> Test for a Difference in Means</a></li>
+<li class="chapter" data-level="6.13" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#paired-difference-in-means"><i class="fa fa-check"></i><b>6.13</b> Paired Difference in Means</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html"><i class="fa fa-check"></i><b>7</b> Chi-Squared Tests for Categorical Variables</a><ul>
+<li class="chapter" data-level="7.1" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#testing-goodness-of-fit-for-a-single-categorical-variable"><i class="fa fa-check"></i><b>7.1</b> Testing Goodness-of-Fit for a Single Categorical Variable</a><ul>
+<li class="chapter" data-level="" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#chi-square-statistic"><i class="fa fa-check"></i>Chi-square Statistic</a></li>
+<li class="chapter" data-level="" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#chi-square-distribution"><i class="fa fa-check"></i>Chi-square Distribution</a></li>
+<li class="chapter" data-level="" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#goodness-of-fit-for-two-categories"><i class="fa fa-check"></i>Goodness-of-Fit for Two Categories</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#testing-for-an-association-between-two-categorical-variables"><i class="fa fa-check"></i><b>7.2</b> Testing for an Association Between Two Categorical Variables</a><ul>
+<li class="chapter" data-level="" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#chi-square-test-for-association"><i class="fa fa-check"></i>Chi-square Test for Association</a></li>
+<li class="chapter" data-level="" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#special-case-for-a-2-x-2-table"><i class="fa fa-check"></i>Special Case for a 2 x 2 Table</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html"><i class="fa fa-check"></i><b>8</b> ANOVA to Compare Means</a><ul>
+<li class="chapter" data-level="8.1" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#analysis-of-variance"><i class="fa fa-check"></i><b>8.1</b> Analysis of Variance</a><ul>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#null-and-alternative-hypotheses-1"><i class="fa fa-check"></i>Null and Alternative Hypotheses</a></li>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#partitioning-variability"><i class="fa fa-check"></i>Partitioning Variability</a></li>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#the-f-statistic"><i class="fa fa-check"></i>The F-Statistic</a></li>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#the-f-distribution"><i class="fa fa-check"></i>The F-distribution</a></li>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#more-examples-of-anova"><i class="fa fa-check"></i>More Examples of ANOVA</a></li>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#anova-calculations"><i class="fa fa-check"></i>ANOVA Calculations</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#pairwise-comparisons-and-inference-after-anova"><i class="fa fa-check"></i><b>8.2</b> Pairwise Comparisons and Inference After ANOVA</a><ul>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#using-anova-for-inferences-about-group-means"><i class="fa fa-check"></i>Using ANOVA for Inferences about Group Means</a></li>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#lots-of-pairwise-comparisons"><i class="fa fa-check"></i>Lots of Pairwise Comparisons</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Lock5 With R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="anova-to-compare-means" class="section level1">
+<h1><span class="header-section-number">8</span> ANOVA to Compare Means</h1>
+<!-- \def\fit#1{\textcolor{green!60!black}{#1}} -->
+<!-- \def\resid#1{\textcolor{red!80!black}{#1}} -->
+<!-- \def\structure<#1>#2{\textcolor{blue}{#2}} -->
+<!--  -->
+<!--  The following defintions are peculiar to this particular -->
+<!--  presetation. They have nothing to do with the beamer class -->
+<!--  -->
+<!-- \def\blank#1{\term{#1}} -->
+<!-- \newcommand{\ans}[1]{ -->
+<!--    \ifthenelse{\boolean{answers}}{#1}{\relax} -->
+<!-- } -->
+<!-- \renewcommand{\answer}[1]{ -->
+<!--    \ifthenelse{\boolean{answers}}{#1}{\relax} -->
+<!-- } -->
+<!-- %\newcommand{\pand}{\operatorname{and}} -->
+<!-- %\newcommand{\por}{\operatorname{or}} -->
+<!-- %\newcommand{\Bin}{\operatorname{Bin}} -->
+<!-- %\newcommand{\Normal}{\operatorname{N}} -->
+<!-- %\newcommand{\sfrac}[2]{#1/#2} -->
+<div id="analysis-of-variance" class="section level2">
+<h2><span class="header-section-number">8.1</span> Analysis of Variance</h2>
+<p><span class="itemize"></p>
+<ul>
+<li><p>Two variables: categorical explanatory and quantitative response</p>
+<p><span class="itemize"></p>
+<ul>
+<li>Can be used in either experimental or observational designs.</li>
+</ul>
+<p></span></p></li>
+<li><p>Main Question: Does the population mean response depend on the (treatment) group?</p>
+<p><span class="itemize"></p>
+<ul>
+<li><span class="math inline">\(H_0\)</span>: the population group means are all the equal (<span class="math inline">\(\mu_1 = \mu_2 = \cdots \mu_k\)</span>)</li>
+<li><span class="math inline">\(H_a\)</span>: the population group means are not all equal</li>
+</ul>
+<p></span></p></li>
+<li><p>If categorical variable has only 2 values, we already have a method: 2-sample <span class="math inline">\(t\)</span>-test</p>
+<p><span class="itemize"></p>
+<ul>
+<li>ANOVA allows for 3 or more groups (sub-populations)</li>
+</ul>
+<p></span></p></li>
+<li><p><span class="math inline">\(F\)</span> statistic compares within group variation (how different are individuals in the same group?)
+to between group variation (how different are the different group means?)</p></li>
+<li><p>ANOVA assumes that each group is normally distributed with the same (population) standard deviation.</p>
+<p><span class="itemize"></p>
+<ul>
+<li>Check normality with normal quantile plots (of residuals)</li>
+<li>Check equal standard deviation using 2:1 ratio rule (largest standard deviation at most twice the smallest standard deviation).</li>
+</ul>
+<p></span></p></li>
+</ul>
+<p></span></p>
+<div id="null-and-alternative-hypotheses-1" class="section level3 unnumbered">
+<h3>Null and Alternative Hypotheses</h3>
+<div id="example-8.1" class="section level4 unnumbered">
+<h4>Example 8.1</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">favstats</span>( Ants <span class="op">~</span><span class="st"> </span>Filling, <span class="dt">data =</span> SandwichAnts )</code></pre>
+<pre><code>##         Filling min    Q1 median    Q3 max  mean        sd n missing
+## 1 Ham &amp; Pickles  34 42.00   51.0 55.25  65 49.25 10.793517 8       0
+## 2 Peanut Butter  19 21.75   30.5 44.00  59 34.00 14.628739 8       0
+## 3      Vegemite  18 24.00   30.0 39.00  42 30.75  9.254343 8       0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_point</span>( Ants <span class="op">~</span><span class="st"> </span>Filling, <span class="dt">data =</span> SandwichAnts) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_line</span>(Ants <span class="op">~</span><span class="st"> </span>Filling, <span class="dt">group =</span> <span class="dv">1</span>, <span class="dt">stat =</span> <span class="st">&quot;summary&quot;</span>)</code></pre>
+<pre><code>## No summary function supplied, defaulting to `mean_se()</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example8.1b-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_boxplot</span>( Ants <span class="op">~</span><span class="st"> </span>Filling, <span class="dt">data =</span> SandwichAnts)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example8.1b-2.png" width="65%" /></p>
+<!-- AuthNote --- gf_line() is just making vertical lines rather than going from one group to the next, original: xyplot( Ants ~ Filling, data = SandwichAnts, type = c('p','a')) -->
+<!-- ### Why Analyze _Variability_ for a Difference in _Means_? {-} -->
+<!-- Question: Are these differences significant? -->
+<!-- Or would we expect sample differences this large by random chance even  -->
+<!-- if (in the population) the mean amount of shift is equal for all three groups? -->
+<!-- Whether differences between the groups are significant depends on three things: -->
+<!--  -->
+<!--    <span class="enumerate">
+ -->
+<!--    #.  the difference in the means -->
+<!--    #.  the amount of variation within each group -->
+<!--    #.  the sample sizes -->
+<!--    
+</span>
+ -->
+<!-- Example 8.2 -->
+</div>
+</div>
+<div id="partitioning-variability" class="section level3 unnumbered">
+<h3>Partitioning Variability</h3>
+<div id="example-8.3" class="section level4 unnumbered">
+<h4>Example 8.3</h4>
+<pre class="sourceCode r"><code class="sourceCode r">Ants.Model &lt;-<span class="st"> </span><span class="kw">lm</span> (Ants <span class="op">~</span><span class="st"> </span>Filling, <span class="dt">data =</span> SandwichAnts)
+<span class="kw">anova</span>(Ants.Model)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: Ants
+##           Df Sum Sq Mean Sq F value  Pr(&gt;F)  
+## Filling    2   1561  780.50  5.6267 0.01105 *
+## Residuals 21   2913  138.71                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The p-value listed in this output is the p-value for our null hypothesis that
+the mean population response is the same in each treatment group.
+In this case we would reject the null hypothesis at the <span class="math inline">\(\alpha = 0.05\)</span> level.</p>
+<p>In the next section we’ll look at this test in more detail, but notice that if
+you know the assumptions of a test, the null hypothesis being tested, and
+the p-value, you can generally interpret the results even if you don’t know
+all the details of how the test statistic is computed.</p>
+</div>
+</div>
+<div id="the-f-statistic" class="section level3 unnumbered">
+<h3>The F-Statistic</h3>
+<p>The ANOVA test statistic (called <span class="math inline">\(F\)</span>) is based on three ingredients:
+<span class="enumerate"></p>
+<pre><code>#.      how different the group means are (between group differences)
+#.      the amount of variability within each group  (within group differences)
+#.      sample size</code></pre>
+<p></span></p>
+<p>Each of these will be involved in the calculation of <span class="math inline">\(F\)</span>.</p>
+<!-- Example 8.4 -->
+<div id="figure-8.3" class="section level4 unnumbered">
+<h4>Figure 8.3</h4>
+<pre class="sourceCode r"><code class="sourceCode r">Rand.Ants &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">1000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">anova</span>(<span class="kw">lm</span>(Ants <span class="op">~</span><span class="st"> </span><span class="kw">shuffle</span>(Filling), <span class="dt">data =</span> SandwichAnts))
+<span class="kw">tally</span>( <span class="op">~</span><span class="st"> </span>(F <span class="op">&gt;=</span><span class="st"> </span><span class="fl">5.63</span>), <span class="dt">data =</span> Rand.Ants)</code></pre>
+<pre><code>## (F &gt;= 5.63)
+##  TRUE FALSE  &lt;NA&gt; 
+##    18   982  1000</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>( <span class="op">~</span><span class="st"> </span>(F <span class="op">&gt;=</span><span class="st"> </span><span class="fl">5.63</span>), <span class="dt">data =</span> Rand.Ants)</code></pre>
+<pre><code>## prop_TRUE 
+##     0.018</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dotplot</span>( <span class="op">~</span><span class="st"> </span>F, <span class="dt">binwidth =</span> <span class="fl">0.20</span>, <span class="dt">dotsize =</span> <span class="fl">.2</span>, <span class="dt">colour =</span> <span class="op">~</span>(F <span class="op">&lt;=</span><span class="st"> </span><span class="fl">5.63</span>), <span class="dt">data =</span> Rand.Ants)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure8.3-1.png" width="65%" /></p>
+</div>
+</div>
+<div id="the-f-distribution" class="section level3 unnumbered">
+<h3>The F-distribution</h3>
+<p>Under certain conditions, the <span class="math inline">\(F\)</span> statistic has a known distribution (called the <span class="math inline">\(F\)</span> distribution). Those conditions
+are
+<span class="enumerate"></p>
+<ol>
+<li>The null hypothesis is true (i.e., each group has the same mean)
+#. Each group is sampled from a normal population
+#. Each population group has the same standard deviation</li>
+</ol>
+<p></span></p>
+<p>When these conditions are met, we can use the <span class="math inline">\(F\)</span>-distribution to compute the p-value without generating
+the randomization distribution.
+<span class="itemize"></p>
+<pre><code>#. $F$ distributions have two parameters -- the degrees of freedom</code></pre>
+<p>for the numerator and for the denominator.</p>
+<p>In our example, this is <span class="math inline">\(2\)</span> for the numerator and <span class="math inline">\(7\)</span> for the denominator.</p>
+<ol>
+<li><p>When <span class="math inline">\(H_0\)</span> is true, the numerator and denominator both have a mean of 1,
+so <span class="math inline">\(F\)</span> will tend to be close to 1.</p></li>
+<li><p>When <span class="math inline">\(H_0\)</span> is false, there is more difference between the groups, so the numerator
+tends to be larger.</p>
+<p>This means we will reject the null hypothesis when <span class="math inline">\(F\)</span> gets large enough.</p>
+<ol>
+<li>The p-value is computed using <code>pf()</code>.</li>
+</ol></li>
+</ol>
+<p></span></p>
+<div id="figure-8.4" class="section level4 unnumbered">
+<h4>Figure 8.4</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dhistogram</span>( <span class="op">~</span><span class="st"> </span>F, <span class="dt">binwidth =</span> <span class="dv">4</span><span class="op">/</span><span class="dv">7</span>, <span class="dt">center =</span> <span class="fl">.25</span>, <span class="dt">data =</span> Rand.Ants) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_dist</span>(<span class="st">&#39;f&#39;</span>, <span class="dt">df1 =</span> <span class="dv">2</span>, <span class="dt">df2 =</span> <span class="dv">21</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure8.4-1.png" width="65%" /></p>
+</div>
+</div>
+<div id="more-examples-of-anova" class="section level3 unnumbered">
+<h3>More Examples of ANOVA</h3>
+<div id="example-8.5" class="section level4 unnumbered">
+<h4>Example 8.5</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(StudentSurvey, <span class="dv">3</span>)</code></pre>
+<pre><code>##        Year Gender Smoke   Award HigherSAT Exercise TV Height Weight
+## 1    Senior      M    No Olympic      Math       10  1     71    180
+## 2 Sophomore      F   Yes Academy      Math        4  7     66    120
+## 3 FirstYear      M    No   Nobel      Math       14  5     72    208
+##   Siblings BirthOrder VerbalSAT MathSAT  SAT  GPA Pulse Piercings    Sex
+## 1        4          4       540     670 1210 3.13    54         0   Male
+## 2        2          2       520     630 1150 2.50    66         3 Female
+## 3        2          1       550     560 1110 2.55   130         0   Male</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">favstats</span>( <span class="op">~</span><span class="st"> </span>Pulse, <span class="dt">data =</span> StudentSurvey)</code></pre>
+<pre><code>##  min Q1 median    Q3 max     mean       sd   n missing
+##   35 62     70 77.75 130 69.57459 12.20514 362       0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">favstats</span>(Pulse <span class="op">~</span><span class="st"> </span>Award, <span class="dt">data =</span> StudentSurvey)</code></pre>
+<pre><code>##     Award min   Q1 median Q3 max     mean       sd   n missing
+## 1 Academy  42 64.5     71 76  95 70.51613 12.35818  31       0
+## 2   Nobel  40 65.0     72 80 130 72.21477 13.09093 149       0
+## 3 Olympic  35 60.0     68 74  96 67.25275 10.97067 182       0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(<span class="kw">lm</span>(Pulse <span class="op">~</span><span class="st"> </span>Award, StudentSurvey))</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: Pulse
+##            Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## Award       2   2047 1023.62  7.1039 0.0009425 ***
+## Residuals 359  51729  144.09                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="figure-8.5" class="section level4 unnumbered">
+<h4>Figure 8.5</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_boxplot</span>(Pulse <span class="op">~</span><span class="st"> </span>Award, <span class="dt">data =</span> StudentSurvey)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure8.5-1.png" width="65%" /></p>
+</div>
+</div>
+<div id="anova-calculations" class="section level3 unnumbered">
+<h3>ANOVA Calculations</h3>
+<p><span class="itemize"></p>
+<ol>
+<li><p>Between group variability:</p>
+<p>span style=“color:green”&gt; <span class="math inline">\(G = `groupMean` - `grandMean`\)</span> </span>
+This measures how different a group is from the overall average.</p></li>
+<li><p>Within group variability:</p>
+<p>span style=“color:red”&gt; <span class="math inline">\(E = `response` - `groupMean`\)</span> </span>
+This measures how different and individual is from its group average.
+<span class="math inline">\(E\)</span> stands for “error”, but just as in “standard error” it is not a
+``mistake". It is simply measure how different an individual response is
+from the model prediction (in this case, the group mean).</p>
+<p>The individual values of span style=“color:red”&gt; <span class="math inline">\(E\)</span> </span> are called <strong>residuals</strong>.</p></li>
+</ol>
+<p></span></p>
+<div id="example-8.6" class="section level4 unnumbered">
+<h4>Example 8.6</h4>
+<p>Let’s first compute the grand mean and group means.</p>
+<pre class="sourceCode r"><code class="sourceCode r">SandwichAnts</code></pre>
+<pre><code>##    Butter       Filling      Bread Ants Order
+## 1      no      Vegemite        Rye   18    10
+## 2      no Peanut Butter        Rye   43    26
+## 3      no Ham &amp; Pickles        Rye   44    39
+## 4      no      Vegemite  Wholemeal   29    25
+## 5      no Peanut Butter  Wholemeal   59    35
+## 6      no Ham &amp; Pickles  Wholemeal   34     1
+## 7      no      Vegemite Multigrain   42    44
+## 8      no Peanut Butter Multigrain   22    36
+## 9      no Ham &amp; Pickles Multigrain   36    32
+## 10     no      Vegemite      White   42    33
+## 11     no Peanut Butter      White   25    34
+## 12     no Ham &amp; Pickles      White   49    13
+## 13     no      Vegemite        Rye   31    14
+## 14     no Peanut Butter        Rye   36    31
+## 15     no Ham &amp; Pickles        Rye   54    20
+## 16     no      Vegemite  Wholemeal   21    19
+## 17     no Peanut Butter  Wholemeal   47    38
+## 18     no Ham &amp; Pickles  Wholemeal   65     5
+## 19     no      Vegemite Multigrain   38    21
+## 20     no Peanut Butter Multigrain   19    22
+## 21     no Ham &amp; Pickles Multigrain   59     8
+## 22     no      Vegemite      White   25    41
+## 23     no Peanut Butter      White   21    16
+## 24     no Ham &amp; Pickles      White   53    23</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(<span class="op">~</span><span class="st"> </span>Ants, <span class="dt">data =</span> SandwichAnts)  <span class="co"># grand mean</span></code></pre>
+<pre><code>## [1] 38</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(Ants <span class="op">~</span><span class="st"> </span>Filling, <span class="dt">data =</span> SandwichAnts)  <span class="co"># group means</span></code></pre>
+<pre><code>## Ham &amp; Pickles Peanut Butter      Vegemite 
+##         49.25         34.00         30.75</code></pre>
+<p>And add those to our data frame</p>
+<pre class="sourceCode r"><code class="sourceCode r">SA &lt;-<span class="st"> </span><span class="kw">transform</span>(SandwichAnts, <span class="dt">groupMean =</span> <span class="kw">c</span>(<span class="fl">30.75</span>, <span class="fl">34.00</span>, <span class="fl">49.25</span>, <span class="fl">30.75</span>, <span class="fl">34.00</span>, <span class="fl">49.25</span>, <span class="fl">30.75</span>, <span class="fl">34.00</span>, <span class="fl">49.25</span>, <span class="fl">30.75</span>, <span class="fl">34.00</span>, <span class="fl">49.25</span>, <span class="fl">30.75</span>, <span class="fl">34.00</span>, <span class="fl">49.25</span>, <span class="fl">30.75</span>, <span class="fl">34.00</span>, <span class="fl">49.25</span>, <span class="fl">30.75</span>, <span class="fl">34.00</span>, <span class="fl">49.25</span>, <span class="fl">30.75</span>, <span class="fl">34.00</span>, <span class="fl">49.25</span>) )
+SA &lt;-<span class="st"> </span><span class="kw">transform</span>(SA, <span class="dt">grandMean =</span> <span class="kw">rep</span>( <span class="dv">38</span>, <span class="dv">24</span> ) )
+SA</code></pre>
+<pre><code>##    Butter       Filling      Bread Ants Order groupMean grandMean
+## 1      no      Vegemite        Rye   18    10     30.75        38
+## 2      no Peanut Butter        Rye   43    26     34.00        38
+## 3      no Ham &amp; Pickles        Rye   44    39     49.25        38
+## 4      no      Vegemite  Wholemeal   29    25     30.75        38
+## 5      no Peanut Butter  Wholemeal   59    35     34.00        38
+## 6      no Ham &amp; Pickles  Wholemeal   34     1     49.25        38
+## 7      no      Vegemite Multigrain   42    44     30.75        38
+## 8      no Peanut Butter Multigrain   22    36     34.00        38
+## 9      no Ham &amp; Pickles Multigrain   36    32     49.25        38
+## 10     no      Vegemite      White   42    33     30.75        38
+## 11     no Peanut Butter      White   25    34     34.00        38
+## 12     no Ham &amp; Pickles      White   49    13     49.25        38
+## 13     no      Vegemite        Rye   31    14     30.75        38
+## 14     no Peanut Butter        Rye   36    31     34.00        38
+## 15     no Ham &amp; Pickles        Rye   54    20     49.25        38
+## 16     no      Vegemite  Wholemeal   21    19     30.75        38
+## 17     no Peanut Butter  Wholemeal   47    38     34.00        38
+## 18     no Ham &amp; Pickles  Wholemeal   65     5     49.25        38
+## 19     no      Vegemite Multigrain   38    21     30.75        38
+## 20     no Peanut Butter Multigrain   19    22     34.00        38
+## 21     no Ham &amp; Pickles Multigrain   59     8     49.25        38
+## 22     no      Vegemite      White   25    41     30.75        38
+## 23     no Peanut Butter      White   21    16     34.00        38
+## 24     no Ham &amp; Pickles      White   53    23     49.25        38</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">SA &lt;-<span class="st"> </span><span class="kw">transform</span>(SA, <span class="dt">M =</span> groupMean <span class="op">-</span><span class="st"> </span>grandMean)
+SA &lt;-<span class="st"> </span><span class="kw">transform</span>(SA, <span class="dt">E =</span> Ants <span class="op">-</span><span class="st"> </span>groupMean)
+SA</code></pre>
+<pre><code>##    Butter       Filling      Bread Ants Order groupMean grandMean     M
+## 1      no      Vegemite        Rye   18    10     30.75        38 -7.25
+## 2      no Peanut Butter        Rye   43    26     34.00        38 -4.00
+## 3      no Ham &amp; Pickles        Rye   44    39     49.25        38 11.25
+## 4      no      Vegemite  Wholemeal   29    25     30.75        38 -7.25
+## 5      no Peanut Butter  Wholemeal   59    35     34.00        38 -4.00
+## 6      no Ham &amp; Pickles  Wholemeal   34     1     49.25        38 11.25
+## 7      no      Vegemite Multigrain   42    44     30.75        38 -7.25
+## 8      no Peanut Butter Multigrain   22    36     34.00        38 -4.00
+## 9      no Ham &amp; Pickles Multigrain   36    32     49.25        38 11.25
+## 10     no      Vegemite      White   42    33     30.75        38 -7.25
+## 11     no Peanut Butter      White   25    34     34.00        38 -4.00
+## 12     no Ham &amp; Pickles      White   49    13     49.25        38 11.25
+## 13     no      Vegemite        Rye   31    14     30.75        38 -7.25
+## 14     no Peanut Butter        Rye   36    31     34.00        38 -4.00
+## 15     no Ham &amp; Pickles        Rye   54    20     49.25        38 11.25
+## 16     no      Vegemite  Wholemeal   21    19     30.75        38 -7.25
+## 17     no Peanut Butter  Wholemeal   47    38     34.00        38 -4.00
+## 18     no Ham &amp; Pickles  Wholemeal   65     5     49.25        38 11.25
+## 19     no      Vegemite Multigrain   38    21     30.75        38 -7.25
+## 20     no Peanut Butter Multigrain   19    22     34.00        38 -4.00
+## 21     no Ham &amp; Pickles Multigrain   59     8     49.25        38 11.25
+## 22     no      Vegemite      White   25    41     30.75        38 -7.25
+## 23     no Peanut Butter      White   21    16     34.00        38 -4.00
+## 24     no Ham &amp; Pickles      White   53    23     49.25        38 11.25
+##         E
+## 1  -12.75
+## 2    9.00
+## 3   -5.25
+## 4   -1.75
+## 5   25.00
+## 6  -15.25
+## 7   11.25
+## 8  -12.00
+## 9  -13.25
+## 10  11.25
+## 11  -9.00
+## 12  -0.25
+## 13   0.25
+## 14   2.00
+## 15   4.75
+## 16  -9.75
+## 17  13.00
+## 18  15.75
+## 19   7.25
+## 20 -15.00
+## 21   9.75
+## 22  -5.75
+## 23 -13.00
+## 24   3.75</code></pre>
+<p>As we did with variance, we will square these differences:</p>
+<pre class="sourceCode r"><code class="sourceCode r">SA &lt;-<span class="st"> </span><span class="kw">transform</span>(SA, <span class="dt">M2 =</span> (groupMean <span class="op">-</span><span class="st"> </span>grandMean)<span class="op">^</span><span class="dv">2</span>)
+SA &lt;-<span class="st"> </span><span class="kw">transform</span>(SA, <span class="dt">E2 =</span> (Ants <span class="op">-</span><span class="st"> </span>groupMean)<span class="op">^</span><span class="dv">2</span>)
+SA</code></pre>
+<pre><code>##    Butter       Filling      Bread Ants Order groupMean grandMean     M
+## 1      no      Vegemite        Rye   18    10     30.75        38 -7.25
+## 2      no Peanut Butter        Rye   43    26     34.00        38 -4.00
+## 3      no Ham &amp; Pickles        Rye   44    39     49.25        38 11.25
+## 4      no      Vegemite  Wholemeal   29    25     30.75        38 -7.25
+## 5      no Peanut Butter  Wholemeal   59    35     34.00        38 -4.00
+## 6      no Ham &amp; Pickles  Wholemeal   34     1     49.25        38 11.25
+## 7      no      Vegemite Multigrain   42    44     30.75        38 -7.25
+## 8      no Peanut Butter Multigrain   22    36     34.00        38 -4.00
+## 9      no Ham &amp; Pickles Multigrain   36    32     49.25        38 11.25
+## 10     no      Vegemite      White   42    33     30.75        38 -7.25
+## 11     no Peanut Butter      White   25    34     34.00        38 -4.00
+## 12     no Ham &amp; Pickles      White   49    13     49.25        38 11.25
+## 13     no      Vegemite        Rye   31    14     30.75        38 -7.25
+## 14     no Peanut Butter        Rye   36    31     34.00        38 -4.00
+## 15     no Ham &amp; Pickles        Rye   54    20     49.25        38 11.25
+## 16     no      Vegemite  Wholemeal   21    19     30.75        38 -7.25
+## 17     no Peanut Butter  Wholemeal   47    38     34.00        38 -4.00
+## 18     no Ham &amp; Pickles  Wholemeal   65     5     49.25        38 11.25
+## 19     no      Vegemite Multigrain   38    21     30.75        38 -7.25
+## 20     no Peanut Butter Multigrain   19    22     34.00        38 -4.00
+## 21     no Ham &amp; Pickles Multigrain   59     8     49.25        38 11.25
+## 22     no      Vegemite      White   25    41     30.75        38 -7.25
+## 23     no Peanut Butter      White   21    16     34.00        38 -4.00
+## 24     no Ham &amp; Pickles      White   53    23     49.25        38 11.25
+##         E       M2       E2
+## 1  -12.75  52.5625 162.5625
+## 2    9.00  16.0000  81.0000
+## 3   -5.25 126.5625  27.5625
+## 4   -1.75  52.5625   3.0625
+## 5   25.00  16.0000 625.0000
+## 6  -15.25 126.5625 232.5625
+## 7   11.25  52.5625 126.5625
+## 8  -12.00  16.0000 144.0000
+## 9  -13.25 126.5625 175.5625
+## 10  11.25  52.5625 126.5625
+## 11  -9.00  16.0000  81.0000
+## 12  -0.25 126.5625   0.0625
+## 13   0.25  52.5625   0.0625
+## 14   2.00  16.0000   4.0000
+## 15   4.75 126.5625  22.5625
+## 16  -9.75  52.5625  95.0625
+## 17  13.00  16.0000 169.0000
+## 18  15.75 126.5625 248.0625
+## 19   7.25  52.5625  52.5625
+## 20 -15.00  16.0000 225.0000
+## 21   9.75 126.5625  95.0625
+## 22  -5.75  52.5625  33.0625
+## 23 -13.00  16.0000 169.0000
+## 24   3.75 126.5625  14.0625</code></pre>
+<p>And then add them up (SS stands for “sum of squares”)</p>
+<pre class="sourceCode r"><code class="sourceCode r">SST &lt;-<span class="st"> </span><span class="kw">sum</span>( <span class="op">~</span>((Ants <span class="op">-</span><span class="st"> </span>grandMean)<span class="op">^</span><span class="dv">2</span>), <span class="dt">data =</span> SA); SST</code></pre>
+<pre><code>## [1] 4474</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">SSM &lt;-<span class="st"> </span><span class="kw">sum</span>( <span class="op">~</span>M2, <span class="dt">data =</span> SA ); SSM    <span class="co"># also called SSG</span></code></pre>
+<pre><code>## [1] 1561</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">SSE &lt;-<span class="st"> </span><span class="kw">sum</span>( <span class="op">~</span>E2, <span class="dt">data =</span> SA ); SSE</code></pre>
+<pre><code>## [1] 2913</code></pre>
+</div>
+</div>
+</div>
+<div id="pairwise-comparisons-and-inference-after-anova" class="section level2">
+<h2><span class="header-section-number">8.2</span> Pairwise Comparisons and Inference After ANOVA</h2>
+<div id="using-anova-for-inferences-about-group-means" class="section level3 unnumbered">
+<h3>Using ANOVA for Inferences about Group Means</h3>
+<p>We can construct a confidence interval for any of the means by just
+taking a subset of the data and using <code>t.test()</code>, but there
+are some problems with this approach. Most importantly,
+<span class="quote"></p>
+<p>We were primarily interested in comparing the means across
+the groups. Often people will display confidence intervals for
+each group and look for “overlapping” intervals. But this is
+not the best way to look for differences.</p>
+<p></span></p>
+<p>Nevertheless, you will sometimes see graphs showing multiple confidence
+intervals and labeling them to indicate which means appear to be
+different from which. (See the solution to problem 15.3 for an example.)</p>
+<div id="example-8.7" class="section level4 unnumbered">
+<h4>Example 8.7</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(Ants.Model)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: Ants
+##           Df Sum Sq Mean Sq F value  Pr(&gt;F)  
+## Filling    2   1561  780.50  5.6267 0.01105 *
+## Residuals 21   2913  138.71                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">MSE&lt;-<span class="st"> </span><span class="fl">138.7</span>
+<span class="kw">mean</span>(Ants <span class="op">~</span><span class="st"> </span>Filling, <span class="dt">data =</span> SandwichAnts)</code></pre>
+<pre><code>## Ham &amp; Pickles Peanut Butter      Vegemite 
+##         49.25         34.00         30.75</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">mean &lt;-<span class="st"> </span><span class="fl">34.0</span>
+t.star &lt;-<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dt">df =</span> <span class="dv">21</span>); t.star</code></pre>
+<pre><code>## [1] 2.079614</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">mean <span class="op">-</span><span class="st"> </span>t.star <span class="op">*</span><span class="st"> </span>(<span class="kw">sqrt</span>(MSE) <span class="op">/</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="dv">8</span>))</code></pre>
+<pre><code>## [1] 25.34084</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">mean <span class="op">+</span><span class="st"> </span>t.star <span class="op">*</span><span class="st"> </span>(<span class="kw">sqrt</span>(MSE) <span class="op">/</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="dv">8</span>))</code></pre>
+<pre><code>## [1] 42.65916</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">TukeyHSD</span>(Ants.Model)</code></pre>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = x)
+## 
+## $Filling
+##                               diff       lwr        upr     p adj
+## Peanut Butter-Ham &amp; Pickles -15.25 -30.09326 -0.4067363 0.0433492
+## Vegemite-Ham &amp; Pickles      -18.50 -33.34326 -3.6567363 0.0131006
+## Vegemite-Peanut Butter       -3.25 -18.09326 11.5932637 0.8466376</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">TukeyHSD</span>(Ants.Model))</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example8.7b-1.png" width="65%" /></p>
+</div>
+<div id="example-8.8" class="section level4 unnumbered">
+<h4>Example 8.8</h4>
+<pre class="sourceCode r"><code class="sourceCode r">MSE&lt;-<span class="st"> </span><span class="fl">138.7</span>
+<span class="kw">mean</span>(Ants  <span class="op">~</span><span class="st"> </span>Filling, <span class="dt">data =</span> SandwichAnts)</code></pre>
+<pre><code>## Ham &amp; Pickles Peanut Butter      Vegemite 
+##         49.25         34.00         30.75</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">diff.mean &lt;-<span class="st"> </span>(<span class="fl">30.75</span> <span class="op">-</span><span class="st"> </span><span class="fl">49.25</span>)
+t.star &lt;-<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dt">df =</span> <span class="dv">21</span>); t.star</code></pre>
+<pre><code>## [1] 2.079614</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">diff.mean <span class="op">-</span><span class="st"> </span>t.star <span class="op">*</span><span class="st"> </span>(<span class="kw">sqrt</span>(MSE <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span><span class="op">/</span><span class="dv">8</span> <span class="op">+</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="dv">8</span>)))</code></pre>
+<pre><code>## [1] -30.74591</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">diff.mean <span class="op">+</span><span class="st"> </span>t.star <span class="op">*</span><span class="st"> </span>(<span class="kw">sqrt</span>(MSE <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span><span class="op">/</span><span class="dv">8</span> <span class="op">+</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="dv">8</span>)))</code></pre>
+<pre><code>## [1] -6.254094</code></pre>
+</div>
+<div id="example-8.9" class="section level4 unnumbered">
+<h4>Example 8.9</h4>
+<pre class="sourceCode r"><code class="sourceCode r">MSE&lt;-<span class="st"> </span><span class="fl">138.7</span>
+<span class="kw">mean</span>(Ants <span class="op">~</span><span class="st"> </span>Filling, <span class="dt">data =</span> SandwichAnts)</code></pre>
+<pre><code>## Ham &amp; Pickles Peanut Butter      Vegemite 
+##         49.25         34.00         30.75</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">diff.mean &lt;-<span class="st"> </span>(<span class="fl">30.75</span> <span class="op">-</span><span class="st"> </span><span class="fl">34.0</span>)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">t &lt;-<span class="st"> </span>diff.mean <span class="op">/</span><span class="st"> </span><span class="kw">sqrt</span>(MSE <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span><span class="op">/</span><span class="dv">8</span> <span class="op">+</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span><span class="dv">8</span>)); t</code></pre>
+<pre><code>## [1] -0.5519187</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pt</span>(t, <span class="dt">df =</span> <span class="dv">21</span>) <span class="op">*</span><span class="st"> </span><span class="dv">2</span></code></pre>
+<pre><code>## [1] 0.5868302</code></pre>
+</div>
+</div>
+<div id="lots-of-pairwise-comparisons" class="section level3 unnumbered">
+<h3>Lots of Pairwise Comparisons</h3>
+<div id="example-8.10" class="section level4 unnumbered">
+<h4>Example 8.10</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(TextbookCosts)</code></pre>
+<pre><code>##            Field Books Cost
+## 1  SocialScience     3   77
+## 2 NaturalScience     2  231
+## 3 NaturalScience     1  189
+## 4  SocialScience     6   85
+## 5 NaturalScience     1  113
+## 6     Humanities     9  132</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">Books.Model &lt;-<span class="st"> </span><span class="kw">lm</span>(Cost <span class="op">~</span><span class="st"> </span>Field, <span class="dt">data =</span> TextbookCosts)
+<span class="kw">anova</span>(Books.Model)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: Cost
+##           Df Sum Sq Mean Sq F value  Pr(&gt;F)  
+## Field      3  30848   10283  4.0547 0.01397 *
+## Residuals 36  91294    2536                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(Books.Model)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Cost ~ Field, data = TextbookCosts)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -77.60 -35.30  -4.95  36.90 102.70 
+## 
+## Coefficients:
+##                     Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)            94.60      15.92   5.940 8.35e-07 ***
+## FieldHumanities        25.70      22.52   1.141  0.26134    
+## FieldNaturalScience    76.20      22.52   3.384  0.00174 ** 
+## FieldSocialScience     23.70      22.52   1.052  0.29965    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 50.36 on 36 degrees of freedom
+## Multiple R-squared:  0.2526, Adjusted R-squared:  0.1903 
+## F-statistic: 4.055 on 3 and 36 DF,  p-value: 0.01397</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">TukeyHSD</span>(Books.Model)</code></pre>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = x)
+## 
+## $Field
+##                               diff        lwr        upr     p adj
+## Humanities-Arts               25.7  -34.95384  86.353844 0.6669143
+## NaturalScience-Arts           76.2   15.54616 136.853844 0.0090147
+## SocialScience-Arts            23.7  -36.95384  84.353844 0.7201024
+## NaturalScience-Humanities     50.5  -10.15384 111.153844 0.1312366
+## SocialScience-Humanities      -2.0  -62.65384  58.653844 0.9997441
+## SocialScience-NaturalScience -52.5 -113.15384   8.153844 0.1097759</code></pre>
+</div>
+<div id="figure-8.8" class="section level4 unnumbered">
+<h4>Figure 8.8</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_boxplot</span>(Cost <span class="op">~</span><span class="st"> </span>Field, <span class="dt">data =</span> TextbookCosts) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_refine</span>(<span class="kw">coord_flip</span>())</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure8.8-1.png" width="65%" /></p>
+<!-- ### The Problem of Multiplicity {-} -->
+<!-- This section is currently Unused and has been Deleted-->
+<!-- Look back in the source control for this section's code -->
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="chi-squared-tests-for-categorical-variables.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["Lock5WithR.pdf"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

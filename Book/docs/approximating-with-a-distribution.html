@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>5 Approximating with a Distribution | Lock5 With R</title>
+  <meta name="description" content="Code, exercises and discussion to accompany a course taught from ‘Statistics: Unlocking the Power of Data’" />
+  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="5 Approximating with a Distribution | Lock5 With R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Code, exercises and discussion to accompany a course taught from ‘Statistics: Unlocking the Power of Data’" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="5 Approximating with a Distribution | Lock5 With R" />
+  
+  <meta name="twitter:description" content="Code, exercises and discussion to accompany a course taught from ‘Statistics: Unlocking the Power of Data’" />
+  
+
+<meta name="author" content="R Pruim" />
+
+
+<meta name="date" content="2019-06-06" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="hypothesis-tests.html">
+<link rel="next" href="inference-for-means-and-proportions.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Lock5 With R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Lock 5 With R</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html"><i class="fa fa-check"></i>Introduction to R and Statistics</a><ul>
+<li class="chapter" data-level="0.1" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#getting-started-with-rstudio"><i class="fa fa-check"></i><b>0.1</b> Getting Started With RStudio</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#rstudio"><i class="fa fa-check"></i>RStudio</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#loading-packages"><i class="fa fa-check"></i>Loading packages</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#using-r-as-a-calculator"><i class="fa fa-check"></i>Using R as a calculator</a></li>
+</ul></li>
+<li class="chapter" data-level="0.2" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#getting-help-in-rstudio"><i class="fa fa-check"></i><b>0.2</b> Getting Help in RStudio</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#the-rstudio-help-system"><i class="fa fa-check"></i>The RStudio help system</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#history"><i class="fa fa-check"></i>History</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#error-messages"><i class="fa fa-check"></i>Error messages</a></li>
+</ul></li>
+<li class="chapter" data-level="0.3" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#four-things-to-know-about-r"><i class="fa fa-check"></i><b>0.3</b> Four Things to Know About R</a></li>
+<li class="chapter" data-level="0.4" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#data-in-r"><i class="fa fa-check"></i><b>0.4</b> Data in R</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#data-in-packages"><i class="fa fa-check"></i>Data in Packages</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#the-helprct-data-set"><i class="fa fa-check"></i>The HELPrct data set</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#using-your-own-data"><i class="fa fa-check"></i>Using your own data</a></li>
+</ul></li>
+<li class="chapter" data-level="0.5" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#the-most-important-template"><i class="fa fa-check"></i><b>0.5</b> The Most Important Template</a></li>
+<li class="chapter" data-level="0.6" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#manipulating-your-data"><i class="fa fa-check"></i><b>0.6</b> Manipulating your data</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#creating-a-subset"><i class="fa fa-check"></i>Creating a subset</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#choosing-specific-columns"><i class="fa fa-check"></i>Choosing specific columns</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#dropping-variables"><i class="fa fa-check"></i>Dropping Variables</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#creating-new-variables"><i class="fa fa-check"></i>Creating new variables</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#saving-data"><i class="fa fa-check"></i>Saving Data</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#merging-datasets"><i class="fa fa-check"></i>Merging datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="0.7" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#using-r-markdown"><i class="fa fa-check"></i><b>0.7</b> Using R Markdown</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#r-markdown-files-must-be-self-contained"><i class="fa fa-check"></i>R Markdown files must be self-contained</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#output-formats"><i class="fa fa-check"></i>Output formats</a></li>
+</ul></li>
+<li class="chapter" data-level="0.8" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#statistics-answering-questions-with-data"><i class="fa fa-check"></i><b>0.8</b> Statistics: Answering Questions With Data</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#data-the-raw-material"><i class="fa fa-check"></i>Data – the raw material</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#information-the-goal"><i class="fa fa-check"></i>Information – the goal</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#uncertainty-the-context"><i class="fa fa-check"></i>Uncertainty – the context</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#probability-the-tool"><i class="fa fa-check"></i>Probability – the tool</a></li>
+</ul></li>
+<li class="chapter" data-level="0.9" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#a-first-example-the-lady-tasting-tea"><i class="fa fa-check"></i><b>0.9</b> A First Example: The Lady Tasting Tea</a></li>
+<li class="chapter" data-level="0.10" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#coins-and-cups"><i class="fa fa-check"></i><b>0.10</b> Coins and Cups</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="collecting-data.html"><a href="collecting-data.html"><i class="fa fa-check"></i><b>1</b> Collecting Data</a><ul>
+<li class="chapter" data-level="1.1" data-path="collecting-data.html"><a href="collecting-data.html#the-structure-of-data"><i class="fa fa-check"></i><b>1.1</b> The Structure of Data</a><ul>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#cases-and-variables"><i class="fa fa-check"></i>Cases and Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#categorical-and-quantitative-variables"><i class="fa fa-check"></i>Categorical and Quantitative Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#investigating-variables-and-relationships-between-variables"><i class="fa fa-check"></i>Investigating Variables and Relationships between Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#using-data-to-answer-a-question"><i class="fa fa-check"></i>Using Data to Answer a Question</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="collecting-data.html"><a href="collecting-data.html#sampling-from-a-population"><i class="fa fa-check"></i><b>1.2</b> Sampling from a Population</a><ul>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#samples-from-populations"><i class="fa fa-check"></i>Samples from Populations</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#sampling-bias"><i class="fa fa-check"></i>Sampling Bias</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#simple-random-sample"><i class="fa fa-check"></i>Simple Random Sample</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="collecting-data.html"><a href="collecting-data.html#experiments-and-observational-studies"><i class="fa fa-check"></i><b>1.3</b> Experiments and Observational Studies</a><ul>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#confounding-variables"><i class="fa fa-check"></i>Confounding Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#observational-studies-vs.-experiments"><i class="fa fa-check"></i>Observational Studies vs. Experiments</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="describing-data.html"><a href="describing-data.html"><i class="fa fa-check"></i><b>2</b> Describing Data</a><ul>
+<li class="chapter" data-level="2.1" data-path="describing-data.html"><a href="describing-data.html#categorical-variables"><i class="fa fa-check"></i><b>2.1</b> Categorical Variables</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#one-categorical-variable"><i class="fa fa-check"></i>One Categorical Variable</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#two-categorical-variables-two-way-tables"><i class="fa fa-check"></i>Two Categorical Variables: Two-Way Tables</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="describing-data.html"><a href="describing-data.html#one-quantitative-variable-shape-and-center"><i class="fa fa-check"></i><b>2.2</b> One Quantitative Variable: Shape and Center</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#the-shape-of-a-distribution"><i class="fa fa-check"></i>The Shape of a Distribution</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#the-center-of-a-distribution"><i class="fa fa-check"></i>The Center of a Distribution</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#resistance"><i class="fa fa-check"></i>Resistance</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="describing-data.html"><a href="describing-data.html#one-quantitative-variable-measures-of-spread"><i class="fa fa-check"></i><b>2.3</b> One Quantitative Variable: Measures of Spread</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#standard-deviation"><i class="fa fa-check"></i>Standard Deviation</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#percentiles"><i class="fa fa-check"></i>Percentiles</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#five-number-summary"><i class="fa fa-check"></i>Five Number Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="describing-data.html"><a href="describing-data.html#outliers-boxplots-and-quantitativecategorical-relationships"><i class="fa fa-check"></i><b>2.4</b> Outliers, Boxplots, and Quantitative/Categorical Relationships</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#detection-of-outliers"><i class="fa fa-check"></i>Detection of Outliers</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#boxplots"><i class="fa fa-check"></i>Boxplots</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#one-quantitative-and-one-categorical-variable"><i class="fa fa-check"></i>One Quantitative and One Categorical Variable</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="describing-data.html"><a href="describing-data.html#two-quantitative-variables-scatterplot-and-correlation"><i class="fa fa-check"></i><b>2.5</b> Two Quantitative Variables: Scatterplot and Correlation</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#visualizing-a-relationship-between-two-quantitative-variables-scatterplots"><i class="fa fa-check"></i>Visualizing a Relationship between Two Quantitative Variables: Scatterplots</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#summarizing-a-relationship-between-two-quantitative-variables-correlation"><i class="fa fa-check"></i>Summarizing a Relationship between Two Quantitative Variables: Correlation</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="describing-data.html"><a href="describing-data.html#two-quantitative-variables-linear-regression"><i class="fa fa-check"></i><b>2.6</b> Two Quantitative Variables: Linear Regression</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>3</b> Confidence Intervals</a><ul>
+<li class="chapter" data-level="3.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#sampling-distributions"><i class="fa fa-check"></i><b>3.1</b> Sampling Distributions</a><ul>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#variability-of-sample-statistics"><i class="fa fa-check"></i>Variability of Sample Statistics</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#measuring-sampling-variability-the-standard-error"><i class="fa fa-check"></i>Measuring Sampling Variability: The Standard Error</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#the-importance-of-sample-size"><i class="fa fa-check"></i>The Importance of Sample Size</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#understanding-and-interpreting-confidence-intervals"><i class="fa fa-check"></i><b>3.2</b> Understanding and Interpreting Confidence Intervals</a><ul>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#interval-estimates-and-margin-of-error"><i class="fa fa-check"></i>Interval Estimates and Margin of Error</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#confidence-intervals-1"><i class="fa fa-check"></i>Confidence Intervals</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#understanding-confidence-intervals"><i class="fa fa-check"></i>Understanding Confidence Intervals</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#interpreting-confidence-intervals"><i class="fa fa-check"></i>Interpreting Confidence Intervals</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#constructing-bootstrap-confidence-intervals"><i class="fa fa-check"></i><b>3.3</b> Constructing Bootstrap Confidence Intervals</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-samples"><i class="fa fa-check"></i><b>3.3.1</b> Bootstrap Samples</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-distribution"><i class="fa fa-check"></i>Bootstrap Distribution</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#estimating-standard-error-based-on-a-bootstrap-distribution"><i class="fa fa-check"></i>Estimating Standard Error Based on a Bootstrap Distribution</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#confidence-interval-based-on-a-bootstrap-standard-error"><i class="fa fa-check"></i>95% Confidence Interval Based on a Bootstrap Standard Error</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-confidence-intervals-using-percentiles"><i class="fa fa-check"></i><b>3.4</b> Bootstrap Confidence Intervals Using Percentiles</a><ul>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#confidence-intervals-based-on-bootstrap-percentiles"><i class="fa fa-check"></i>Confidence Intervals Based on Bootstrap Percentiles</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#finding-confidence-intervals-for-many-different-parameters"><i class="fa fa-check"></i>Finding Confidence Intervals for Many Different Parameters</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#another-look-at-the-effect-of-sample-size"><i class="fa fa-check"></i>Another Look at the Effect of Sample Size</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#one-caution-on-constructing-bootstrap-confidence-intervals"><i class="fa fa-check"></i>One Caution on Constructing Bootstrap Confidence Intervals</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html"><i class="fa fa-check"></i><b>4</b> Hypothesis Tests</a><ul>
+<li class="chapter" data-level="4.1" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#introducing-hypothesis-tests"><i class="fa fa-check"></i><b>4.1</b> Introducing Hypothesis Tests</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#the-4-step-outline"><i class="fa fa-check"></i>The 4-step outline</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#null-and-alternative-hypotheses"><i class="fa fa-check"></i>Null and Alternative Hypotheses</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#measuring-evidence-with-p-values"><i class="fa fa-check"></i><b>4.2</b> Measuring Evidence with P-values</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#p-values-from-randomization-distributions"><i class="fa fa-check"></i>P-values from Randomization Distributions</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#p-values-and-the-alternative-hypothesis"><i class="fa fa-check"></i>P-values and the Alternative Hypothesis</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#determining-statisical-significance"><i class="fa fa-check"></i><b>4.3</b> Determining Statisical Significance</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#less-formal-statistical-decisions"><i class="fa fa-check"></i>Less Formal Statistical Decisions</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#creating-randomization-distributions"><i class="fa fa-check"></i><b>4.4</b> Creating Randomization Distributions</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-test-for-a-difference-in-proportions-cocaine-addiction"><i class="fa fa-check"></i>Randomization Test for a Difference in Proportions: Cocaine Addiction</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-test-for-a-correlation-malevolent-uniforms-and-penalties"><i class="fa fa-check"></i>Randomization Test for a Correlation: Malevolent Uniforms and Penalties</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-test-for-a-mean-body-temperature"><i class="fa fa-check"></i>Randomization Test for a Mean: Body Temperature</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#confidence-intervals-and-hypothesis-tests"><i class="fa fa-check"></i><b>4.5</b> Confidence Intervals and Hypothesis Tests</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-and-bootstrap-distributions"><i class="fa fa-check"></i>Randomization and Bootstrap Distributions</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html"><i class="fa fa-check"></i><b>5</b> Approximating with a Distribution</a><ul>
+<li class="chapter" data-level="5.1" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#normal-distributions"><i class="fa fa-check"></i><b>5.1</b> Normal Distributions</a><ul>
+<li class="chapter" data-level="" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#density-curves"><i class="fa fa-check"></i>Density Curves</a></li>
+<li class="chapter" data-level="" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#normal-distributions-1"><i class="fa fa-check"></i>Normal Distributions</a></li>
+<li class="chapter" data-level="" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#finding-normal-probabilities-and-percentiles"><i class="fa fa-check"></i>Finding Normal Probabilities and Percentiles</a></li>
+<li class="chapter" data-level="" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#standard-normal-n01"><i class="fa fa-check"></i>Standard Normal N(0,1)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#confidence-intervals-and-p-values-using-normal-distributions"><i class="fa fa-check"></i><b>5.2</b> Confidence Intervals and P-values Using Normal Distributions</a><ul>
+<li class="chapter" data-level="" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#confidence-intervals-based-on-a-normal-distribution"><i class="fa fa-check"></i>Confidence Intervals Based on a Normal Distribution</a></li>
+<li class="chapter" data-level="" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#p-values-based-on-a-normal-distribution"><i class="fa fa-check"></i>P-values Based on a Normal Distribution</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html"><i class="fa fa-check"></i><b>6</b> Inference for Means and Proportions</a><ul>
+<li class="chapter" data-level="6.1" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#distribution-of-a-sample-proportion"><i class="fa fa-check"></i><b>6.1</b> Distribution of a Sample Proportion</a><ul>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#how-large-a-sample-size-is-needed"><i class="fa fa-check"></i>How Large a Sample Size is Needed?</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#confidence-interval-for-a-single-proportion"><i class="fa fa-check"></i><b>6.2</b> Confidence Interval for a Single Proportion</a><ul>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#confidence-interval-for-a-single-proportion-1"><i class="fa fa-check"></i>Confidence Interval for a Single Proportion</a></li>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#determining-sample-size-for-estimating-a-proportion"><i class="fa fa-check"></i>Determining Sample Size for Estimating a Proportion</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#test-for-a-single-proportion"><i class="fa fa-check"></i><b>6.3</b> Test for a Single Proportion</a></li>
+<li class="chapter" data-level="6.4" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#distribution-of-a-sample-mean"><i class="fa fa-check"></i><b>6.4</b> Distribution of a Sample Mean</a><ul>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#computing-the-standard-error"><i class="fa fa-check"></i>Computing the Standard Error</a></li>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#how-large-a-sample-size-is-needed-1"><i class="fa fa-check"></i>How Large a Sample Size is Needed?</a></li>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#the-t-distribution"><i class="fa fa-check"></i>The t-Distribution</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#confidence-interval-for-a-mean-using-the-t-distribution"><i class="fa fa-check"></i><b>6.5</b> Confidence Interval for a Mean Using the t-Distribution</a><ul>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#confidence-interval-for-a-mean-using-the-t-distribution-1"><i class="fa fa-check"></i>Confidence Interval for a Mean Using the t-Distribution</a></li>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#determining-sample-size-for-estimating-a-mean"><i class="fa fa-check"></i>Determining Sample Size for Estimating a Mean</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#test-for-a-single-mean"><i class="fa fa-check"></i><b>6.6</b> Test for a Single Mean</a></li>
+<li class="chapter" data-level="6.7" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#distribution-of-differences-in-proportions"><i class="fa fa-check"></i><b>6.7</b> Distribution of Differences in Proportions</a></li>
+<li class="chapter" data-level="6.8" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#confidence-interval-for-a-difference-in-proportions"><i class="fa fa-check"></i><b>6.8</b> Confidence Interval for a Difference in Proportions</a></li>
+<li class="chapter" data-level="6.9" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#test-for-a-difference-in-proportions"><i class="fa fa-check"></i><b>6.9</b> Test For a Difference in Proportions</a></li>
+<li class="chapter" data-level="6.10" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#distribution-of-differences-in-means"><i class="fa fa-check"></i><b>6.10</b> Distribution of Differences in Means</a><ul>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#the-t-distribution-1"><i class="fa fa-check"></i>The t-Distribution</a></li>
+</ul></li>
+<li class="chapter" data-level="6.11" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#confidence-interval-for-a-difference-in-means"><i class="fa fa-check"></i><b>6.11</b> Confidence Interval for a Difference in Means</a></li>
+<li class="chapter" data-level="6.12" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#test-for-a-difference-in-means"><i class="fa fa-check"></i><b>6.12</b> Test for a Difference in Means</a></li>
+<li class="chapter" data-level="6.13" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#paired-difference-in-means"><i class="fa fa-check"></i><b>6.13</b> Paired Difference in Means</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html"><i class="fa fa-check"></i><b>7</b> Chi-Squared Tests for Categorical Variables</a><ul>
+<li class="chapter" data-level="7.1" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#testing-goodness-of-fit-for-a-single-categorical-variable"><i class="fa fa-check"></i><b>7.1</b> Testing Goodness-of-Fit for a Single Categorical Variable</a><ul>
+<li class="chapter" data-level="" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#chi-square-statistic"><i class="fa fa-check"></i>Chi-square Statistic</a></li>
+<li class="chapter" data-level="" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#chi-square-distribution"><i class="fa fa-check"></i>Chi-square Distribution</a></li>
+<li class="chapter" data-level="" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#goodness-of-fit-for-two-categories"><i class="fa fa-check"></i>Goodness-of-Fit for Two Categories</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#testing-for-an-association-between-two-categorical-variables"><i class="fa fa-check"></i><b>7.2</b> Testing for an Association Between Two Categorical Variables</a><ul>
+<li class="chapter" data-level="" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#chi-square-test-for-association"><i class="fa fa-check"></i>Chi-square Test for Association</a></li>
+<li class="chapter" data-level="" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#special-case-for-a-2-x-2-table"><i class="fa fa-check"></i>Special Case for a 2 x 2 Table</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html"><i class="fa fa-check"></i><b>8</b> ANOVA to Compare Means</a><ul>
+<li class="chapter" data-level="8.1" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#analysis-of-variance"><i class="fa fa-check"></i><b>8.1</b> Analysis of Variance</a><ul>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#null-and-alternative-hypotheses-1"><i class="fa fa-check"></i>Null and Alternative Hypotheses</a></li>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#partitioning-variability"><i class="fa fa-check"></i>Partitioning Variability</a></li>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#the-f-statistic"><i class="fa fa-check"></i>The F-Statistic</a></li>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#the-f-distribution"><i class="fa fa-check"></i>The F-distribution</a></li>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#more-examples-of-anova"><i class="fa fa-check"></i>More Examples of ANOVA</a></li>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#anova-calculations"><i class="fa fa-check"></i>ANOVA Calculations</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#pairwise-comparisons-and-inference-after-anova"><i class="fa fa-check"></i><b>8.2</b> Pairwise Comparisons and Inference After ANOVA</a><ul>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#using-anova-for-inferences-about-group-means"><i class="fa fa-check"></i>Using ANOVA for Inferences about Group Means</a></li>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#lots-of-pairwise-comparisons"><i class="fa fa-check"></i>Lots of Pairwise Comparisons</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Lock5 With R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="approximating-with-a-distribution" class="section level1">
+<h1><span class="header-section-number">5</span> Approximating with a Distribution</h1>
+<div id="normal-distributions" class="section level2">
+<h2><span class="header-section-number">5.1</span> Normal Distributions</h2>
+<div id="density-curves" class="section level3 unnumbered">
+<h3>Density Curves</h3>
+<div id="example-5.1" class="section level4 unnumbered">
+<h4>Example 5.1</h4>
+<pre class="sourceCode r"><code class="sourceCode r">Bootstrap &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">1000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>Time, <span class="dt">data =</span> <span class="kw">resample</span>(CommuteAtlanta))
+<span class="kw">head</span>(Bootstrap, <span class="dv">3</span>)</code></pre>
+<pre><code>##     mean
+## 1 28.364
+## 2 28.894
+## 3 28.404</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dhistogram</span>( <span class="op">~</span><span class="st"> </span>mean, <span class="dt">data =</span> Bootstrap)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example5.1-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dens</span>( <span class="op">~</span><span class="st"> </span>mean, <span class="dt">data =</span> Bootstrap)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example5.1-2.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>( <span class="op">~</span><span class="st"> </span>(mean <span class="op">&lt;=</span><span class="st"> </span><span class="dv">30</span>), <span class="dt">data =</span> Bootstrap)                <span class="co"># proportion less than 30 min</span></code></pre>
+<pre><code>## prop_TRUE 
+##     0.842</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>( <span class="op">~</span><span class="st"> </span>(mean <span class="op">&gt;=</span><span class="st"> </span><span class="dv">31</span>), <span class="dt">data =</span> Bootstrap)                <span class="co"># proportion greater than 31 min</span></code></pre>
+<pre><code>## prop_TRUE 
+##     0.017</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prop</span>( <span class="op">~</span><span class="st"> </span>(mean <span class="op">&gt;=</span><span class="st"> </span><span class="dv">30</span> <span class="op">&amp;</span><span class="st"> </span>mean <span class="op">&lt;=</span><span class="st"> </span><span class="dv">31</span>), <span class="dt">data =</span> Bootstrap)   <span class="co"># proportion between 30 and 31 min</span></code></pre>
+<pre><code>## prop_TRUE 
+##     0.142</code></pre>
+</div>
+</div>
+<div id="normal-distributions-1" class="section level3 unnumbered">
+<h3>Normal Distributions</h3>
+<p>Normal distributions
+<!-- begin itemize --></p>
+<ol>
+<li>are symmetric, unimodel, and bell-shaped</li>
+<li>can have any combination of mean and standard deviation (as long as the standard deviation is positive)</li>
+<li>satisfy the 68–95–99.7 rule:</li>
+</ol>
+<p>Approximately 68% of any normal distribution lies within 1 standard deviation of the mean.</p>
+<p>Approximately 95% of any normal distribution lies within 2 standard deviations of the mean.</p>
+<p>Approximately 99.7% of any normal distribution lies within 3 standard deviations of the mean.
+<!-- end itemize --></p>
+<p>Many naturally occurring distributions are approximately normally distributed. Normal distributions are also an important part of statistical inference.
+The <code>gf_dist()</code> function can be used to plot many common distributions.</p>
+<div id="figure-5.5" class="section level4 unnumbered">
+<h4>Figure 5.5</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dist</span>(<span class="st">&quot;norm&quot;</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">1</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">5</span>, <span class="dv">6</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_dist</span>(<span class="st">&quot;norm&quot;</span>, <span class="dt">mean =</span> <span class="dv">2</span>, <span class="dt">sd =</span> <span class="dv">1</span>, <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure5.5-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dist</span>(<span class="st">&quot;norm&quot;</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">1</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_dist</span>(<span class="st">&quot;norm&quot;</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">2</span>, <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_dist</span>(<span class="st">&quot;norm&quot;</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">3</span>, <span class="dt">colour =</span> <span class="st">&quot;green&quot;</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure5.5b-1.png" width="65%" /></p>
+<!-- AuthNote --- the sd argument doesn't seem to be able to handle values between 0 and 1 when the xlim isn't between 0 and 1, originally this was sd = .5, 1, 2 -->
+</div>
+<div id="example-5.2" class="section level4 unnumbered">
+<h4>Example 5.2</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dist</span>(<span class="st">&quot;norm&quot;</span>, <span class="dt">mean =</span> <span class="dv">75</span>, <span class="dt">sd =</span> <span class="dv">10</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">40</span>, <span class="dv">110</span>))
+<span class="kw">gf_dist</span>(<span class="st">&quot;norm&quot;</span>, <span class="dt">mean =</span> <span class="fl">7.1</span>, <span class="dt">sd =</span> <span class="fl">1.1</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="fl">2.7</span>, <span class="fl">11.5</span>))
+<span class="kw">gf_dist</span>(<span class="st">&quot;norm&quot;</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="fl">0.02</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span>.<span class="dv">07</span>, <span class="fl">.07</span>))</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example5.2-1.png" width="65%" /><img src="Lock5WithR_files/figure-html/Example5.2-2.png" width="65%" /><img src="Lock5WithR_files/figure-html/Example5.2-3.png" width="65%" /></p>
+</div>
+</div>
+<div id="finding-normal-probabilities-and-percentiles" class="section level3 unnumbered">
+<h3>Finding Normal Probabilities and Percentiles</h3>
+<p>The two main functions we need for working with normal distributions are <code>pnorm()</code> and <code>qnorm()</code>.
+<code>pnorm()</code> computes the proportion of a normal distribution below a specified value:</p>
+<p><span class="math display">\[
+\mbox{\texttt{pnorm(x, mean = $\mu$, sd = $\sigma$)}} = \Prob(X \le x)
+\]</span>
+when <span class="math inline">\(X \sim \Norm(\mu, \sigma)\)</span>.</p>
+<p>We can obtain arbitrary probabilities using pnorm()</p>
+<div id="example-5.3" class="section level4 unnumbered">
+<h4>Example 5.3</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pnorm</span>(<span class="dv">90</span>, <span class="dv">75</span>, <span class="dv">10</span>, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>) <span class="co"># proportion of scores above 90</span></code></pre>
+<pre><code>## [1] 0.0668072</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xpnorm</span>(<span class="dv">90</span>, <span class="dv">75</span>, <span class="dv">10</span>, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>)</code></pre>
+<pre><code>## </code></pre>
+<pre><code>## If X ~ N(75, 10), then</code></pre>
+<pre><code>##  P(X &lt;= 90) = P(Z &lt;= 1.5) = 0.9332</code></pre>
+<pre><code>##  P(X &gt;  90) = P(Z &gt;  1.5) = 0.06681</code></pre>
+<pre><code>## </code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example5.3-1.png" width="65%" /></p>
+<pre><code>## [1] 0.0668072</code></pre>
+<p>The <code>xpnorm()</code> function gives a bit more verbose output and also gives you a picture. Notice the <span style="color:brown">lower.tail = FALSE</span>. This is added because the default for <code>pnorm()</code> and <code>xpnorm()</code> finds the lower tail, not the upper tail. However, we can also subtract the proportion of the lower tail from 1 to find the the proportion of the upper tail.</p>
+</div>
+<div id="example-5.4" class="section level4 unnumbered">
+<h4>Example 5.4</h4>
+<p><code>qnorm()</code> goes the other direction: You provide the quantile (percentile expressed as a decimal) and R gives you the value.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qnorm</span>(<span class="fl">0.2</span>, <span class="dv">75</span>, <span class="dv">10</span>) <span class="co"># 20th percentile in Norm(75, 10)</span></code></pre>
+<pre><code>## [1] 66.58379</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xqnorm</span>(<span class="fl">0.2</span>, <span class="dv">75</span>, <span class="dv">10</span>)  </code></pre>
+<pre><code>## </code></pre>
+<pre><code>## If X ~ N(75, 10), then</code></pre>
+<pre><code>##  P(X &lt;= 66.58379) = 0.2</code></pre>
+<pre><code>##  P(X &gt;  66.58379) = 0.8</code></pre>
+<pre><code>## </code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example5.4-1.png" width="65%" /></p>
+<pre><code>## [1] 66.58379</code></pre>
+</div>
+</div>
+<div id="standard-normal-n01" class="section level3 unnumbered">
+<h3>Standard Normal N(0,1)</h3>
+<p>Because probabilities in a normal distribution depend only on the number of standard deviations above and below the mean, it is useful to define <span class="math inline">\(Z\)</span>-scores (also called standardized scores) as follows:</p>
+<p><span class="math display">\[
+\mbox{$Z$-score} = \frac{ \mbox{value} - \mbox{mean} } { \mbox{standard deviation} }
+\]</span></p>
+<p>If we know the population mean and standard deviation, we can plug those in. When we do not, we will use the mean and standard deviation of a random sample as an estimate.</p>
+<p>Z-scores provide a second way to compute normal probabilities.</p>
+<div id="example-5.5" class="section level4 unnumbered">
+<h4>Example 5.5</h4>
+<pre class="sourceCode r"><code class="sourceCode r">z30 &lt;-<span class="st"> </span>(<span class="dv">30</span> <span class="op">-</span><span class="st"> </span><span class="fl">29.11</span>) <span class="op">/</span><span class="st"> </span><span class="fl">0.93</span>; z30  <span class="co"># z-score for 30 min</span></code></pre>
+<pre><code>## [1] 0.9569892</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">z31 &lt;-<span class="st"> </span>(<span class="dv">31</span> <span class="op">-</span><span class="st"> </span><span class="fl">29.11</span>) <span class="op">/</span><span class="st"> </span><span class="fl">0.93</span>; z31  <span class="co"># z-score for 31 min</span></code></pre>
+<pre><code>## [1] 2.032258</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xpnorm</span>(<span class="kw">c</span>(<span class="dv">30</span>, <span class="dv">31</span>), <span class="fl">29.11</span>, <span class="fl">0.93</span>)   <span class="co"># original normal distribution proportion between 30 and 31 min</span></code></pre>
+<pre><code>## </code></pre>
+<pre><code>## If X ~ N(29.11, 0.93), then</code></pre>
+<pre><code>##  P(X &lt;= 30) = P(Z &lt;= 0.957) = 0.8307 P(X &lt;= 31) = P(Z &lt;= 2.032) = 0.9789</code></pre>
+<pre><code>##  P(X &gt;  30) = P(Z &gt;  0.957) = 0.16929    P(X &gt;  31) = P(Z &gt;  2.032) = 0.02106</code></pre>
+<pre><code>## </code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example5.5-1.png" width="65%" /></p>
+<pre><code>## [1] 0.8307137 0.9789362</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xpnorm</span>(<span class="kw">c</span>(z30, z31))              <span class="co"># standardized distribution proportion between 30 and 31 min</span></code></pre>
+<pre><code>## </code></pre>
+<pre><code>## If X ~ N(0, 1), then</code></pre>
+<pre><code>##  P(X &lt;= 0.957) = P(Z &lt;= 0.957) = 0.8307  P(X &lt;= 2.032) = P(Z &lt;= 2.032) = 0.9789</code></pre>
+<pre><code>##  P(X &gt;  0.957) = P(Z &gt;  0.957) = 0.16929 P(X &gt;  2.032) = P(Z &gt;  2.032) = 0.02106</code></pre>
+<pre><code>## </code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example5.5-2.png" width="65%" /></p>
+<pre><code>## [1] 0.8307137 0.9789362</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pnorm</span>(z31) <span class="op">-</span><span class="st"> </span><span class="kw">pnorm</span>(z30)</code></pre>
+<pre><code>## [1] 0.1482226</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xpnorm</span>(<span class="fl">0.957</span>)                      <span class="co"># proportion with z-score below 0.957</span></code></pre>
+<pre><code>## </code></pre>
+<pre><code>## If X ~ N(0, 1), then</code></pre>
+<pre><code>##  P(X &lt;= 0.957) = P(Z &lt;= 0.957) = 0.8307</code></pre>
+<pre><code>##  P(X &gt;  0.957) = P(Z &gt;  0.957) = 0.1693</code></pre>
+<pre><code>## </code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example5.5b-1.png" width="65%" /></p>
+<pre><code>## [1] 0.8307164</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xpnorm</span>(<span class="fl">2.032</span>, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>)  <span class="co"># proportion with z-score above 2.032</span></code></pre>
+<pre><code>## </code></pre>
+<pre><code>## If X ~ N(0, 1), then</code></pre>
+<pre><code>##  P(X &lt;= 2.032) = P(Z &lt;= 2.032) = 0.9789</code></pre>
+<pre><code>##  P(X &gt;  2.032) = P(Z &gt;  2.032) = 0.02108</code></pre>
+<pre><code>## </code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example5.5b-2.png" width="65%" /></p>
+<pre><code>## [1] 0.02107683</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pnorm</span>(<span class="dv">30</span>, <span class="fl">29.11</span>, <span class="fl">0.93</span>)          </code></pre>
+<pre><code>## [1] 0.8307137</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pnorm</span>(<span class="dv">31</span>, <span class="fl">29.11</span>, <span class="fl">0.93</span>, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>)</code></pre>
+<pre><code>## [1] 0.02106377</code></pre>
+</div>
+<div id="example-5.6" class="section level4 unnumbered">
+<h4>Example 5.6</h4>
+<pre class="sourceCode r"><code class="sourceCode r">z &lt;-<span class="st"> </span><span class="kw">qnorm</span>(<span class="fl">0.2</span>); z</code></pre>
+<pre><code>## [1] -0.8416212</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">75</span> <span class="op">+</span><span class="st"> </span>z <span class="op">*</span><span class="st"> </span><span class="dv">10</span></code></pre>
+<pre><code>## [1] 66.58379</code></pre>
+</div>
+</div>
+</div>
+<div id="confidence-intervals-and-p-values-using-normal-distributions" class="section level2">
+<h2><span class="header-section-number">5.2</span> Confidence Intervals and P-values Using Normal Distributions</h2>
+<div id="confidence-intervals-based-on-a-normal-distribution" class="section level3 unnumbered">
+<h3>Confidence Intervals Based on a Normal Distribution</h3>
+<div id="example-5.7" class="section level4 unnumbered">
+<h4>Example 5.7</h4>
+<pre class="sourceCode r"><code class="sourceCode r">Bootstrap &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">1000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>Time, <span class="dt">data =</span> <span class="kw">resample</span>(CommuteAtlanta)) 
+<span class="kw">gf_dotplot</span>( <span class="op">~</span><span class="st"> </span>mean, <span class="dt">binwidth =</span> <span class="fl">0.1</span>, <span class="dt">dotsize =</span> <span class="fl">.6</span>, <span class="dt">data =</span> Bootstrap)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example5.7-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xqnorm</span>(<span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>), <span class="fl">29.11</span>, <span class="fl">0.915</span>)   <span class="co"># 95&lt;!--  confidence interval for the normal distribution --&gt;</span></code></pre>
+<pre><code>## </code></pre>
+<pre><code>## If X ~ N(29.11, 0.915), then</code></pre>
+<pre><code>##  P(X &lt;= 27.31663) = 0.025    P(X &lt;= 30.90337) = 0.975</code></pre>
+<pre><code>##  P(X &gt;  27.31663) = 0.975    P(X &gt;  30.90337) = 0.025</code></pre>
+<pre><code>## </code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example5.7b-1.png" width="65%" /></p>
+<pre><code>## [1] 27.31663 30.90337</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qnorm</span>(<span class="fl">0.005</span>, <span class="fl">29.11</span>, <span class="fl">0.915</span>) <span class="co"># lower endpoint for 99&lt;!--  confidence interval --&gt;</span></code></pre>
+<pre><code>## [1] 26.75312</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qnorm</span>(<span class="fl">0.995</span>, <span class="fl">29.11</span>, <span class="fl">0.915</span>) <span class="co"># upper endpoint for 99&lt;!--  confidence interval --&gt;</span></code></pre>
+<pre><code>## [1] 31.46688</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qnorm</span>(<span class="fl">0.05</span>, <span class="fl">29.11</span>, <span class="fl">0.915</span>) <span class="co"># lower endpoint for 90&lt;!--  confidence interval --&gt;</span></code></pre>
+<pre><code>## [1] 27.60496</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qnorm</span>(<span class="fl">0.95</span>, <span class="fl">29.11</span>, <span class="fl">0.915</span>) <span class="co"># upper endpoint for 90&lt;!--  confidence interval --&gt;</span></code></pre>
+<pre><code>## [1] 30.61504</code></pre>
+</div>
+<div id="example-5.8" class="section level4 unnumbered">
+<h4>Example 5.8</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qnorm</span>(<span class="fl">0.005</span>, <span class="fl">13.10</span>, <span class="fl">0.20</span>) <span class="co"># lower endpoint for 99&lt;!--  confidence interval --&gt;</span></code></pre>
+<pre><code>## [1] 12.58483</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qnorm</span>(<span class="fl">0.995</span>, <span class="fl">13.10</span>, <span class="fl">0.20</span>) <span class="co"># upper endpoint for 99&lt;!--  confidence interval --&gt;</span></code></pre>
+<pre><code>## [1] 13.61517</code></pre>
+</div>
+</div>
+<div id="p-values-based-on-a-normal-distribution" class="section level3 unnumbered">
+<h3>P-values Based on a Normal Distribution</h3>
+<div id="example-5.9" class="section level4 unnumbered">
+<h4>Example 5.9</h4>
+<pre class="sourceCode r"><code class="sourceCode r">Randomization.Temp &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">10000</span>) <span class="op">*</span><span class="st"> </span>(<span class="kw">mean</span>( <span class="op">~</span><span class="st"> </span>BodyTemp, <span class="dt">data =</span> <span class="kw">resample</span>(BodyTemp50)) <span class="op">+</span><span class="st"> </span><span class="fl">0.34</span>)
+<span class="kw">gf_dhistogram</span>( <span class="op">~</span><span class="st"> </span>result, <span class="dt">binwidth =</span> <span class="fl">.025</span>, <span class="dt">data =</span> Randomization.Temp) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">gf_fitdistr</span>()</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example5.9-1.png" width="65%" /></p>
+<p><a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>
+<!-- AuthNote --- the original graph used 'mean' as the variable but Randomization.Temp only contains 'result' so I switched it to that  --></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pnorm</span>(<span class="fl">98.26</span>, <span class="fl">98.6</span>, <span class="fl">0.1066</span>)</code></pre>
+<pre><code>## [1] 0.0007126119</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">pnorm</span>(<span class="fl">98.26</span>, <span class="fl">98.6</span>, <span class="fl">0.1066</span>)</code></pre>
+<pre><code>## [1] 0.001425224</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">z &lt;-<span class="st"> </span>(<span class="fl">98.26</span> <span class="op">-</span><span class="st"> </span><span class="fl">98.6</span>) <span class="op">/</span><span class="st"> </span><span class="fl">0.1066</span>; z</code></pre>
+<pre><code>## [1] -3.189493</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pnorm</span>(z)</code></pre>
+<pre><code>## [1] 0.0007126119</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">pnorm</span>(z)</code></pre>
+<pre><code>## [1] 0.001425224</code></pre>
+</div>
+<div id="example-5.10" class="section level4 unnumbered">
+<h4>Example 5.10</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pnorm</span>(<span class="fl">0.66</span>, <span class="fl">0.65</span>, <span class="fl">0.013</span>, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>)</code></pre>
+<pre><code>## [1] 0.2208782</code></pre>
+
+</div>
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="5">
+<li id="fn5"><p><code>gf_fitdistr()</code> has default arguments that will add a normal distribution, these defaults can be changed<a href="approximating-with-a-distribution.html#fnref5" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="hypothesis-tests.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="inference-for-means-and-proportions.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["Lock5WithR.pdf"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

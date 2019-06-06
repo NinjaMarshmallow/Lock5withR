@@ -26,7 +26,7 @@ mean(~FTGradEnrollment, data = StatisticsPhD) # mean enrollment in original popu
 
 #### Example 3.5 {-}
 
-To select a random sample of a certain size in R  we can use the `sample()()` function.
+To select a random sample of a certain size in R  we can use the `sample()` function.
 ```{r Example3.5, cache=TRUE}
 sample10 <- sample(StatisticsPhD, 10); sample10
 x.bar <- mean(~FTGradEnrollment, data = sample10); x.bar  # mean enrollment in sample10
@@ -34,18 +34,16 @@ x.bar <- mean(~FTGradEnrollment, data = sample10); x.bar  # mean enrollment in s
 
 Note that this sample has been assigned a name to which we can refer back to find the mean of that particular sample.
 
-```{r Example3.5b, cache=TRUE}
+```{r "Example3.5b", cache=TRUE}
 mean(~FTGradEnrollment, data = sample(StatisticsPhD, 10))  # mean enrollment in another sample 
 ```
 
 
-<!-- ```{r Table3.2, include=FALSE} -->
-<!-- <<Example3.5>> -->
-<!-- ``` -->
+```{r Table3.2, ref.label = "Example3.5", include=FALSE}
+```
 
-<!-- ```{r Table3.3, include=FALSE} -->
-<!-- <<Example3.5>> -->
-<!-- ``` -->
+```{r Table3.3, ref.label = "Example3.5", include=FALSE}
+```
 
 
 #### Figure 3.1 {-}
@@ -70,7 +68,7 @@ In many (but not all) situations, the sampling distribution is
 
 #### Example 3.6 {-}
 
-This time we don't have data, but instead we have a summary of the data. We can however, still simulate the sample distribution by using the `rflip()()` function.
+This time we don't have data, but instead we have a summary of the data. We can however, still simulate the sample distribution by using the `rflip()` function.
 ```{r Example3.6, opts.label = "fig4", cache = TRUE}
 Sampledist.deg <- do(1000) * rflip(200, 0.275) # 1000 samples, each of size 200 and proportion 0.275
 head(Sampledist.deg, 3)
@@ -78,9 +76,8 @@ gf_dotplot(~ prop, binwidth = .002, data = Sampledist.deg)
 ```
 
 
-<!-- ```{r Figure3.2, include=FALSE} -->
-<!-- <<Example3.6>> -->
-<!-- ``` -->
+```{r Figure3.2, ref.label = "Example3.6", include=FALSE}
+```
 
 
 ### Measuring Sampling Variability: The Standard Error {-}
@@ -98,7 +95,7 @@ The standard error is our primary way of measuring how much variability there is
 
 #### Example 3.7 {-}
 
-Calculating the SE is the same as calculating the standard deviation of a sampling distribution, so we use `sd()()`.
+Calculating the SE is the same as calculating the standard deviation of a sampling distribution, so we use `sd()`.
 ```{r Example3.7}
 SE <- sd( ~ mean, data = Sampledist); SE    # sample from Example 3.5
 SE2 <- sd(~prop, data = Sampledist.deg); SE2     # sample from Example 3.6
@@ -250,8 +247,8 @@ Notice how we defined groups in this dotplot. We are grouping proportions that l
 
 #### Figure 3.13 {-}
 
-We can create the data needed for plots like Figure 3.13 using `CIsim()()`.  
-<!--  The plot itself uses `xYplot()()` from the **`Hmisc`** package. -->
+We can create the data needed for plots like Figure 3.13 using `CIsim()`.  
+<!--  The plot itself uses `xYplot()` from the **`Hmisc`** package. -->
 ```{r Figure3.13, message=FALSE, seed=1234, opts.label="fig1"}
 CIsim(200, samples = 3, rdist = rbinom, args = list(size = 1, prob = 0.275), 
       method = binom.test, method.args = list(success = 1), 
@@ -317,7 +314,7 @@ gf_dotplot(~Time, binwidth = 1, data = CommuteAtlanta)
 
 #### Table 3.7 {-}
 
-The computer can easily do all of the resampling by using the `resample()()`.
+The computer can easily do all of the resampling by using the `resample()`.
 ```{r Table3.7}
 mean(~Time, data = resample(CommuteAtlanta)) # mean commute time in one resample
 mean(~Time, data = resample(CommuteAtlanta)) # mean commute time in another resample
@@ -348,15 +345,14 @@ gf_dotplot(~ prop, binwidth = .002, data = BootP)
 ```
 
 
-<!-- ```{r Figure3.18, include=FALSE} -->
-<!-- <<Example3.19>> -->
-<!-- ``` -->
+```{r Figure3.18, ref.label = "Example3.19", include=FALSE}
+```
 
 
 #### Example 3.20 {-}
 
-Variables can be created in R  using the `c()()` function then collected into
-a data frame using the `data.frame()()` function.
+Variables can be created in R  using the `c()` function then collected into
+a data frame using the `data.frame()` function.
 ```{r Example3.20}
 Laughter <- data.frame( NumLaughs =  c(16, 22, 9, 31, 6, 42) )
 mean( ~ NumLaughs, data = Laughter )
@@ -428,7 +424,7 @@ The steps used in this example get used in a wide variety of confidence interval
 
 #### Example 3.23 {-}
 
-Another way to create a 95\% confidence interval is to use the middle 95\% of the bootstrap distribution. The `cdata()()` function can compute this for us as follows:
+Another way to create a 95\% confidence interval is to use the middle 95\% of the bootstrap distribution. The `cdata()` function can compute this for us as follows:
 ```{r Example3.23}
 cdata( ~ mean, 0.95, data = Bootstrap)
 ```
@@ -460,9 +456,8 @@ gf_dotplot(~ mean, binwidth = .08, colour = ~(26.98 <= mean & mean <= 31.63),
 ```
 
 <!-- AuthNote --- new variable? -->
-<!-- ```{r Figure3.23, include=FALSE} -->
-<!-- <<Example3.23>> -->
-<!-- ``` -->
+```{r Figure3.23, ref.label = "Example3.23", include=FALSE}
+```
 
 
 ### Finding Confidence Intervals for Many Different Parameters {-}
@@ -523,9 +518,8 @@ gf_dotplot( ~ cor, binwidth = .002, colour = ~(-.940 <= cor & cor <= -.705),
 ```
 
 
-<!-- ```{r Figure3.27, include=FALSE} -->
-<!-- <<Example3.26b>> -->
-<!-- ``` -->
+```{r Figure3.27, ref.label = "Example3.26b", include=FALSE}
+```
 
 
 ### Another Look at the Effect of Sample Size {-}
@@ -539,9 +533,8 @@ gf_dotplot(~ prop, binwidth = 0.002, colour = ~(0.472 <= prop & prop<= 0.568),
            data = BootP400, show.legend = FALSE)
 ```
 
-<!-- ```{r Figure3.28, include=FALSE} -->
-<!-- <<Example3.27>> -->
-<!-- ``` -->
+```{r Figure3.28, Example3.27, include=FALSE}
+```
 
 
 ### One Caution on Constructing Bootstrap Confidence Intervals {-}
@@ -555,10 +548,10 @@ head(Boot.Mustang, 3)
 gf_histogram( ~ median, bins = 50, data = Boot.Mustang)
 ```
 
+```{r Figure3.29, ref.label = "Example3.28", include=FALSE}
+```
 
-<!-- ```{r Figure3.29, include=FALSE} -->
-<!-- <<Example3.28>> -->
-<!-- ``` -->
+
 
 
 This time the histogram does not have the desired shape.  There are two problems:

@@ -1,0 +1,392 @@
+`r chapter <- 7`
+```{r include=FALSE}
+require(mosaic)
+require(mosaicData)
+require(ggformula)
+library(Lock5withR)
+require("fastR")
+data("SandwichAnts2")
+```
+# ANOVA to Compare Means
+
+<!-- \def\fit#1{\textcolor{green!60!black}{#1}} -->
+<!-- \def\resid#1{\textcolor{red!80!black}{#1}} -->
+<!-- \def\structure<#1>#2{\textcolor{blue}{#2}} -->
+
+
+<!--  -->
+<!--  The following defintions are peculiar to this particular -->
+<!--  presetation. They have nothing to do with the beamer class -->
+<!--  -->
+
+<!-- \def\blank#1{\term{#1}} -->
+
+`r answers <- FALSE`
+`r answers <- TRUE`
+
+
+
+<!-- \newcommand{\ans}[1]{ -->
+<!-- 	\ifthenelse{\boolean{answers}}{#1}{\relax} -->
+<!-- } -->
+
+<!-- \renewcommand{\answer}[1]{ -->
+<!-- 	\ifthenelse{\boolean{answers}}{#1}{\relax} -->
+<!-- } -->
+
+<!-- %\newcommand{\pand}{\operatorname{and}} -->
+<!-- %\newcommand{\por}{\operatorname{or}} -->
+<!-- %\newcommand{\Bin}{\operatorname{Bin}} -->
+<!-- %\newcommand{\Normal}{\operatorname{N}} -->
+<!-- %\newcommand{\sfrac}[2]{#1/#2} -->
+
+## Analysis of Variance
+
+<span class="itemize">
+
+* Two variables: categorical explanatory and quantitative response
+   
+   <span class="itemize">
+
+    - Can be used in either experimental or observational designs.
+   
+  </span>
+
+* Main Question: Does the population mean response  depend on the (treatment) group?
+
+   <span class="itemize">
+
+    - $H_0$: the population group means are all the equal ($\mu_1 = \mu_2 = \cdots \mu_k$)
+    - $H_a$: the population group means are not all equal
+   
+  </span>
+
+
+* If categorical variable has only 2 values, we already have a method:  2-sample $t$-test
+
+  <span class="itemize">
+
+    - ANOVA allows for 3 or more groups (sub-populations)
+ 
+  </span>
+
+
+* $F$ statistic compares within group variation (how different are individuals in the same group?)
+ 		to between group variation (how different are the different group means?)
+
+* ANOVA assumes that each group is normally distributed with the same (population) standard deviation.
+ 
+    <span class="itemize">
+ 
+    - Check normality with normal quantile plots (of residuals)
+    - Check equal standard deviation using 2:1 ratio rule (largest standard deviation at most            twice the smallest standard deviation).
+ 
+  </span>
+
+</span>
+
+
+### Null and Alternative Hypotheses {-}
+
+#### Example 8.1 {-}
+
+```{r Example8.1}
+favstats( Ants ~ Filling, data = SandwichAnts )
+```
+
+
+```{r Example8.1b}
+gf_point( Ants ~ Filling, data = SandwichAnts) %>%
+  gf_line(Ants ~ Filling, group = 1, stat = "summary")
+gf_boxplot( Ants ~ Filling, data = SandwichAnts)
+```
+
+<!-- AuthNote --- gf_line() is just making vertical lines rather than going from one group to the next, original: xyplot( Ants ~ Filling, data = SandwichAnts, type = c('p','a')) -->
+<!-- ### Why Analyze _Variability_ for a Difference in _Means_? {-} -->
+
+<!-- Question: Are these differences significant? -->
+<!-- Or would we expect sample differences this large by random chance even  -->
+<!-- if (in the population) the mean amount of shift is equal for all three groups? -->
+
+<!-- Whether differences between the groups are significant depends on three things: -->
+<!--  -->
+<!--    <span class="enumerate">
+ -->
+<!--    #.  the difference in the means -->
+<!--    #.  the amount of variation within each group -->
+<!--    #.  the sample sizes -->
+<!--    
+</span>
+ -->
+
+   
+<!-- Example 8.2 -->
+
+
+### Partitioning Variability {-}
+   
+#### Example 8.3 {-}
+
+```{r Example8.3}
+Ants.Model <- lm (Ants ~ Filling, data = SandwichAnts)
+anova(Ants.Model)
+```
+
+
+The p-value listed in this output is the p-value for our null hypothesis that
+the mean population response is the same in each treatment group.
+In this case we would reject the null hypothesis at the $\alpha = 0.05$ level.
+
+In the next section we'll look at this test in more detail, but notice that if 
+you know the assumptions of a test, the null hypothesis being tested, and 
+the p-value, you can generally interpret the results even if you don't know 
+all the details of how the test statistic is computed.
+   
+### The F-Statistic {-}
+
+The ANOVA test statistic (called $F$) is based on three ingredients:
+<span class="enumerate">
+
+	#. 		how different the group means are (between group differences)
+	#. 		the amount of variability within each group  (within group differences)
+	#. 		sample size
+
+</span>
+
+
+Each of these will be involved in the calculation of $F$.
+
+<!-- Example 8.4 -->
+
+#### Figure 8.3 {-}
+
+```{r Figure8.3, cache = TRUE, opts.label = "fig4", message = FALSE, warning = FALSE}
+Rand.Ants <- do(1000) * anova(lm(Ants ~ shuffle(Filling), data = SandwichAnts))
+tally( ~ (F >= 5.63), data = Rand.Ants)
+prop( ~ (F >= 5.63), data = Rand.Ants)
+gf_dotplot( ~ F, binwidth = 0.20, dotsize = .2, colour = ~(F <= 5.63), data = Rand.Ants)
+```
+
+
+### The F-distribution {-}
+
+Under certain conditions, the $F$ statistic has a known distribution (called the $F$ distribution).  Those conditions 
+are
+<span class="enumerate">
+
+  #. 
+		The null hypothesis is true (i.e., each group has the same mean)
+	#. 		Each group is sampled from a normal population
+	#. 		Each population group has the same standard deviation
+
+</span>
+
+When these conditions are met, we can use the $F$-distribution to compute the p-value without generating 
+the randomization distribution.
+<span class="itemize">
+
+	#. $F$ distributions have two parameters -- the degrees of freedom
+for the numerator and for the denominator.  
+
+In our example, this is $2$ for the numerator and $7$ for the denominator.  
+
+#. When $H_0$ is true, the numerator and denominator both have a mean of 1, 
+	so $F$ will tend to be close to 1.  
+	
+#. 	When $H_0$ is false, there is more difference between the groups, so the numerator
+	tends to be larger.
+
+	This means we will reject the null hypothesis when $F$ gets large enough.
+
+	#. 	The p-value is computed using `pf()`.
+
+</span>
+
+
+#### Figure 8.4 {-}
+
+```{r Figure8.4, fig.keep = 'last', message = FALSE, warning = FALSE}
+gf_dhistogram( ~ F, binwidth = 4/7, center = .25, data = Rand.Ants) %>%
+  gf_dist('f', df1 = 2, df2 = 21)
+```
+
+
+### More Examples of ANOVA {-}
+
+#### Example 8.5 {-}
+
+```{r Example8.5}
+head(StudentSurvey, 3)
+favstats( ~ Pulse, data = StudentSurvey)
+favstats(Pulse ~ Award, data = StudentSurvey)
+anova(lm(Pulse ~ Award, StudentSurvey))
+```
+
+
+#### Figure 8.5 {-}
+
+```{r Figure8.5}
+gf_boxplot(Pulse ~ Award, data = StudentSurvey)
+```
+
+
+### ANOVA Calculations {-}
+
+<span class="itemize">
+
+#. Between group variability: 
+
+    span style="color:green"> $G = `groupMean` - `grandMean`$ </span>
+    This measures how different a group is from the overall average.
+
+#. Within group variability: 
+		
+    span style="color:red"> $E = `response` - `groupMean`$ </span>
+    This measures how different and individual is from its group average.
+    $E$ stands for "error", but just as in "standard error" it is not a 
+    ``mistake".  It is simply measure how different an individual response is
+    from the model prediction (in this case, the group mean).
+
+    The individual values of span style="color:red"> $E$ </span> are called **residuals**.
+
+</span>
+
+
+#### Example 8.6 {-}
+
+Let's first compute the grand mean and group means.
+```{r Example8.6}
+SandwichAnts
+mean(~ Ants, data = SandwichAnts)  # grand mean
+mean(Ants ~ Filling, data = SandwichAnts)  # group means
+```
+
+And add those to our data frame
+```{r Example8.6b}
+SA <- transform(SandwichAnts, groupMean = c(30.75, 34.00, 49.25, 30.75, 34.00, 49.25, 30.75, 34.00, 49.25, 30.75, 34.00, 49.25, 30.75, 34.00, 49.25, 30.75, 34.00, 49.25, 30.75, 34.00, 49.25, 30.75, 34.00, 49.25) )
+SA <- transform(SA, grandMean = rep( 38, 24 ) )
+SA
+```
+
+
+```{r Example8.6c}
+SA <- transform(SA, M = groupMean - grandMean)
+SA <- transform(SA, E = Ants - groupMean)
+SA
+```
+
+
+As we did with variance, we will square these differences:
+```{r Example8.6d}
+SA <- transform(SA, M2 = (groupMean - grandMean)^2)
+SA <- transform(SA, E2 = (Ants - groupMean)^2)
+SA
+```
+
+
+And then add them up (SS stands for "sum of squares")
+```{r Example8.6e}
+SST <- sum( ~((Ants - grandMean)^2), data = SA); SST
+SSM <- sum( ~M2, data = SA ); SSM    # also called SSG
+SSE <- sum( ~E2, data = SA ); SSE
+```
+
+
+
+## Pairwise Comparisons and Inference After ANOVA
+
+### Using ANOVA for Inferences about Group Means {-}
+
+We can construct a confidence interval for any of the means by just 
+taking a subset of the data and using `t.test()`, but there 
+are some problems with this approach.  Most importantly,
+<span class="quote">
+
+We were primarily interested in comparing the means across 
+the groups.  Often people will display confidence intervals for 
+each group and look for "overlapping" intervals.  But this is 
+not the best way to look for differences.
+
+</span>
+
+Nevertheless, you will sometimes see graphs showing multiple confidence
+intervals and labeling them to indicate which means appear to be 
+different from which.  (See the solution to problem 15.3 for an example.)
+
+#### Example 8.7 {-}
+
+```{r Example8.7}
+anova(Ants.Model)
+MSE<- 138.7
+mean(Ants ~ Filling, data = SandwichAnts)
+mean <- 34.0
+t.star <- qt(.975, df = 21); t.star
+mean - t.star * (sqrt(MSE) / sqrt(8))
+mean + t.star * (sqrt(MSE) / sqrt(8))
+```
+
+
+```{r Example8.7b, opts.label = "fig4"}
+TukeyHSD(Ants.Model)
+plot(TukeyHSD(Ants.Model))
+```
+
+
+#### Example 8.8 {-}
+
+```{r Example8.8}
+MSE<- 138.7
+mean(Ants  ~ Filling, data = SandwichAnts)
+diff.mean <- (30.75 - 49.25)
+t.star <- qt(.975, df = 21); t.star
+```
+
+```{r Example8.8b}
+diff.mean - t.star * (sqrt(MSE * (1/8 + 1/8)))
+diff.mean + t.star * (sqrt(MSE * (1/8 + 1/8)))
+```
+
+
+#### Example 8.9 {-}
+
+```{r Example8.9}
+MSE<- 138.7
+mean(Ants ~ Filling, data = SandwichAnts)
+diff.mean <- (30.75 - 34.0)
+```
+
+```{r Example8.9b}
+t <- diff.mean / sqrt(MSE * (1/8 + 1/8)); t
+pt(t, df = 21) * 2
+```
+
+
+### Lots of Pairwise Comparisons {-}
+
+#### Example 8.10 {-}
+
+```{r Example8.10}
+head(TextbookCosts)
+Books.Model <- lm(Cost ~ Field, data = TextbookCosts)
+anova(Books.Model)
+summary(Books.Model)
+```
+
+```{r Example8.10b}
+TukeyHSD(Books.Model)
+```
+
+
+#### Figure 8.8 {-}
+
+```{r Figure8.8}
+gf_boxplot(Cost ~ Field, data = TextbookCosts) %>%
+  gf_refine(coord_flip())
+```
+
+
+
+<!-- ### The Problem of Multiplicity {-} -->
+<!-- This section is currently Unused and has been Deleted-->
+<!-- Look back in the source control for this section's code -->
+

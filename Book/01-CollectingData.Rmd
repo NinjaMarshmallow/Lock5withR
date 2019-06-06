@@ -46,7 +46,7 @@ head(StudentSurvey) # first six cases of the data set
 ```
 
 
-We can easily classify variables as either **categorical** or **quantitative** by studying the result of `head()()`, but there are some summaries of the data set which reveal such information.
+We can easily classify variables as either **categorical** or **quantitative** by studying the result of `head()`, but there are some summaries of the data set which reveal such information.
 ```{r Data1.1}
 str(StudentSurvey)     # structure of the data set
 summary(StudentSurvey) # summary of each variable

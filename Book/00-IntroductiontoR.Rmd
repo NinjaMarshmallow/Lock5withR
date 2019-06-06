@@ -119,10 +119,11 @@ If you know you have done something before, but can't remember how, you can sear
 
 ### Error messages {-}
 When things go wrong, R  tries to help you out by providing an error message. If you can't make sense of the message, you can try copying and pasting your command and the error message and sending to me in an email.  One common error message is illustrated below.
-<<error-message, purl=FALSE>>=
+```{r error-message, error=TRUE, purl=FALSE}
 fred <- 23
 frd
-@
+```
+
 The object `frd` is not found because it was mistyped.  It should have been `fred`.  If you see an ``object not found'' message, check your typing and check to make sure that the necessary packages have been loaded.
 
 
@@ -143,7 +144,7 @@ Functions in R  use the following syntax:
 
     * The arguments are **always** _surrounded by (round) parentheses_ and _separated by commas_.
 
-    * Some functions (like `data()()`) have no required arguments, but you still need the parentheses.
+    * Some functions (like `data()`) have no required arguments, but you still need the parentheses.
 
     * If you type a function name without the parentheses, you will see the _code_ for that function -- which probably isn't what you want at this point.
 
@@ -390,7 +391,7 @@ Let's try an example.  Suppose we want to make this plot
 
 1. What is our goal?
 
-    Our goal is to make a scatter plot. The function that does this is called `xyplot()()`.  That takes care of the first slot.
+    Our goal is to make a scatter plot. The function that does this is called `gf_point()`.  That takes care of the first slot.
 
 1. What does R  need to know to do this?
 
@@ -409,7 +410,7 @@ xyplot(births ~ date, data = Births78)
 
 This same template can be used for a wide variety of graphical and 
 numerical summaries.  For example, to compute the mean number of births, we can 
-change `xyplot()()` to `mean()()` and provide <span style="color:green">births</span>
+change `xyplot()` to `mean()` and provide <span style="color:green">births</span>
 but not <span style="color:green">date</span>:
 ```{r }
 mean( ~ births, data = Births78)
@@ -427,7 +428,7 @@ We'll see more examples of this template as we go along.
 
 ### Creating a subset {-}
 
-The `filter()()` command can be used to create subsets.  The population
+The `filter()` command can be used to create subsets.  The population
 data set we downloaded has population for states and various other regions.  If we
 just want the states, we can select the items where the <span style="color:green">State</span> variable is 
 greater than 0.  (Notice the double equals for testing equality.)
@@ -446,7 +447,7 @@ That two states too many.  We can scan the list to see what else is in there.
 The two extras are Washington, DC and Peurto Rico.
 
 ### Choosing specific columns {-}
-`filter()()` chooses rows from a data frame.  `select()()` selects
+`filter()` chooses rows from a data frame.  `select()` selects
 columns.  This can be handy if you have a data set with many more variables than you are interested in.  Let's pick just a handful from the <span style="color:blue">Population</span> data
 set.
 <!-- Relies on data from a broken link -->
@@ -460,7 +461,7 @@ set.
 ### Dropping Variables {-}
 
 Sometimes it is easier to think about dropping variables.
-We can use `select()()` for this as well:
+We can use `select()` for this as well:
 ```{r }
 iris2 <- select(iris, - Sepal.Width, - Sepal.Length)  # the minus sign means drop 
 head(iris2, 3)
@@ -469,7 +470,7 @@ head(iris2, 3)
 
 ### Creating new variables {-}
 
-We can add a new variable to data set using `mutate()()`:
+We can add a new variable to data set using `mutate()`:
 <!-- Relies on data from a broken link -->
 <!-- ```{r tidy=FALSE} -->
 <!-- head(iris, 3) -->
@@ -487,18 +488,20 @@ Generally, it is a good idea to keep raw data (like <span style="color:green">Se
 
 ### Saving Data {-}
 
-`write.csv()()` can be used to save data from R  into csv formatted files. This can be useful for exporting to some other program.
+`write.csv()` can be used to save data from R  into csv formatted files. This can be useful for exporting to some other program.
 <!-- Relies on data from a broken link -->
 <!-- ```{r writingData} -->
 <!-- write.csv(iris3, "iris3.csv") -->
 <!-- ``` -->
 
 
-Data can also be saved in native R  format.  Saving data sets (and other R  objects) using `save()()` has some advantages over other file formats:
+Data can also be saved in native R  format.  Saving data sets (and other R  objects) using `save()` has some advantages over other file formats:
 <!-- begin itemize -->
+
 #. Complete information about the objects is saved, including attributes.
 #. Data saved this way takes less space and loads much more quickly.
 #. Multiple objects can be saved to and loaded from a single file.
+
 <!-- end itemize -->
 The downside is that these files are only readable in R 
 <!-- Relies on data from a broken link -->
@@ -587,7 +590,7 @@ load any additional packages you will be using.
 RStudio  makes it easy to generate HTML, PDF, or Word documents from your RMarkdown.  Just remember that if you edit any of these files after you generate them 
 with RMarkdown, then you will need to redo those edits if you ever go back and change the RMarkdown file, but if you change the RMarkdown file, one click will 
 generate the new HTML, PDF, or Word document.  (There are even ways to get it to generate all three in one go; 
-see the `render()()` function in the **`rmarkdown`** package.)  So it is best to keep you editing to the RMarkdown document as much as possible.
+see the `render()` function in the **`rmarkdown`** package.)  So it is best to keep you editing to the RMarkdown document as much as possible.
 
 <!-- ### Printing your document {-} -->
 <!--  -->
@@ -608,29 +611,27 @@ Here are some definitions of statistics from other people:
 <!--   a body of methods for making wise decisions in the face of uncertainty   -->
 <!-- 	(W.A. Wallis) -->
   
-  #. a collection of procedures and principles for gaining information in
-	order to make decisions when faced with 
-	uncertainty (J. Utts @Utts:2005:SeeingThroughStats),
+#. a collection of procedures and principles for gaining information in order to make decisions when faced with uncertainty (J. Utts @Utts:2005:SeeingThroughStats),
 
-  #. a way of taming uncertainty, of turning raw data into arguments that
-	can resolve profound questions (T. Amabile @AgainstAllOdds:video),
+#. a way of taming uncertainty, of turning raw data into arguments that can resolve profound questions (T. Amabile @AgainstAllOdds:video),
+
 <!--   #.  the science of gaining information from numerical data (D.S. Moore) -->
-  #. the science of drawing conclusions from data with the aid of the
-	mathematics of probability 
-	(S. Garfunkel @ForAllPracticalPurposes:video),
-	#. 	the explanation of variation in the context of what remains unexplained
-	(D. Kaplan @kaplan-modeling),
- #. the mathematics of the collection, organization, and interpretation of
-   numerical data, especially the analysis of a population's characteristics by
-   inference from sampling 
-   (American Heritage Dictionary @AmHerDictionary:1982).
+
+#. the science of drawing conclusions from data with the aid of the mathematics of probability (S. Garfunkel @ForAllPracticalPurposes:video),
+
+#. 	the explanation of variation in the context of what remains unexplained (D. Kaplan @kaplan-modeling),
+
+#. the mathematics of the collection, organization, and interpretation of numerical data, especially the analysis of a population's characteristics by inference from sampling (American Heritage Dictionary @AmHerDictionary:1982).
+
 <!-- end itemize -->
 
 Here's a simpler definition:
 
-```
+---
+
 	Statistics is the science of answering questions with data.
-```
+
+---
 
 This definition gets at two important elements of the longer definitions above:
 
@@ -837,7 +838,7 @@ install.packages("mosaic")
 ```
 
 
-The `rflip()()` function can flip one coin
+The `rflip()` function can flip one coin
 ```{r flip1coin, cache=TRUE}
 require(mosaic)
 rflip()
@@ -851,20 +852,21 @@ rflip(10)
 
 and show us the results.
 
-Typing `rflip(10)` a bunch of times is almost as tedious as flipping all those coins.   But it is not too hard to tell R  to `do()()` this a bunch of times.
+Typing `rflip(10)` a bunch of times is almost as tedious as flipping all those coins.   But it is not too hard to tell R  to `do()` this a bunch of times.
 ```{r flip2, cache=TRUE}
 do(2) * rflip(10)
 ```
 
 <!-- And if we switch to a "quiet" version of rflip()!, -->
-<!-- we will get much terser output --  -->
+<!-- we will get much terser output -- -->
 <!-- just the counts of the number of heads (i.e., correct guesses). -->
-<!-- <<flip3, cache=TRUE>>= -->
+<!-- ```{r flip3, cache=TRUE} -->
 <!-- do(100) * rflip(10)           # "quiet version" of rflip() -->
-<!-- @ -->
+<!-- ``` -->
 
 
-Let's get R  to `do()()` it for us 10,000 times and make a table of the results.
+
+Let's get R  to `do()` it for us 10,000 times and make a table of the results.
 ```{r seed123, echo=FALSE}
 set.seed(123)
 ```

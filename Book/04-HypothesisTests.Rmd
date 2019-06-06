@@ -65,7 +65,7 @@ Testing one proportion.
     
     $H_a$: $p > 0.5$
 #. Test statistic:  $\hat p = 16/25$ (the sample proportion)
-#. We can simulate a world in which $p = 0.5$ using `rflip()()`:
+#. We can simulate a world in which $p = 0.5$ using `rflip()`:
 ```{r Example4.13, cache=TRUE}
 Randomization.Match <- 
   do(10000) * rflip(25, .5)  # 25 because n = 25
@@ -82,9 +82,8 @@ gf_histogram( ~ prop, binwidth = 0.04, fill = ~(prop >= 0.64),
 ```
 
 
-<!-- ```{r Figure4.7, include=FALSE} -->
-<!-- <<Example4.13b>> -->
-<!-- ``` -->
+```{r Figure4.7,ref.label = "Example4.13b", include=FALSE}
+```
 
 <!-- end enumerate -->
 
@@ -103,9 +102,11 @@ gf_histogram( ~ prop, binwidth = 0.04, fill = ~(prop >= 0.76),
 ```
 
 
-<!-- ```{r Figure4.9, include=FALSE} -->
-<!-- <<Example4.15>> -->
-<!-- ``` -->
+
+```{r Figure4.9, include=FALSE, ref.label = "Example4.15" }
+
+```
+
 
 
 #### Example 4.16 {-}
@@ -158,9 +159,10 @@ gf_dotplot( ~ No.Caffeine, binwidth = 0.1, dotsize = .6, colour = ~(No.Caffeine 
             data = Randomization.Caff, show.legend = FALSE)
 ```
 
-<!-- ```{r Figure4.11, include=FALSE} -->
-<!-- <<Example4.18c>> -->
-<!-- ``` -->
+```{r Figure4.11, include=FALSE, ref.label = "Example4.18c" }
+
+```
+
 
 <!-- end enumerate -->
 
@@ -184,9 +186,9 @@ gf_histogram( ~ prop, binwidth = 1/10, data = RandomizationDist)
 
 <!-- AuthNote --- need to label each bar, in lattice 'label = TRUE', gf_text() needs y ~ x arg and doesn't take ..count.. -->
 
-<!-- ```{r Figure4.12,include=FALSE} -->
-<!-- <<Example4.19>> -->
-<!-- ``` -->
+```{r Figure4.12,include=FALSE, ref.label = "Example4.19" }
+
+```
 
 ```{r Example4.19b}
 prop( ~ (prop >= 0.8), data = RandomizationDist )
@@ -222,9 +224,10 @@ prop(~ (prop <= 0.2 | prop >= 0.8), data = RandomizationDist)
 <!-- Why wrong histogram? -->
 
 
-<!-- ```{r Figure4.13,include=FALSE} -->
-<!-- <<Example4.20>> -->
-<!-- ``` -->
+
+```{r Figure4.13,include=FALSE, ref.label = "Example4.20" }
+
+```
 
 <!-- end enumerate -->
 
@@ -269,9 +272,9 @@ gf_dotplot(~ diffmean, binwidth = 0.03, dotsize = .7, colour = ~(diffmean >= 0.7
         xlab = "Diff", data = Randomization.Smiles, show.legend = FALSE)
 ```
 
-<!-- ```{r Figure4.24,include=FALSE} -->
-<!-- <<Example4.27c>> -->
-<!-- ``` -->
+```{r Figure4.24,include=FALSE, ref.label = "Example4.27c" }
+
+```
 
 
 Now we find the p-value:
@@ -300,7 +303,7 @@ In other situations, it can be more challenging to create a randomization distri
 
 #. $H_0$: $p_1 = p_2$
 
-    This would be simple _if_ we new the value of $p_1$ and $p_2$ (we could use `rflip()()` twice, once for each group), 
+    This would be simple _if_ we new the value of $p_1$ and $p_2$ (we could use `rflip()` twice, once for each group), 
 #. $H_0$: $\mu$ = some number
 
     Just knowing the mean does not tell us enough about the distribution.
@@ -387,9 +390,9 @@ head(Randomization.Coc)
 <!--   gf_vline(xintercept = -.0833) -->
 <!-- ``` -->
 
-<!-- ```{r Figure4.28, include=FALSE} -->
-<!-- <<Example4.29c>> -->
-<!-- ``` -->
+```{r Figure4.28, include=FALSE, ref.label = "Example4.29c" }
+
+```
 
 <!-- end enumerate -->
 
@@ -427,9 +430,9 @@ gf_histogram(~ cor, binwidth = 0.05, data = Randomization.Mal) %>%
   gf_vline(xintercept = .43)
 ```
 
-<!-- ```{r Figure4.29, include=FALSE} -->
-<!-- <<Example4.32c>> -->
-<!-- ``` -->
+```{r Figure4.29, include=FALSE, ref.label = "Example4.32c" }
+
+```
 
 <!-- end enumerate -->
 
@@ -447,9 +450,9 @@ gf_dotplot(~ BodyTemp, binwidth = .1, stackratio = 2, dotsize = 1,
 ```
 
 
-<!-- ```{r Figure4.30,include=FALSE} -->
-<!-- <<Example4.33>> -->
-<!-- ``` -->
+```{r Figure4.30,include=FALSE, ref.label = "Example4.33" }
+
+```
 
 
 <!-- begin enumerate -->
@@ -486,9 +489,9 @@ gf_histogram( ~ result, binwidth = .01, data = Randomization.Temp) %>%
   gf_vline(xintercept = 98.81)
 ```
 
-<!-- ```{r Figure4.31,include=FALSE} -->
-<!-- <<Example4.33d>> -->
-<!-- ``` -->
+```{r Figure4.31,include=FALSE, ref.label = "Example4.33d" }
+
+```
 
 <!-- end enumerate -->
 
