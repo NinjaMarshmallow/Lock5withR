@@ -20,7 +20,7 @@ require("fastR")
 You should change your password. Here's how.
 <!-- begin enumerate -->
 
-#. From the <span class="tab">Tools</span> menu, select <span class="tab"Shell</span>
+#. From the <span class="tab">Tools</span> menu, select <span class="tab">Shell</span>
 #. Type `yppasswd`
 #. You will be prompted for your old password, then your new password twice.
 #. If you give a sufficiently strong new password (at least six letters, at least one capital, etc.) you will receive notice that your password has been reset.  If there was a problem, you will see a message about it and can try again.

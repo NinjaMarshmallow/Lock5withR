@@ -1,0 +1,187 @@
+```{r include=FALSE}
+require(mosaic)
+require(mosaicData)
+require(ggformula)
+library(Lock5withR)
+require("fastR")
+```
+`r chapter <- 9`
+# Multiple Regression
+
+## Multiple Predictors
+
+### Multiple Regression Model {-}
+
+#### Example 10.1 {-}
+
+```{r Example10.1}
+lm(Price ~ PPM + CostBW, data = InkjetPrinters)
+Ink.Price <- makeFun(lm(Price ~ PPM + CostBW, data = InkjetPrinters))
+Ink.Price(PPM = 3.0, CostBW = 3.7)
+```
+
+
+### Testing Individual Terms in a Model {-}
+
+#### Example 10.2 {-}
+
+```{r Example10.2}
+msummary(lm(Price ~ PPM + CostBW, data = InkjetPrinters))
+```
+
+
+#### Example 10.3 {-}
+
+```{r Example10.3}
+msummary(lm(Bodyfat ~ Weight + Height, data = BodyFat))
+```
+
+
+#### Example 10.4 {-}
+
+```{r Example10.4}
+msummary(lm(Bodyfat ~ Weight + Height + Abdomen, data = BodyFat))
+```
+
+
+<!-- Example 10.5 -->
+
+### ANOVA for a Multiple Regression Model {-}
+
+#### Example 10.6 {-}
+
+```{r Example10.6}
+Mod0 <- lm(Price ~ 1, data = InkjetPrinters)
+Mod1 <- lm(Price ~ PPM, data = InkjetPrinters)
+Mod2 <- lm(Price ~ PPM + CostBW, data = InkjetPrinters)
+anova(Mod0, Mod1)
+anova(Mod0, Mod2)
+```
+
+
+#### Example 10.7 {-}
+
+```{r Example10.7}
+Mod0 <- lm(Price ~ 1, data = InkjetPrinters)
+Mod1 <- lm(Price ~ PhotoTime + CostColor, data = InkjetPrinters)
+msummary(Mod1)
+anova(Mod0, Mod1)
+```
+
+
+#### Example 10.8 {-}
+
+```{r Example10.8}
+rsquared(lm(Price ~ PPM + CostBW, data = InkjetPrinters))
+rsquared(lm(Price ~ PhotoTime + CostColor, data = InkjetPrinters))
+```
+
+
+## Checking Conditions for a Regression Model
+
+<!-- ### Residuals vs Fitted Values Plot {-} -->
+
+<!-- Example 10.9 -->
+<!-- Example 10.10 -->
+<!-- Figure 10.1 -->
+<!-- Figure 10.2 -->
+
+### Histogram/Dotplot/Boxplot of Residuals {-}
+
+<!-- Example 10.11 -->
+<!-- Figure 10.3 -->
+
+#### Example 10.12 {-}
+
+```{r Example10.12}
+ink.model <- lm(Price ~ PPM, data = InkjetPrinters)
+gf_dotplot( ~ resid(ink.model), dotsize = 2, binwidth = 2, stackratio = 4)
+```
+
+
+```{r Example10.12b}
+gf_point(resid(ink.model) ~ fitted(ink.model), dotsize = 0.5) #$# gf_lm()
+```
+
+
+### Checking Conditions for a Multiple Regression Model {-}
+
+#### Example 10.13 {-}
+
+```{r Example10.13}
+body.model <- lm(Bodyfat ~ Weight + Abdomen, data = BodyFat)
+msummary(body.model)
+gf_histogram( ~ resid(body.model), bins = 10)
+gf_point(resid(body.model) ~ fitted(body.model), dotsize = 0.5) #$# gf_lm()
+```
+
+
+
+## Using Multiple Regression
+
+### Choosing a Model {-}
+
+#### Example 10.14 {-}
+
+```{r Example10.14}
+msummary(lm(Bodyfat ~ Weight + Height + Abdomen + Age + Wrist, data = BodyFat))
+msummary(lm(Bodyfat ~ Weight + Abdomen + Age + Wrist, data = BodyFat))
+```
+
+
+#### Example 10.15 {-}
+
+```{r Example10.15}
+msummary(lm(Bodyfat ~ Weight + Abdomen + Wrist, data = BodyFat))
+```
+
+
+### Categorical Variables {-}
+
+#### Figure 10.9 {-}
+
+```{r Figure10.9}
+gf_boxplot(Salary ~ Gender, group = ~Gender ,data = SalaryGender)
+```
+
+<!-- AuthNote --- Should I redefine the variable in the data to become categorical M-F? -->
+#### Example 10.16 {-}
+
+```{r Example10.16}
+msummary(lm(Salary ~ Gender, data = SalaryGender))
+```
+
+
+#### Example 10.17 {-}
+
+```{r Example10.17}
+msummary(lm(Salary ~ PhD, data = SalaryGender))
+confint(lm(Salary ~ PhD, data = SalaryGender))
+```
+
+
+### Accounting for Confounding Variables {-}
+
+#### Example 10.18 {-}
+
+```{r Example10.18}
+msummary(lm(Salary ~ Gender + PhD + Age, data = SalaryGender))
+```
+
+
+### Association between Explanatory Variables {-}
+
+#### Example 10.19 {-}
+
+```{r Example10.19}
+msummary(lm(Final ~ Exam1 + Exam2, data = StatGrades))
+```
+
+
+#### Figure 10.10 {-}
+
+```{r Figure10.10, opts.label="fig3"}
+gf_point(Final ~ Exam1, data = StatGrades) #$# gf_lm()
+gf_point(Final ~ Exam2, data = StatGrades) #$# gf_lm()
+gf_point(Exam2 ~ Exam1, data = StatGrades) #$# gf_lm()
+```

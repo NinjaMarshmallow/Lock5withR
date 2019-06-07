@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>9 Inference for Regression | Lock5 With R</title>
+  <meta name="description" content="Code, exercises and discussion to accompany a course taught from ‘Statistics: Unlocking the Power of Data’" />
+  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="9 Inference for Regression | Lock5 With R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Code, exercises and discussion to accompany a course taught from ‘Statistics: Unlocking the Power of Data’" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="9 Inference for Regression | Lock5 With R" />
+  
+  <meta name="twitter:description" content="Code, exercises and discussion to accompany a course taught from ‘Statistics: Unlocking the Power of Data’" />
+  
+
+<meta name="author" content="R Pruim" />
+
+
+<meta name="date" content="2019-06-07" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="anova-to-compare-means.html">
+<link rel="next" href="multiple-regression.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Lock5 With R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Lock 5 With R</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html"><i class="fa fa-check"></i>Introduction to R and Statistics</a><ul>
+<li class="chapter" data-level="0.1" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#getting-started-with-rstudio"><i class="fa fa-check"></i><b>0.1</b> Getting Started With RStudio</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#rstudio"><i class="fa fa-check"></i>RStudio</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#loading-packages"><i class="fa fa-check"></i>Loading packages</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#using-r-as-a-calculator"><i class="fa fa-check"></i>Using R as a calculator</a></li>
+</ul></li>
+<li class="chapter" data-level="0.2" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#getting-help-in-rstudio"><i class="fa fa-check"></i><b>0.2</b> Getting Help in RStudio</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#the-rstudio-help-system"><i class="fa fa-check"></i>The RStudio help system</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#history"><i class="fa fa-check"></i>History</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#error-messages"><i class="fa fa-check"></i>Error messages</a></li>
+</ul></li>
+<li class="chapter" data-level="0.3" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#four-things-to-know-about-r"><i class="fa fa-check"></i><b>0.3</b> Four Things to Know About R</a></li>
+<li class="chapter" data-level="0.4" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#data-in-r"><i class="fa fa-check"></i><b>0.4</b> Data in R</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#data-in-packages"><i class="fa fa-check"></i>Data in Packages</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#the-helprct-data-set"><i class="fa fa-check"></i>The HELPrct data set</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#using-your-own-data"><i class="fa fa-check"></i>Using your own data</a></li>
+</ul></li>
+<li class="chapter" data-level="0.5" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#the-most-important-template"><i class="fa fa-check"></i><b>0.5</b> The Most Important Template</a></li>
+<li class="chapter" data-level="0.6" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#manipulating-your-data"><i class="fa fa-check"></i><b>0.6</b> Manipulating your data</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#creating-a-subset"><i class="fa fa-check"></i>Creating a subset</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#choosing-specific-columns"><i class="fa fa-check"></i>Choosing specific columns</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#dropping-variables"><i class="fa fa-check"></i>Dropping Variables</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#creating-new-variables"><i class="fa fa-check"></i>Creating new variables</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#saving-data"><i class="fa fa-check"></i>Saving Data</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#merging-datasets"><i class="fa fa-check"></i>Merging datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="0.7" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#using-r-markdown"><i class="fa fa-check"></i><b>0.7</b> Using R Markdown</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#r-markdown-files-must-be-self-contained"><i class="fa fa-check"></i>R Markdown files must be self-contained</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#output-formats"><i class="fa fa-check"></i>Output formats</a></li>
+</ul></li>
+<li class="chapter" data-level="0.8" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#statistics-answering-questions-with-data"><i class="fa fa-check"></i><b>0.8</b> Statistics: Answering Questions With Data</a><ul>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#data-the-raw-material"><i class="fa fa-check"></i>Data – the raw material</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#information-the-goal"><i class="fa fa-check"></i>Information – the goal</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#uncertainty-the-context"><i class="fa fa-check"></i>Uncertainty – the context</a></li>
+<li class="chapter" data-level="" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#probability-the-tool"><i class="fa fa-check"></i>Probability – the tool</a></li>
+</ul></li>
+<li class="chapter" data-level="0.9" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#a-first-example-the-lady-tasting-tea"><i class="fa fa-check"></i><b>0.9</b> A First Example: The Lady Tasting Tea</a></li>
+<li class="chapter" data-level="0.10" data-path="introduction-to-r-and-statistics.html"><a href="introduction-to-r-and-statistics.html#coins-and-cups"><i class="fa fa-check"></i><b>0.10</b> Coins and Cups</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="collecting-data.html"><a href="collecting-data.html"><i class="fa fa-check"></i><b>1</b> Collecting Data</a><ul>
+<li class="chapter" data-level="1.1" data-path="collecting-data.html"><a href="collecting-data.html#the-structure-of-data"><i class="fa fa-check"></i><b>1.1</b> The Structure of Data</a><ul>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#cases-and-variables"><i class="fa fa-check"></i>Cases and Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#categorical-and-quantitative-variables"><i class="fa fa-check"></i>Categorical and Quantitative Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#investigating-variables-and-relationships-between-variables"><i class="fa fa-check"></i>Investigating Variables and Relationships between Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#using-data-to-answer-a-question"><i class="fa fa-check"></i>Using Data to Answer a Question</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="collecting-data.html"><a href="collecting-data.html#sampling-from-a-population"><i class="fa fa-check"></i><b>1.2</b> Sampling from a Population</a><ul>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#samples-from-populations"><i class="fa fa-check"></i>Samples from Populations</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#sampling-bias"><i class="fa fa-check"></i>Sampling Bias</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#simple-random-sample"><i class="fa fa-check"></i>Simple Random Sample</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="collecting-data.html"><a href="collecting-data.html#experiments-and-observational-studies"><i class="fa fa-check"></i><b>1.3</b> Experiments and Observational Studies</a><ul>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#confounding-variables"><i class="fa fa-check"></i>Confounding Variables</a></li>
+<li class="chapter" data-level="" data-path="collecting-data.html"><a href="collecting-data.html#observational-studies-vs.-experiments"><i class="fa fa-check"></i>Observational Studies vs. Experiments</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="describing-data.html"><a href="describing-data.html"><i class="fa fa-check"></i><b>2</b> Describing Data</a><ul>
+<li class="chapter" data-level="2.1" data-path="describing-data.html"><a href="describing-data.html#categorical-variables"><i class="fa fa-check"></i><b>2.1</b> Categorical Variables</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#one-categorical-variable"><i class="fa fa-check"></i>One Categorical Variable</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#two-categorical-variables-two-way-tables"><i class="fa fa-check"></i>Two Categorical Variables: Two-Way Tables</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="describing-data.html"><a href="describing-data.html#one-quantitative-variable-shape-and-center"><i class="fa fa-check"></i><b>2.2</b> One Quantitative Variable: Shape and Center</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#the-shape-of-a-distribution"><i class="fa fa-check"></i>The Shape of a Distribution</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#the-center-of-a-distribution"><i class="fa fa-check"></i>The Center of a Distribution</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#resistance"><i class="fa fa-check"></i>Resistance</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="describing-data.html"><a href="describing-data.html#one-quantitative-variable-measures-of-spread"><i class="fa fa-check"></i><b>2.3</b> One Quantitative Variable: Measures of Spread</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#standard-deviation"><i class="fa fa-check"></i>Standard Deviation</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#percentiles"><i class="fa fa-check"></i>Percentiles</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#five-number-summary"><i class="fa fa-check"></i>Five Number Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="describing-data.html"><a href="describing-data.html#outliers-boxplots-and-quantitativecategorical-relationships"><i class="fa fa-check"></i><b>2.4</b> Outliers, Boxplots, and Quantitative/Categorical Relationships</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#detection-of-outliers"><i class="fa fa-check"></i>Detection of Outliers</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#boxplots"><i class="fa fa-check"></i>Boxplots</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#one-quantitative-and-one-categorical-variable"><i class="fa fa-check"></i>One Quantitative and One Categorical Variable</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="describing-data.html"><a href="describing-data.html#two-quantitative-variables-scatterplot-and-correlation"><i class="fa fa-check"></i><b>2.5</b> Two Quantitative Variables: Scatterplot and Correlation</a><ul>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#visualizing-a-relationship-between-two-quantitative-variables-scatterplots"><i class="fa fa-check"></i>Visualizing a Relationship between Two Quantitative Variables: Scatterplots</a></li>
+<li class="chapter" data-level="" data-path="describing-data.html"><a href="describing-data.html#summarizing-a-relationship-between-two-quantitative-variables-correlation"><i class="fa fa-check"></i>Summarizing a Relationship between Two Quantitative Variables: Correlation</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="describing-data.html"><a href="describing-data.html#two-quantitative-variables-linear-regression"><i class="fa fa-check"></i><b>2.6</b> Two Quantitative Variables: Linear Regression</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="confidence-intervals.html"><a href="confidence-intervals.html"><i class="fa fa-check"></i><b>3</b> Confidence Intervals</a><ul>
+<li class="chapter" data-level="3.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#sampling-distributions"><i class="fa fa-check"></i><b>3.1</b> Sampling Distributions</a><ul>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#variability-of-sample-statistics"><i class="fa fa-check"></i>Variability of Sample Statistics</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#measuring-sampling-variability-the-standard-error"><i class="fa fa-check"></i>Measuring Sampling Variability: The Standard Error</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#the-importance-of-sample-size"><i class="fa fa-check"></i>The Importance of Sample Size</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="confidence-intervals.html"><a href="confidence-intervals.html#understanding-and-interpreting-confidence-intervals"><i class="fa fa-check"></i><b>3.2</b> Understanding and Interpreting Confidence Intervals</a><ul>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#interval-estimates-and-margin-of-error"><i class="fa fa-check"></i>Interval Estimates and Margin of Error</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#confidence-intervals-1"><i class="fa fa-check"></i>Confidence Intervals</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#understanding-confidence-intervals"><i class="fa fa-check"></i>Understanding Confidence Intervals</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#interpreting-confidence-intervals"><i class="fa fa-check"></i>Interpreting Confidence Intervals</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="confidence-intervals.html"><a href="confidence-intervals.html#constructing-bootstrap-confidence-intervals"><i class="fa fa-check"></i><b>3.3</b> Constructing Bootstrap Confidence Intervals</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-samples"><i class="fa fa-check"></i><b>3.3.1</b> Bootstrap Samples</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-distribution"><i class="fa fa-check"></i>Bootstrap Distribution</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#estimating-standard-error-based-on-a-bootstrap-distribution"><i class="fa fa-check"></i>Estimating Standard Error Based on a Bootstrap Distribution</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#confidence-interval-based-on-a-bootstrap-standard-error"><i class="fa fa-check"></i>95% Confidence Interval Based on a Bootstrap Standard Error</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="confidence-intervals.html"><a href="confidence-intervals.html#bootstrap-confidence-intervals-using-percentiles"><i class="fa fa-check"></i><b>3.4</b> Bootstrap Confidence Intervals Using Percentiles</a><ul>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#confidence-intervals-based-on-bootstrap-percentiles"><i class="fa fa-check"></i>Confidence Intervals Based on Bootstrap Percentiles</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#finding-confidence-intervals-for-many-different-parameters"><i class="fa fa-check"></i>Finding Confidence Intervals for Many Different Parameters</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#another-look-at-the-effect-of-sample-size"><i class="fa fa-check"></i>Another Look at the Effect of Sample Size</a></li>
+<li class="chapter" data-level="" data-path="confidence-intervals.html"><a href="confidence-intervals.html#one-caution-on-constructing-bootstrap-confidence-intervals"><i class="fa fa-check"></i>One Caution on Constructing Bootstrap Confidence Intervals</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html"><i class="fa fa-check"></i><b>4</b> Hypothesis Tests</a><ul>
+<li class="chapter" data-level="4.1" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#introducing-hypothesis-tests"><i class="fa fa-check"></i><b>4.1</b> Introducing Hypothesis Tests</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#the-4-step-outline"><i class="fa fa-check"></i>The 4-step outline</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#null-and-alternative-hypotheses"><i class="fa fa-check"></i>Null and Alternative Hypotheses</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#measuring-evidence-with-p-values"><i class="fa fa-check"></i><b>4.2</b> Measuring Evidence with P-values</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#p-values-from-randomization-distributions"><i class="fa fa-check"></i>P-values from Randomization Distributions</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#p-values-and-the-alternative-hypothesis"><i class="fa fa-check"></i>P-values and the Alternative Hypothesis</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#determining-statisical-significance"><i class="fa fa-check"></i><b>4.3</b> Determining Statisical Significance</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#less-formal-statistical-decisions"><i class="fa fa-check"></i>Less Formal Statistical Decisions</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#creating-randomization-distributions"><i class="fa fa-check"></i><b>4.4</b> Creating Randomization Distributions</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-test-for-a-difference-in-proportions-cocaine-addiction"><i class="fa fa-check"></i>Randomization Test for a Difference in Proportions: Cocaine Addiction</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-test-for-a-correlation-malevolent-uniforms-and-penalties"><i class="fa fa-check"></i>Randomization Test for a Correlation: Malevolent Uniforms and Penalties</a></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-test-for-a-mean-body-temperature"><i class="fa fa-check"></i>Randomization Test for a Mean: Body Temperature</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#confidence-intervals-and-hypothesis-tests"><i class="fa fa-check"></i><b>4.5</b> Confidence Intervals and Hypothesis Tests</a><ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests.html"><a href="hypothesis-tests.html#randomization-and-bootstrap-distributions"><i class="fa fa-check"></i>Randomization and Bootstrap Distributions</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html"><i class="fa fa-check"></i><b>5</b> Approximating with a Distribution</a><ul>
+<li class="chapter" data-level="5.1" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#normal-distributions"><i class="fa fa-check"></i><b>5.1</b> Normal Distributions</a><ul>
+<li class="chapter" data-level="" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#density-curves"><i class="fa fa-check"></i>Density Curves</a></li>
+<li class="chapter" data-level="" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#normal-distributions-1"><i class="fa fa-check"></i>Normal Distributions</a></li>
+<li class="chapter" data-level="" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#finding-normal-probabilities-and-percentiles"><i class="fa fa-check"></i>Finding Normal Probabilities and Percentiles</a></li>
+<li class="chapter" data-level="" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#standard-normal-n01"><i class="fa fa-check"></i>Standard Normal N(0,1)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#confidence-intervals-and-p-values-using-normal-distributions"><i class="fa fa-check"></i><b>5.2</b> Confidence Intervals and P-values Using Normal Distributions</a><ul>
+<li class="chapter" data-level="" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#confidence-intervals-based-on-a-normal-distribution"><i class="fa fa-check"></i>Confidence Intervals Based on a Normal Distribution</a></li>
+<li class="chapter" data-level="" data-path="approximating-with-a-distribution.html"><a href="approximating-with-a-distribution.html#p-values-based-on-a-normal-distribution"><i class="fa fa-check"></i>P-values Based on a Normal Distribution</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html"><i class="fa fa-check"></i><b>6</b> Inference for Means and Proportions</a><ul>
+<li class="chapter" data-level="6.1" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#distribution-of-a-sample-proportion"><i class="fa fa-check"></i><b>6.1</b> Distribution of a Sample Proportion</a><ul>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#how-large-a-sample-size-is-needed"><i class="fa fa-check"></i>How Large a Sample Size is Needed?</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#confidence-interval-for-a-single-proportion"><i class="fa fa-check"></i><b>6.2</b> Confidence Interval for a Single Proportion</a><ul>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#confidence-interval-for-a-single-proportion-1"><i class="fa fa-check"></i>Confidence Interval for a Single Proportion</a></li>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#determining-sample-size-for-estimating-a-proportion"><i class="fa fa-check"></i>Determining Sample Size for Estimating a Proportion</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#test-for-a-single-proportion"><i class="fa fa-check"></i><b>6.3</b> Test for a Single Proportion</a></li>
+<li class="chapter" data-level="6.4" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#distribution-of-a-sample-mean"><i class="fa fa-check"></i><b>6.4</b> Distribution of a Sample Mean</a><ul>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#computing-the-standard-error"><i class="fa fa-check"></i>Computing the Standard Error</a></li>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#how-large-a-sample-size-is-needed-1"><i class="fa fa-check"></i>How Large a Sample Size is Needed?</a></li>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#the-t-distribution"><i class="fa fa-check"></i>The t-Distribution</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#confidence-interval-for-a-mean-using-the-t-distribution"><i class="fa fa-check"></i><b>6.5</b> Confidence Interval for a Mean Using the t-Distribution</a><ul>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#confidence-interval-for-a-mean-using-the-t-distribution-1"><i class="fa fa-check"></i>Confidence Interval for a Mean Using the t-Distribution</a></li>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#determining-sample-size-for-estimating-a-mean"><i class="fa fa-check"></i>Determining Sample Size for Estimating a Mean</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#test-for-a-single-mean"><i class="fa fa-check"></i><b>6.6</b> Test for a Single Mean</a></li>
+<li class="chapter" data-level="6.7" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#distribution-of-differences-in-proportions"><i class="fa fa-check"></i><b>6.7</b> Distribution of Differences in Proportions</a></li>
+<li class="chapter" data-level="6.8" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#confidence-interval-for-a-difference-in-proportions"><i class="fa fa-check"></i><b>6.8</b> Confidence Interval for a Difference in Proportions</a></li>
+<li class="chapter" data-level="6.9" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#test-for-a-difference-in-proportions"><i class="fa fa-check"></i><b>6.9</b> Test For a Difference in Proportions</a></li>
+<li class="chapter" data-level="6.10" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#distribution-of-differences-in-means"><i class="fa fa-check"></i><b>6.10</b> Distribution of Differences in Means</a><ul>
+<li class="chapter" data-level="" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#the-t-distribution-1"><i class="fa fa-check"></i>The t-Distribution</a></li>
+</ul></li>
+<li class="chapter" data-level="6.11" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#confidence-interval-for-a-difference-in-means"><i class="fa fa-check"></i><b>6.11</b> Confidence Interval for a Difference in Means</a></li>
+<li class="chapter" data-level="6.12" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#test-for-a-difference-in-means"><i class="fa fa-check"></i><b>6.12</b> Test for a Difference in Means</a></li>
+<li class="chapter" data-level="6.13" data-path="inference-for-means-and-proportions.html"><a href="inference-for-means-and-proportions.html#paired-difference-in-means"><i class="fa fa-check"></i><b>6.13</b> Paired Difference in Means</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html"><i class="fa fa-check"></i><b>7</b> Chi-Squared Tests for Categorical Variables</a><ul>
+<li class="chapter" data-level="7.1" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#testing-goodness-of-fit-for-a-single-categorical-variable"><i class="fa fa-check"></i><b>7.1</b> Testing Goodness-of-Fit for a Single Categorical Variable</a><ul>
+<li class="chapter" data-level="" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#chi-square-statistic"><i class="fa fa-check"></i>Chi-square Statistic</a></li>
+<li class="chapter" data-level="" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#chi-square-distribution"><i class="fa fa-check"></i>Chi-square Distribution</a></li>
+<li class="chapter" data-level="" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#goodness-of-fit-for-two-categories"><i class="fa fa-check"></i>Goodness-of-Fit for Two Categories</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#testing-for-an-association-between-two-categorical-variables"><i class="fa fa-check"></i><b>7.2</b> Testing for an Association Between Two Categorical Variables</a><ul>
+<li class="chapter" data-level="" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#chi-square-test-for-association"><i class="fa fa-check"></i>Chi-square Test for Association</a></li>
+<li class="chapter" data-level="" data-path="chi-squared-tests-for-categorical-variables.html"><a href="chi-squared-tests-for-categorical-variables.html#special-case-for-a-2-x-2-table"><i class="fa fa-check"></i>Special Case for a 2 x 2 Table</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html"><i class="fa fa-check"></i><b>8</b> ANOVA to Compare Means</a><ul>
+<li class="chapter" data-level="8.1" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#analysis-of-variance"><i class="fa fa-check"></i><b>8.1</b> Analysis of Variance</a><ul>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#null-and-alternative-hypotheses-1"><i class="fa fa-check"></i>Null and Alternative Hypotheses</a></li>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#partitioning-variability"><i class="fa fa-check"></i>Partitioning Variability</a></li>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#the-f-statistic"><i class="fa fa-check"></i>The F-Statistic</a></li>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#the-f-distribution"><i class="fa fa-check"></i>The F-distribution</a></li>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#more-examples-of-anova"><i class="fa fa-check"></i>More Examples of ANOVA</a></li>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#anova-calculations"><i class="fa fa-check"></i>ANOVA Calculations</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#pairwise-comparisons-and-inference-after-anova"><i class="fa fa-check"></i><b>8.2</b> Pairwise Comparisons and Inference After ANOVA</a><ul>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#using-anova-for-inferences-about-group-means"><i class="fa fa-check"></i>Using ANOVA for Inferences about Group Means</a></li>
+<li class="chapter" data-level="" data-path="anova-to-compare-means.html"><a href="anova-to-compare-means.html#lots-of-pairwise-comparisons"><i class="fa fa-check"></i>Lots of Pairwise Comparisons</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="inference-for-regression.html"><a href="inference-for-regression.html"><i class="fa fa-check"></i><b>9</b> Inference for Regression</a><ul>
+<li class="chapter" data-level="9.1" data-path="inference-for-regression.html"><a href="inference-for-regression.html#inference-for-slope-and-correlation"><i class="fa fa-check"></i><b>9.1</b> Inference for Slope and Correlation</a><ul>
+<li class="chapter" data-level="" data-path="inference-for-regression.html"><a href="inference-for-regression.html#simple-linear-model"><i class="fa fa-check"></i>Simple Linear Model</a></li>
+<li class="chapter" data-level="" data-path="inference-for-regression.html"><a href="inference-for-regression.html#inference-for-slope"><i class="fa fa-check"></i>Inference for Slope</a></li>
+<li class="chapter" data-level="" data-path="inference-for-regression.html"><a href="inference-for-regression.html#t-test-for-correlation"><i class="fa fa-check"></i>t-Test for Correlation</a></li>
+<li class="chapter" data-level="" data-path="inference-for-regression.html"><a href="inference-for-regression.html#coefficient-of-determination-r-squared"><i class="fa fa-check"></i>Coefficient of Determination: R-squared</a></li>
+<li class="chapter" data-level="" data-path="inference-for-regression.html"><a href="inference-for-regression.html#checking-conditions-for-a-simple-linear-model"><i class="fa fa-check"></i>Checking Conditions for a Simple Linear Model</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="inference-for-regression.html"><a href="inference-for-regression.html#anova-for-regression"><i class="fa fa-check"></i><b>9.2</b> ANOVA for Regression</a><ul>
+<li class="chapter" data-level="" data-path="inference-for-regression.html"><a href="inference-for-regression.html#partitioning-variability-1"><i class="fa fa-check"></i>Partitioning Variability</a></li>
+<li class="chapter" data-level="" data-path="inference-for-regression.html"><a href="inference-for-regression.html#f-statistic"><i class="fa fa-check"></i>F-Statistic</a></li>
+<li class="chapter" data-level="" data-path="inference-for-regression.html"><a href="inference-for-regression.html#computational-details"><i class="fa fa-check"></i>Computational Details</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="inference-for-regression.html"><a href="inference-for-regression.html#confidence-and-prediction-intervals"><i class="fa fa-check"></i><b>9.3</b> Confidence and Prediction Intervals</a><ul>
+<li class="chapter" data-level="" data-path="inference-for-regression.html"><a href="inference-for-regression.html#interpreting-confidence-and-prediction-intervals"><i class="fa fa-check"></i>Interpreting Confidence and Prediction Intervals</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>10</b> Multiple Regression</a><ul>
+<li class="chapter" data-level="10.1" data-path="multiple-regression.html"><a href="multiple-regression.html#multiple-predictors"><i class="fa fa-check"></i><b>10.1</b> Multiple Predictors</a><ul>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#multiple-regression-model"><i class="fa fa-check"></i>Multiple Regression Model</a></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#testing-individual-terms-in-a-model"><i class="fa fa-check"></i>Testing Individual Terms in a Model</a></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#anova-for-a-multiple-regression-model"><i class="fa fa-check"></i>ANOVA for a Multiple Regression Model</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="multiple-regression.html"><a href="multiple-regression.html#checking-conditions-for-a-regression-model"><i class="fa fa-check"></i><b>10.2</b> Checking Conditions for a Regression Model</a><ul>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#histogramdotplotboxplot-of-residuals"><i class="fa fa-check"></i>Histogram/Dotplot/Boxplot of Residuals</a></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#checking-conditions-for-a-multiple-regression-model"><i class="fa fa-check"></i>Checking Conditions for a Multiple Regression Model</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="multiple-regression.html"><a href="multiple-regression.html#using-multiple-regression"><i class="fa fa-check"></i><b>10.3</b> Using Multiple Regression</a><ul>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#choosing-a-model"><i class="fa fa-check"></i>Choosing a Model</a></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#categorical-variables-1"><i class="fa fa-check"></i>Categorical Variables</a></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#accounting-for-confounding-variables"><i class="fa fa-check"></i>Accounting for Confounding Variables</a></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#association-between-explanatory-variables"><i class="fa fa-check"></i>Association between Explanatory Variables</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Lock5 With R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="inference-for-regression" class="section level1">
+<h1><span class="header-section-number">9</span> Inference for Regression</h1>
+<div id="inference-for-slope-and-correlation" class="section level2">
+<h2><span class="header-section-number">9.1</span> Inference for Slope and Correlation</h2>
+<div id="simple-linear-model" class="section level3 unnumbered">
+<h3>Simple Linear Model</h3>
+<p><span class="math display">\[
+Y = \beta_0 + \beta_1 x + \epsilon  \qquad \mbox{where $\epsilon \sim Norm(0, \sigma)$.}
+\]</span></p>
+<p>In other words:
+<span class="itemize"></p>
+<ol>
+<li><p>The mean response for a given predictor value <span class="math inline">\(x\)</span> is given by a linear formula
+<span class="math display">\[
+  \mbox{mean response} = \beta_0 + \beta_1 x
+  \]</span></p></li>
+<li><p>The distribution of all responses for a given predictor value <span class="math inline">\(x\)</span> is normal.</p></li>
+<li><p>The standard deviation of the responses is the same for each predictor value.</p></li>
+</ol>
+<p></span></p>
+<p>One of the goals in simple linear regression is to estimate this linear relationship – that
+is to estimate the intercept and the slope.</p>
+<p>Of course, there are lots of lines.
+We want to determine the line that fits the data best. But what does that mean?</p>
+<p>The usual method is called the <strong>method of least squares</strong> and chooses the line that has the
+_ smallest possible sum of squares of residuals_, where residuals are defined by</p>
+<p><span class="math display">\[
+\mbox{residual} = \mbox{observed response} - \mbox{predicted response}
+\]</span></p>
+<p>For a line with equation <span class="math inline">\(y = b_0 + b_1 x\)</span>, this would be
+<span class="math display">\[
+e_i = y_i - (b_0 + b_1 x) 
+\]</span></p>
+<p>Simple calculus (that you don’t need to know) allows us to compute the best
+<span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span> possible. These best values define the least squares regression line.
+Fortunately, statistical software packages do all this work for us. In R
+the command that does this is <code>lm()</code>.</p>
+<div id="example-9.1" class="section level4 unnumbered">
+<h4>Example 9.1</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lm</span>(Price <span class="op">~</span><span class="st"> </span>PPM, <span class="dt">data =</span> InkjetPrinters)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Price ~ PPM, data = InkjetPrinters)
+## 
+## Coefficients:
+## (Intercept)          PPM  
+##      -94.22        90.88</code></pre>
+<p>You can get terser output with</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">coef</span>(<span class="kw">lm</span>(Price <span class="op">~</span><span class="st"> </span>PPM, <span class="dt">data =</span> InkjetPrinters))</code></pre>
+<pre><code>## (Intercept)         PPM 
+##   -94.22176    90.87807</code></pre>
+<p>You can also get more information with</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">msummary</span>(<span class="kw">lm</span>(Price <span class="op">~</span><span class="st"> </span>PPM, <span class="dt">data =</span> InkjetPrinters))</code></pre>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   -94.22      56.40  -1.671 0.112086    
+## PPM            90.88      19.49   4.663 0.000193 ***
+## 
+## Residual standard error: 58.55 on 18 degrees of freedom
+## Multiple R-squared:  0.5471, Adjusted R-squared:  0.522 
+## F-statistic: 21.75 on 1 and 18 DF,  p-value: 0.0001934</code></pre>
+<p>So our regression equation is</p>
+<p><span class="math display">\[
+\widehat{\mbox{Price}} = -94.2217606 + 90.8780677 \cdot \mbox{PPM}
+\]</span></p>
+<p>For example, this suggests that the average price for inkjet printers that print 3 pages per minute is
+<span class="math display">\[
+\widehat{\mbox{Price}} 
+= 
+-94.2217606 + 90.8780677 \cdot \mbox{3.0}
+=
+178.4124425
+\]</span></p>
+</div>
+</div>
+<div id="inference-for-slope" class="section level3 unnumbered">
+<h3>Inference for Slope</h3>
+<div id="figure-9.1" class="section level4 unnumbered">
+<h4>Figure 9.1</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_point</span>(Price <span class="op">~</span><span class="st"> </span>PPM, <span class="dt">data =</span> InkjetPrinters) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gf_lm</span>()</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure9.1-1.png" width="65%" /></p>
+</div>
+<div id="figure-9.2" class="section level4 unnumbered">
+<h4>Figure 9.2</h4>
+<pre class="sourceCode r"><code class="sourceCode r">Boot.Ink &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">1000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">lm</span>(Price <span class="op">~</span><span class="st"> </span>PPM, <span class="dt">data =</span> <span class="kw">resample</span>(InkjetPrinters))
+<span class="kw">favstats</span>( <span class="op">~</span><span class="st"> </span>PPM, <span class="dt">data =</span> Boot.Ink)</code></pre>
+<pre><code>##       min       Q1   median       Q3      max  mean       sd    n missing
+##  23.16786 79.03896 92.14894 105.6885 164.7333 92.19 20.75733 1000       0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dotplot</span>( <span class="op">~</span><span class="st"> </span>PPM, <span class="dt">binwidth =</span> <span class="dv">2</span>, <span class="dt">data =</span> Boot.Ink)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure9.2-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r">Rand.Ink &lt;-<span class="st"> </span><span class="kw">do</span>(<span class="dv">1000</span>) <span class="op">*</span><span class="st"> </span><span class="kw">lm</span>(Price <span class="op">~</span><span class="st"> </span><span class="kw">shuffle</span>(PPM), <span class="dt">data =</span> InkjetPrinters)
+<span class="kw">favstats</span>( <span class="op">~</span><span class="st"> </span>PPM, <span class="dt">data =</span> Rand.Ink)</code></pre>
+<pre><code>##        min        Q1    median       Q3      max       mean       sd    n
+##  -83.35051 -20.31245 -0.235998 19.52745 75.97585 -0.8119218 28.27206 1000
+##  missing
+##        0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_dotplot</span>( <span class="op">~</span><span class="st"> </span>PPM, <span class="dt">binwidth =</span> <span class="dv">2</span>, <span class="dt">data =</span> Rand.Ink)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure9.2-2.png" width="65%" /></p>
+<!-- how to get just the slope? -->
+</div>
+<div id="example-9.2" class="section level4 unnumbered">
+<h4>Example 9.2</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">msummary</span>(<span class="kw">lm</span>(Price <span class="op">~</span><span class="st"> </span>PPM, <span class="dt">data =</span> InkjetPrinters)) </code></pre>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   -94.22      56.40  -1.671 0.112086    
+## PPM            90.88      19.49   4.663 0.000193 ***
+## 
+## Residual standard error: 58.55 on 18 degrees of freedom
+## Multiple R-squared:  0.5471, Adjusted R-squared:  0.522 
+## F-statistic: 21.75 on 1 and 18 DF,  p-value: 0.0001934</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(<span class="kw">lm</span>(Price <span class="op">~</span><span class="st"> </span>PPM, <span class="dt">data =</span> InkjetPrinters) , <span class="st">&quot;PPM&quot;</span>)</code></pre>
+<pre><code>##        2.5 %   97.5 %
+## PPM 49.93604 131.8201</code></pre>
+</div>
+<div id="example-9.3" class="section level4 unnumbered">
+<h4>Example 9.3</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(RestaurantTips)</code></pre>
+<pre><code>##    Bill   Tip Credit Guests Day Server PctTip CreditCard
+## 1 23.70 10.00      n      2 Fri      A   42.2         No
+## 2 36.11  7.00      n      3 Fri      B   19.4         No
+## 3 31.99  5.01      y      2 Fri      A   15.7        Yes
+## 4 17.39  3.61      y      2 Fri      B   20.8        Yes
+## 5 15.41  3.00      n      2 Fri      B   19.5         No
+## 6 18.62  2.50      n      2 Fri      A   13.4         No</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">lm</span>(Tip <span class="op">~</span><span class="st"> </span>Bill, <span class="dt">data =</span> RestaurantTips)) </code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Tip ~ Bill, data = RestaurantTips)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.3911 -0.4891 -0.1108  0.2839  5.9738 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -0.292267   0.166160  -1.759   0.0806 .  
+## Bill         0.182215   0.006451  28.247   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.9795 on 155 degrees of freedom
+## Multiple R-squared:  0.8373, Adjusted R-squared:  0.8363 
+## F-statistic: 797.9 on 1 and 155 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(<span class="kw">lm</span>(Tip <span class="op">~</span><span class="st"> </span>Bill, <span class="dt">data =</span> RestaurantTips) , <span class="st">&quot;Bill&quot;</span>, <span class="dt">level =</span> <span class="fl">0.90</span>)</code></pre>
+<pre><code>##            5 %      95 %
+## Bill 0.1715402 0.1928893</code></pre>
+</div>
+<div id="example-9.4" class="section level4 unnumbered">
+<h4>Example 9.4</h4>
+<p><span class="enumerate"></p>
+<ol>
+<li><span class="math inline">\(H_0\)</span>: <span class="math inline">\(\beta_1 = 0\)</span>; <span class="math inline">\(H_a\)</span>: <span class="math inline">\(\beta_1 \neq 0\)</span></li>
+<li>Test statistic: <span class="math inline">\(b_1 = 0.0488\)</span> (sample slope)</li>
+<li>t-test for slope:</li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">msummary</span>(<span class="kw">lm</span>(PctTip <span class="op">~</span><span class="st"> </span>Bill, <span class="dt">data =</span> RestaurantTips)) </code></pre>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 15.50965    0.73956   20.97   &lt;2e-16 ***
+## Bill         0.04881    0.02871    1.70   0.0911 .  
+## 
+## Residual standard error: 4.36 on 155 degrees of freedom
+## Multiple R-squared:  0.01831,    Adjusted R-squared:  0.01197 
+## F-statistic:  2.89 on 1 and 155 DF,  p-value: 0.09112</code></pre>
+<p></span></p>
+</div>
+</div>
+<div id="t-test-for-correlation" class="section level3 unnumbered">
+<h3>t-Test for Correlation</h3>
+<div id="example-9.5" class="section level4 unnumbered">
+<h4>Example 9.5</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">lm</span>(CostBW <span class="op">~</span><span class="st"> </span>PPM, <span class="dt">data =</span> InkjetPrinters)) </code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = CostBW ~ PPM, data = InkjetPrinters)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.1383 -0.7288 -0.3365  0.5315  3.8066 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   8.6829     1.2839   6.763 2.46e-06 ***
+## PPM          -1.5517     0.4436  -3.498  0.00257 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.333 on 18 degrees of freedom
+## Multiple R-squared:  0.4046, Adjusted R-squared:  0.3715 
+## F-statistic: 12.23 on 1 and 18 DF,  p-value: 0.002571</code></pre>
+<!-- how to do test for correlation? -->
+</div>
+<div id="example-9.6" class="section level4 unnumbered">
+<h4>Example 9.6</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">msummary</span>(<span class="kw">lm</span>(PctTip <span class="op">~</span><span class="st"> </span>Bill, <span class="dt">data =</span> RestaurantTips)) </code></pre>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 15.50965    0.73956   20.97   &lt;2e-16 ***
+## Bill         0.04881    0.02871    1.70   0.0911 .  
+## 
+## Residual standard error: 4.36 on 155 degrees of freedom
+## Multiple R-squared:  0.01831,    Adjusted R-squared:  0.01197 
+## F-statistic:  2.89 on 1 and 155 DF,  p-value: 0.09112</code></pre>
+</div>
+</div>
+<div id="coefficient-of-determination-r-squared" class="section level3 unnumbered">
+<h3>Coefficient of Determination: R-squared</h3>
+<div id="example-9.7" class="section level4 unnumbered">
+<h4>Example 9.7</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">msummary</span>(<span class="kw">lm</span>(Price <span class="op">~</span><span class="st"> </span>PPM, <span class="dt">data =</span> InkjetPrinters))</code></pre>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   -94.22      56.40  -1.671 0.112086    
+## PPM            90.88      19.49   4.663 0.000193 ***
+## 
+## Residual standard error: 58.55 on 18 degrees of freedom
+## Multiple R-squared:  0.5471, Adjusted R-squared:  0.522 
+## F-statistic: 21.75 on 1 and 18 DF,  p-value: 0.0001934</code></pre>
+</div>
+</div>
+<div id="checking-conditions-for-a-simple-linear-model" class="section level3 unnumbered">
+<h3>Checking Conditions for a Simple Linear Model</h3>
+<!-- #### Figure 9.3 {-} -->
+<!-- #### Figure 9.4 {-} -->
+<!-- #### Example 9.8 {-} -->
+<!-- #### Figure 9.5 {-} -->
+<div id="example-9.9" class="section level4 unnumbered">
+<h4>Example 9.9</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_point</span>(Tip <span class="op">~</span><span class="st"> </span>Bill, <span class="dt">data =</span> RestaurantTips, <span class="dt">cex =</span> <span class="fl">0.5</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gf_lm</span>()</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example9.9-1.png" width="65%" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_point</span>(PctTip <span class="op">~</span><span class="st"> </span>Bill, <span class="dt">data =</span> RestaurantTips, <span class="dt">cex =</span> <span class="fl">0.5</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gf_lm</span>()</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Example9.9-2.png" width="65%" /></p>
+</div>
+</div>
+</div>
+<div id="anova-for-regression" class="section level2">
+<h2><span class="header-section-number">9.2</span> ANOVA for Regression</h2>
+<div id="partitioning-variability-1" class="section level3 unnumbered">
+<h3>Partitioning Variability</h3>
+<p>We can also think about regression as a way to analyze the variability in the response. This is a lot like the ANOVA tables we have seen before. This time:</p>
+<p><span class="align*"></p>
+<p><span class="math inline">\(SST\)</span> = <span class="math inline">\(\sum (y - \overline{y})^2\)</span></p>
+<p><span class="math inline">\(SSE\)</span> = <span class="math inline">\(\sum (y - \hat{y})^2\)</span></p>
+<p><span class="math inline">\(SSM\)</span> = <span class="math inline">\(\sum (\hat{y} - \overline{y})^2\)</span></p>
+<p><span class="math inline">\(SST\)</span> = <span class="math inline">\(SSM\)</span> + <span class="math inline">\(SSE\)</span></p>
+<p></span></p>
+<p>As before, when <span class="math inline">\(SSM\)</span> is large and <span class="math inline">\(SSE\)</span> is small, then the model (<span class="math inline">\(\hat y = \hat\beta_0 + \hat\beta_1 x\)</span>) explains a lot of the variability and little is left unexplained (<span class="math inline">\(SSE\)</span>). On the other hand, if <span class="math inline">\(SSM\)</span> is small and <span class="math inline">\(SSE\)</span> is large, then the model explains only a little of the variability and most of it is due to things not explained by the model.</p>
+<div id="example-9.10" class="section level4 unnumbered">
+<h4>Example 9.10</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">lm</span>(Calories <span class="op">~</span><span class="st"> </span>Sugars, <span class="dt">data =</span> Cereal))</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Calories ~ Sugars, data = Cereal)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -36.574 -25.282  -2.549  17.796  51.805 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  88.9204    10.8120   8.224 5.96e-09 ***
+## Sugars        4.3103     0.9269   4.650 7.22e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 26.61 on 28 degrees of freedom
+## Multiple R-squared:  0.4357, Adjusted R-squared:  0.4156 
+## F-statistic: 21.62 on 1 and 28 DF,  p-value: 7.217e-05</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(<span class="kw">lm</span>(Calories <span class="op">~</span><span class="st"> </span>Sugars, <span class="dt">data =</span> Cereal))</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: Calories
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## Sugars     1  15316 15316.5  21.623 7.217e-05 ***
+## Residuals 28  19834   708.3                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+</div>
+<div id="f-statistic" class="section level3 unnumbered">
+<h3>F-Statistic</h3>
+<!-- \def\fit#1{#1} -->
+<!-- \def\resid#1{#1} -->
+<p><span class="itemize"></p>
+<ul>
+<li><span class="math inline">\(MSM = SSM / DFM = SSM / (number of groups - 1)\)</span></li>
+<li><span class="math inline">\(MSE = SSE / DFE = SSE / (n - number of groups)\)</span></li>
+</ul>
+<p></span></p>
+<p>MS stands for “mean square”</p>
+<p>Our test statistic is
+<span class="math display">\[
+F = \frac{MSM}{MSE} 
+\]</span>
+<!-- AuthNote --- it seems that fit and resid are undefined and so I'm unable to compile the pdf --></p>
+<div id="example-9.11" class="section level4 unnumbered">
+<h4>Example 9.11</h4>
+<pre class="sourceCode r"><code class="sourceCode r">SSM &lt;-<span class="st"> </span><span class="dv">15317</span>
+MSM &lt;-<span class="st"> </span>SSM <span class="op">/</span><span class="st"> </span>(<span class="dv">2-1</span>); MSM</code></pre>
+<pre><code>## [1] 15317</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">SSE &lt;-<span class="st"> </span><span class="dv">19834</span>
+MSE &lt;-<span class="st"> </span>SSE <span class="op">/</span><span class="st"> </span>(<span class="dv">30-2</span>); MSE</code></pre>
+<pre><code>## [1] 708.3571</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">F &lt;-<span class="st"> </span>MSM <span class="op">/</span><span class="st"> </span>MSE; F</code></pre>
+<pre><code>## [1] 21.62327</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pf</span>(F, <span class="dv">1</span>, <span class="dv">28</span>, <span class="dt">lower.tail =</span> <span class="ot">FALSE</span>)</code></pre>
+<pre><code>## [1] 7.216549e-05</code></pre>
+<!-- any way to get total sum of squares? -->
+</div>
+<div id="example-9.12" class="section level4 unnumbered">
+<h4>Example 9.12</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(<span class="kw">lm</span>(Calories <span class="op">~</span><span class="st"> </span>Sodium, <span class="dt">data =</span> Cereal))</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Calories ~ Sodium, data = Cereal)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -47.387 -22.917  -8.006  18.747  76.233 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 103.75873   18.86779   5.499  7.1e-06 ***
+## Sodium        0.13658    0.08098   1.686    0.103    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 33.76 on 28 degrees of freedom
+## Multiple R-squared:  0.09221,    Adjusted R-squared:  0.05979 
+## F-statistic: 2.844 on 1 and 28 DF,  p-value: 0.1028</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(<span class="kw">lm</span>(Calories <span class="op">~</span><span class="st"> </span>Sodium, <span class="dt">data =</span> Cereal))</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: Calories
+##           Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Sodium     1   3241  3241.3  2.8442 0.1028
+## Residuals 28  31909  1139.6</code></pre>
+<p>The percentage of explained variability is denoted <span class="math inline">\(r^2\)</span> or <span class="math inline">\(R^2\)</span>:</p>
+<p><span class="math display">\[
+R^2 = \frac{SSM}{SST} = \frac{SSM}{SSM + SSE}
+\]</span></p>
+</div>
+<div id="example-9.13" class="section level4 unnumbered">
+<h4>Example 9.13</h4>
+<p>The summary of the linear model shows us the <strong>coefficient of determination</strong> but we can also find it manually.</p>
+<pre class="sourceCode r"><code class="sourceCode r">SSM &lt;-<span class="st"> </span><span class="dv">15317</span>
+SST &lt;-<span class="st"> </span>SSM <span class="op">+</span><span class="st"> </span><span class="dv">19834</span>
+R2 &lt;-<span class="st"> </span>SSM <span class="op">/</span><span class="st"> </span>SST; R2</code></pre>
+<pre><code>## [1] 0.4357486</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rsquared</span>(<span class="kw">lm</span>(Calories <span class="op">~</span><span class="st"> </span>Sugars, <span class="dt">data =</span> Cereal))</code></pre>
+<pre><code>## [1] 0.4357451</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">SSM &lt;-<span class="st"> </span><span class="dv">3241</span>
+SST &lt;-<span class="st"> </span>SSM <span class="op">+</span><span class="st"> </span><span class="dv">31909</span>
+R2 &lt;-<span class="st"> </span>SSM <span class="op">/</span><span class="st"> </span>SST; R2</code></pre>
+<pre><code>## [1] 0.09220484</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rsquared</span>(<span class="kw">lm</span>(Calories <span class="op">~</span><span class="st"> </span>Sodium, <span class="dt">data =</span> Cereal))</code></pre>
+<pre><code>## [1] 0.09221243</code></pre>
+</div>
+</div>
+<div id="computational-details" class="section level3 unnumbered">
+<h3>Computational Details</h3>
+<!-- Example 9.14 -->
+<div id="example-9.15" class="section level4 unnumbered">
+<h4>Example 9.15</h4>
+<p>Again, the summary of the linear model gives us the standard deviation of the error but we can calculate it manually.</p>
+<pre class="sourceCode r"><code class="sourceCode r">SSE &lt;-<span class="st"> </span><span class="dv">31909</span>
+SD  &lt;-<span class="st"> </span><span class="kw">sqrt</span>(SSE <span class="op">/</span><span class="st"> </span>(<span class="dv">30</span> <span class="op">-</span><span class="st"> </span><span class="dv">2</span>)); SD</code></pre>
+<pre><code>## [1] 33.75807</code></pre>
+</div>
+<div id="example-9.16" class="section level4 unnumbered">
+<h4>Example 9.16</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">favstats</span>( <span class="op">~</span><span class="st"> </span>Sodium, <span class="dt">data =</span> Cereal)</code></pre>
+<pre><code>##  min     Q1 median     Q3 max  mean       sd  n missing
+##    5 183.75    217 251.25 408 220.2 77.40641 30       0</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">SE &lt;-<span class="st"> </span>SD <span class="op">/</span><span class="st"> </span>(<span class="fl">77.4</span> <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="dv">30</span> <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) <span class="co"># SD from Example 9.15</span>
+SE</code></pre>
+<pre><code>## [1] 0.08099116</code></pre>
+</div>
+</div>
+</div>
+<div id="confidence-and-prediction-intervals" class="section level2">
+<h2><span class="header-section-number">9.3</span> Confidence and Prediction Intervals</h2>
+<div id="interpreting-confidence-and-prediction-intervals" class="section level3 unnumbered">
+<h3>Interpreting Confidence and Prediction Intervals</h3>
+<p>It may be very interesting to make predictions when the explanatory variable has some other value, however. There are two ways to do this in R One uses the <code>predict()</code> function. It is simpler, however, to use the <code>makeFun()</code> function in the <strong><code>mosaic</code></strong> package, so that’s the approach we will use here.</p>
+<p>Prediction intervals
+<span class="enumerate"></p>
+<ol>
+<li><p>are much wider than confidence intervals</p></li>
+<li><p>are very sensitive to the assumption that the population normal for each value of the predictor.</p></li>
+<li><p>are (for a 95% confidence level) a little bit wider than
+<span class="math display">\[
+  \hat y \pm 2 SE
+  \]</span>
+where <span class="math inline">\(SE\)</span> is the ``residual standard error’’ reported in the summary output.
+<span class="enumerate"></p></li>
+<li><p>The prediction interval is a little wider because it takes into account the uncertainty in our estimated slope and intercept as well as the variability of responses around the true regression line.</p></li>
+</ol>
+<p></span></p>
+<p></span></p>
+<!-- Example 9.17 -->
+<div id="example-9.18" class="section level4 unnumbered">
+<h4>Example 9.18</h4>
+<p>First, let’s build our linear model and store it.</p>
+<pre class="sourceCode r"><code class="sourceCode r">ink.model &lt;-<span class="st"> </span><span class="kw">lm</span>(Price <span class="op">~</span><span class="st"> </span>PPM, <span class="dt">data =</span> InkjetPrinters)
+<span class="kw">summary</span>(ink.model)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Price ~ PPM, data = InkjetPrinters)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -79.38 -51.40  -3.49  43.85  87.76 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   -94.22      56.40  -1.671 0.112086    
+## PPM            90.88      19.49   4.663 0.000193 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 58.55 on 18 degrees of freedom
+## Multiple R-squared:  0.5471, Adjusted R-squared:  0.522 
+## F-statistic: 21.75 on 1 and 18 DF,  p-value: 0.0001934</code></pre>
+<p>Now let’s create a function that will estimate values of <span style="color:green">Price</span> for a given
+value of <span style="color:green">PPM</span>:</p>
+<pre class="sourceCode r"><code class="sourceCode r">Ink.Price &lt;-<span class="st"> </span><span class="kw">makeFun</span>(ink.model)</code></pre>
+<p>We can now input a PPM and see what our least squares regression line predicts for the price:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">Ink.Price</span>(<span class="dt">PPM =</span> <span class="fl">3.0</span>)   <span class="co"># estimate Price when PPM is 3.0</span></code></pre>
+<pre><code>##        1 
+## 178.4124</code></pre>
+<p>R can compute two kinds of confidence intervals for the response for a given value
+<span class="enumerate"></p>
+<ol>
+<li><p>A confidence interval for the <em>mean response</em> for a <em>given explanatory value</em> can be computed by adding interval = ‘confidence’.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">Ink.Price</span>(<span class="dt">PPM =</span> <span class="fl">3.0</span>, <span class="dt">interval =</span> <span class="st">&#39;confidence&#39;</span>)</code></pre>
+<pre><code>##        fit      lwr    upr
+## 1 178.4124 149.8849 206.94</code></pre></li>
+<li><p>An interval for an <em>individual response</em> (called a prediction interval to avoid confusion with the confidence interval above) can be computed by adding interval = ‘prediction’! instead.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">Ink.Price</span>(<span class="dt">PPM =</span> <span class="fl">3.0</span>, <span class="dt">interval =</span> <span class="st">&#39;prediction&#39;</span>)</code></pre>
+<pre><code>##        fit     lwr      upr
+## 1 178.4124 52.1476 304.6773</code></pre></li>
+</ol>
+<p></span></p>
+</div>
+<div id="figure-9.13" class="section level4 unnumbered">
+<h4>Figure 9.13</h4>
+<p>The figure below shows the confidence (inner band) and prediction (outer band) intervals as bands around the regression line.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gf_point</span>(Price <span class="op">~</span><span class="st"> </span>PPM, <span class="dt">data =</span> InkjetPrinters,
+       <span class="dt">dotsize =</span> <span class="fl">.6</span>, <span class="dt">alpha =</span> <span class="fl">.5</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">gf_lm</span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">gf_lm</span>(<span class="dt">interval =</span> <span class="st">&quot;confidence&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">gf_lm</span>(<span class="dt">interval =</span> <span class="st">&quot;prediction&quot;</span>)</code></pre>
+<p><img src="Lock5WithR_files/figure-html/Figure9.13-1.png" width="65%" /></p>
+<p>As the graph illustrates, the intervals are narrow near the center of the data and wider near the edges of the data. It is not safe to extrapolate beyond the data (without additional information), since there is no data to let us know whether the pattern of the data extends.</p>
+<!-- Example 9.19 -->
+<!-- ## Inference (Confidence Intervals and Hypothesis Tests) -->
+<!-- This section is currently Unused and has been Deleted-->
+<!-- Look back in the source control for this section's code -->
+
+</div>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="anova-to-compare-means.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="multiple-regression.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["Lock5WithR.pdf"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
